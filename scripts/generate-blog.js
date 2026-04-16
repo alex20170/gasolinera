@@ -67,11 +67,11 @@ async function run() {
         const dateStr = now.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         const fileDate = now.toISOString().split('T')[0];
         
-        const title = `Precios de gasolina en España hoy: ${dateStr}`;
-        const description = `Consulta los precios medios de los combustibles en España hoy ${dateStr}. Análisis diario de Gasolina 95, 98 y Diésel.`;
+        const title = `Precios de gasolina en España el ${dateStr}`;
+        const description = `Consulta los precios medios de los combustibles en España el ${dateStr}. Análisis diario de Gasolina 95, 98 y Diésel.`;
         
         let content = `
-            <p>Hoy, <strong>${dateStr}</strong>, los precios de los carburantes en España muestran los siguientes valores medios nacionales. Estos datos son obtenidos directamente del Ministerio de Industria y actualizados en tiempo real.</p>
+            <p>El día <strong>${dateStr}</strong>, los precios de los carburantes en España muestran los siguientes valores medios nacionales. Estos datos son obtenidos directamente del Ministerio de Industria.</p>
             
             <div class="stats-grid">
                 <div class="stat-card">
@@ -88,13 +88,13 @@ async function run() {
                 </div>
             </div>
 
-            <h2>Análisis del mercado hoy</h2>
-            <p>En el reporte de hoy, vemos que el precio medio de la <strong>Gasolina 95</strong> se sitúa en los <strong>${avgs.G95} €/L</strong>. Por su parte, el <strong>Diésel (Gasoil A)</strong> tiene un coste medio de <strong>${avgs.GOA} €/L</strong>.</p>
+            <h2>Análisis del mercado</h2>
+            <p>En este reporte, vemos que el precio medio de la <strong>Gasolina 95</strong> se sitúa en los <strong>${avgs.G95} €/L</strong>. Por su parte, el <strong>Diésel (Gasoil A)</strong> tiene un coste medio de <strong>${avgs.GOA} €/L</strong>.</p>
             
             <p>Si estás buscando ahorrar, te recomendamos utilizar nuestro buscador en la página principal para encontrar la gasolinera más barata cerca de tu ubicación actual, ya que las diferencias entre provincias y estaciones pueden ser significativas.</p>
             
             <h2>Precios por tipo de combustible</h2>
-            <p>A continuación detallamos el resto de carburantes analizados hoy:</p>
+            <p>A continuación detallamos el resto de carburantes analizados:</p>
             <ul>
                 <li><strong>Gasolina 98:</strong> ${avgs.G98} €/L</li>
                 <li><strong>Diésel Plus:</strong> ${avgs.Gplus || avgs['G+']} €/L</li>
@@ -154,8 +154,8 @@ function updateHomepageBlog() {
             return `<a href="/blog/${f}" class="post-card" data-date="${date}" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4);text-decoration:none;color:inherit;transition:all var(--transition-interactive);display:flex;flex-direction:column;gap:var(--space-2)">
                 <div style="height:120px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg)"></div>
                 <span style="font-size:10px;color:var(--color-primary);font-weight:700;text-transform:uppercase">${date}</span>
-                <h3 style="font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;line-height:1.2">Precios de hoy: ${date}</h3>
-                <p style="font-size:var(--text-xs);color:var(--color-text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Consulta el reporte diario y ahorra en tu combustible hoy.</p>
+                <h3 style="font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;line-height:1.2">Precios del día: ${date}</h3>
+                <p style="font-size:var(--text-xs);color:var(--color-text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
             </a>`;
         }).join('\n');
 
@@ -192,7 +192,7 @@ function updateBlogIndex() {
             return `<a href="${f}" class="post-card" data-date="${date}">
                 <div style="height:160px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg);margin-bottom:var(--space-2)"></div>
                 <span class="post-card-date">${date}</span>
-                <h2 class="post-card-title">Precios de hoy: ${date}</h2>
+                <h2 class="post-card-title">Precios del día: ${date}</h2>
                 <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día ${date}.</p>
             </a>`;
         }).join('\n');
