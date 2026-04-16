@@ -151,7 +151,7 @@ function updateHomepageBlog() {
             const imgIdx = d.getDate() % HERO_IMAGES.length;
             const thumb = HERO_IMAGES[imgIdx];
             
-            return `<a href="/blog/${f}" class="post-card" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4);text-decoration:none;color:inherit;transition:all var(--transition-interactive);display:flex;flex-direction:column;gap:var(--space-2)">
+            return `<a href="/blog/${f}" class="post-card" data-date="${date}" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4);text-decoration:none;color:inherit;transition:all var(--transition-interactive);display:flex;flex-direction:column;gap:var(--space-2)">
                 <div style="height:120px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg)"></div>
                 <span style="font-size:10px;color:var(--color-primary);font-weight:700;text-transform:uppercase">${date}</span>
                 <h3 style="font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;line-height:1.2">Precios de hoy: ${date}</h3>
@@ -189,7 +189,7 @@ function updateBlogIndex() {
             const imgIdx = d.getDate() % HERO_IMAGES.length;
             const thumb = HERO_IMAGES[imgIdx];
             
-            return `<a href="${f}" class="post-card">
+            return `<a href="${f}" class="post-card" data-date="${date}">
                 <div style="height:160px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg);margin-bottom:var(--space-2)"></div>
                 <span class="post-card-date">${date}</span>
                 <h2 class="post-card-title">Precios de hoy: ${date}</h2>
