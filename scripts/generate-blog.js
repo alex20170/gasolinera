@@ -110,10 +110,42 @@ async function run() {
         console.log(`Blog post created: ${fileName}`);
 
         // Update Sitemap
-        updateSitemap(`https://gasolinerasespaña.es/blog/${fileName}`);
+        updateSitemap(`https://xn--gasolinerasespaa-lub.es/blog/${fileName}`);
+
+        // Update Blog Index
+        updateBlogIndex();
 
     } catch (err) {
         console.error('Error details:', err);
+    }
+}
+
+function updateBlogIndex() {
+    try {
+        const indexPath = path.join(BLOG_DIR, 'index.html');
+        if (!fs.existsSync(indexPath)) return;
+
+        const files = fs.readdirSync(BLOG_DIR)
+            .filter(f => f.endsWith('.html') && f !== 'index.html')
+            .sort()
+            .reverse();
+
+        const postListHtml = files.map(f => {
+            const date = f.substring(0, 10);
+            return `<a href="${f}" class="post-card">
+                <span class="post-card-date">${date}</span>
+                <h2 class="post-card-title">Precios de hoy: ${date}</h2>
+                <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día ${date}.</p>
+            </a>`;
+        }).join('\n');
+
+        let indexContent = fs.readFileSync(indexPath, 'utf-8');
+        indexContent = indexContent.replace(/<!-- POSTS_GO_HERE -->[\s\S]*<!-- POSTS_GO_HERE -->|<!-- POSTS_GO_HERE -->/, `<!-- POSTS_GO_HERE -->\n${postListHtml}\n<!-- POSTS_GO_HERE -->`);
+        
+        fs.writeFileSync(indexPath, indexContent);
+        console.log('Blog index updated');
+    } catch (err) {
+        console.error('Blog index update error:', err);
     }
 }
 
