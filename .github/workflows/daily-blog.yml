@@ -1,0 +1,32 @@
+name: Daily Blog Generator
+
+on:
+  schedule:
+    - cron: '30 8 * * *' # Every day at 08:30 UTC
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Generate Blog Post
+        run: node scripts/generate-blog.js
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "chore: add daily blog post for $(date +'%Y-%m-%d')"
+          title: "Daily Blog Post: $(date +'%Y-%m-%d')"
+          body: "This is an automated PR containing the daily gas price report."
+          branch: "auto-blog-post"
+          base: "main"
+          delete-branch: true

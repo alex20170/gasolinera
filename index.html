@@ -1,0 +1,1661 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c60b1e'/><rect y='10' width='32' height='12' fill='%23ffc400'/><text x='16' y='22' font-size='16' text-anchor='middle'>⛽</text></svg>">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gasolineras España - Encuentra el combustible más barato</title>
+<meta name="description" content="Busca y compara los precios de todas las gasolineras de España actualizados diariamente. Encuentra la gasolina, diésel o GLP más barato cerca de tu municipio o ubicación en el mapa.">
+<meta name="keywords" content="gasolineras baratas, precio gasolina hoy, precio diésel, gasolinas españa, combustible barato, mapa gasolineras, buscar gasolineras">
+<meta name="author" content="Alejandro Sibaja">
+<meta name="google-site-verification" content="DLjn3q9u8-hoedxOM16W7BzWgfLCC5oTU0D7q8u5B8c" />
+<meta property="og:title" content="Gasolineras España - Encuentra el combustible más barato">
+<meta property="og:description" content="Busca y compara los precios de todas las gasolineras de España actualizados diariamente.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="anonymous">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="anonymous"></script>
+<style>
+:root,[data-theme="light"]{
+  --color-bg:#f7f6f2;--color-surface:#f9f8f5;--color-surface-2:#fbfbf9;
+  --color-surface-offset:#f3f0ec;--color-surface-dynamic:#e6e4df;
+  --color-divider:#dcd9d5;--color-border:#d4d1ca;
+  --color-text:#28251d;--color-text-muted:#7a7974;--color-text-faint:#bab9b4;
+  --color-text-inverse:#f9f8f4;
+  --color-primary:#01696f;--color-primary-hover:#0c4e54;--color-primary-active:#0f3638;
+  --color-primary-highlight:#cedcd8;
+  --color-success:#437a22;--color-success-highlight:#d4dfcc;
+  --color-warning:#964219;--color-warning-highlight:#ddcfc6;
+  --color-error:#a12c7b;--color-error-highlight:#e0ced7;
+  --color-orange:#da7101;--color-gold:#d19900;--color-blue:#006494;
+  --radius-sm:.375rem;--radius-md:.5rem;--radius-lg:.75rem;--radius-xl:1rem;--radius-full:9999px;
+  --transition-interactive:180ms cubic-bezier(.16,1,.3,1);
+  --shadow-sm:0 1px 2px oklch(.2 .01 80/.06);--shadow-md:0 4px 12px oklch(.2 .01 80/.08);--shadow-lg:0 12px 32px oklch(.2 .01 80/.12);
+  --content-default:1200px;--font-display:'Sora','Inter',sans-serif;--font-body:'Inter',sans-serif;
+  --text-xs:clamp(.75rem,.7rem + .25vw,.875rem);--text-sm:clamp(.875rem,.8rem + .35vw,1rem);
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);--text-lg:clamp(1.125rem,1rem + .75vw,1.5rem);
+  --text-xl:clamp(1.5rem,1.2rem + 1.25vw,2.25rem);
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;
+  --space-6:1.5rem;--space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;
+}
+[data-theme="dark"]{
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-surface-dynamic:#2d2c2a;
+  --color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;--color-text-inverse:#2b2a28;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;--color-primary-active:#1a626b;--color-primary-highlight:#313b3b;
+  --color-success:#6daa45;--color-success-highlight:#3a4435;
+  --color-warning:#bb653b;--color-warning-highlight:#564942;
+  --color-error:#d163a7;--color-error-highlight:#4c3d46;
+  --color-orange:#fdab43;--color-gold:#e8af34;--color-blue:#5591c7;
+  --shadow-sm:0 1px 2px oklch(0 0 0/.2);--shadow-md:0 4px 12px oklch(0 0 0/.3);--shadow-lg:0 12px 32px oklch(0 0 0/.4);
+}
+@media(prefers-color-scheme:dark){:root:not([data-theme]){
+  --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
+  --color-surface-offset:#1d1c1a;--color-surface-dynamic:#2d2c2a;
+  --color-divider:#262523;--color-border:#393836;
+  --color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;
+  --color-primary:#4f98a3;--color-primary-hover:#227f8b;
+  --color-success:#6daa45;--color-warning:#bb653b;--color-error:#d163a7;
+  --color-orange:#fdab43;--color-gold:#e8af34;--color-blue:#5591c7;
+}}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-font-smoothing:antialiased;scroll-behavior:smooth}
+body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);font-size:var(--text-base);color:var(--color-text);background:
+  radial-gradient(1200px 500px at 15% -10%,color-mix(in oklch,var(--color-primary) 15%,transparent),transparent 60%),
+  radial-gradient(1000px 450px at 100% 10%,color-mix(in oklch,var(--color-success) 10%,transparent),transparent 55%),
+  var(--color-bg)}
+img,svg{display:block;max-width:100%}
+input,button,select{font:inherit;color:inherit}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.15}
+p{text-wrap:pretty}
+button{cursor:pointer;background:none;border:none}
+::selection{background:oklch(from var(--color-primary) l c h/.2);color:var(--color-text)}
+:focus-visible{outline:2px solid var(--color-primary);outline-offset:3px;border-radius:var(--radius-sm)}
+a,button,[role="button"],input,select{transition:color var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive),box-shadow var(--transition-interactive)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+
+/* LAYOUT */
+.container{max-width:var(--content-default);margin-inline:auto;padding-inline:var(--space-4)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+
+/* HEADER */
+header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--color-surface) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid oklch(from var(--color-text) l c h/.08);box-shadow:var(--shadow-sm)}
+.header-inner{display:flex;align-items:center;gap:var(--space-4);padding-block:var(--space-3);flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:var(--space-2);text-decoration:none;color:var(--color-text)}
+.logo-icon{color:var(--color-primary)}
+.logo-text{font-family:var(--font-display);font-weight:700;font-size:var(--text-base)}
+.logo-text span{color:var(--color-primary)}
+.header-actions{margin-left:auto;display:flex;align-items:center;gap:var(--space-2)}
+.btn-theme{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:var(--color-text-muted)}
+.btn-theme:hover{background:var(--color-surface-offset);color:var(--color-text)}
+.header-date{font-size:var(--text-xs);color:var(--color-text-muted);display:none}
+@media(min-width:600px){.header-date{display:block}}
+
+/* PRECIOS MEDIOS BANNER */
+.avg-banner{background:var(--color-surface);border-bottom:1px solid var(--color-divider);padding-block:var(--space-3);overflow:hidden}
+.avg-banner-inner{display:flex;align-items:center;gap:var(--space-6);flex-wrap:wrap}
+.avg-banner-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint);white-space:nowrap;display:flex;align-items:center;gap:var(--space-1)}
+.avg-prices{display:flex;gap:var(--space-4);flex-wrap:wrap;align-items:center}
+.avg-price-item{display:flex;align-items:center;gap:var(--space-2)}
+.avg-price-dot{width:8px;height:8px;border-radius:var(--radius-full);flex-shrink:0}
+.avg-price-name{font-size:var(--text-xs);color:var(--color-text-muted)}
+.avg-price-val{font-size:var(--text-sm);font-weight:700;font-variant-numeric:tabular-nums}
+.avg-skeleton{height:16px;width:60px;border-radius:var(--radius-sm)}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+.skeleton{background:linear-gradient(90deg,var(--color-surface-offset) 25%,var(--color-surface-dynamic) 50%,var(--color-surface-offset) 75%);background-size:200% 100%;animation:shimmer 1.5s ease-in-out infinite;border-radius:var(--radius-sm)}
+.skeleton-card{height:110px;border-radius:var(--radius-lg);margin-bottom:var(--space-2)}
+.trend-banner{background:linear-gradient(135deg in oklch,color-mix(in oklch,var(--color-primary) 10%,var(--color-surface)) 0%,var(--color-surface) 100%);border-bottom:1px solid var(--color-divider);padding-block:var(--space-2)}
+.trend-inner{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.trend-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint);display:flex;align-items:center;gap:var(--space-1)}
+.trend-list{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.trend-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 10px;border-radius:var(--radius-full);font-size:11px;font-weight:600;border:1px solid transparent}
+.trend-pill.down{background:var(--color-success-highlight);color:var(--color-success);border-color:color-mix(in oklch,var(--color-success) 20%,transparent)}
+.trend-pill.up{background:var(--color-error-highlight);color:var(--color-error);border-color:color-mix(in oklch,var(--color-error) 20%,transparent)}
+.trend-pill.equal{background:var(--color-surface-offset);color:var(--color-text-muted);border-color:var(--color-border)}
+.trend-note{font-size:11px;color:var(--color-text-muted)}
+.insight-banner{background:var(--color-surface);border-bottom:1px solid var(--color-divider)}
+.insight-inner{padding:var(--space-3) 0}
+.insight-card{display:flex;align-items:flex-start;gap:var(--space-2);background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4)}
+.insight-icon{color:var(--color-primary);flex-shrink:0;margin-top:2px}
+.insight-text{font-size:var(--text-sm);color:var(--color-text-muted)}
+.insight-text strong{color:var(--color-text)}
+
+/* HERO */
+.hero{background:
+  linear-gradient(135deg in oklch,var(--color-primary-highlight) 0%,var(--color-bg) 65%),
+  radial-gradient(600px 240px at 80% 0%,color-mix(in oklch,var(--color-gold) 18%,transparent),transparent 70%);
+  padding-block:var(--space-10) var(--space-8);border-bottom:1px solid var(--color-divider)}
+.hero-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--color-text);margin-bottom:var(--space-2)}
+.hero-sub{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-6);max-width:55ch}
+.search-bar{display:flex;gap:var(--space-2);flex-wrap:wrap;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-3);box-shadow:var(--shadow-md)}
+.search-input-wrap{flex:1 1 220px;display:flex;align-items:center;gap:var(--space-2)}
+.search-input-wrap i{color:var(--color-text-muted);flex-shrink:0}
+.search-input{border:none;background:transparent;outline:none;font-size:var(--text-sm);color:var(--color-text);width:100%}
+.search-input::placeholder{color:var(--color-text-faint)}
+.search-divider{width:1px;background:var(--color-divider);align-self:stretch;display:none}
+@media(min-width:600px){.search-divider{display:block}}
+.btn-primary{display:inline-flex;align-items:center;gap:var(--space-2);background:var(--color-primary);color:var(--color-text-inverse);border-radius:var(--radius-lg);padding:var(--space-2) var(--space-5);font-size:var(--text-sm);font-weight:600;white-space:nowrap;border:none}
+.btn-primary:hover{background:var(--color-primary-hover)}
+.btn-primary:active{background:var(--color-primary-active)}
+.btn-secondary{display:inline-flex;align-items:center;gap:var(--space-2);background:var(--color-surface-offset);color:var(--color-text);border-radius:var(--radius-lg);padding:var(--space-2) var(--space-4);font-size:var(--text-sm);font-weight:500;white-space:nowrap;border:1px solid oklch(from var(--color-text) l c h/.1)}
+.btn-secondary:hover{background:var(--color-surface-dynamic)}
+.location-note{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:var(--space-2);display:flex;align-items:center;gap:var(--space-1)}
+
+
+/* AUTOCOMPLETE */
+.autocomplete-wrap{position:relative;z-index:200;margin-top:4px}
+.autocomplete-dropdown{position:absolute;left:0;right:0;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);overflow:hidden;margin-top:4px}
+.autocomplete-item{padding:var(--space-3) var(--space-4);cursor:pointer;font-size:var(--text-sm);border-bottom:1px solid var(--color-divider)}
+.autocomplete-item:last-child{border-bottom:none}
+.autocomplete-item:hover{background:var(--color-primary-highlight)}
+
+/* FILTERS */
+.filters-bar{background:var(--color-surface);border-bottom:1px solid var(--color-divider);padding-block:var(--space-3)}
+.filters-inner{display:flex;gap:var(--space-2);align-items:center;flex-wrap:wrap}
+.filter-label{font-size:var(--text-xs);font-weight:600;color:var(--color-text-muted);text-transform:uppercase;letter-spacing:.06em;white-space:nowrap}
+.fuel-filters{display:flex;gap:var(--space-2);flex-wrap:wrap}
+.fuel-chip{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:500;cursor:pointer;border:1px solid oklch(from var(--color-text) l c h/.12);background:var(--color-surface);color:var(--color-text-muted);transition:all var(--transition-interactive)}
+.fuel-chip.active{background:var(--color-primary);color:white;border-color:var(--color-primary)}
+.fuel-chip:hover:not(.active){background:var(--color-surface-offset);color:var(--color-text)}
+.fuel-dot{width:8px;height:8px;border-radius:var(--radius-full);flex-shrink:0}
+
+/* STATUS */
+.status-bar{background:var(--color-surface-offset);border-bottom:1px solid var(--color-divider);padding:var(--space-2) var(--space-4);font-size:var(--text-xs);color:var(--color-text-muted);display:flex;align-items:center;gap:var(--space-2)}
+.status-dot{width:7px;height:7px;border-radius:var(--radius-full);background:var(--color-success);flex-shrink:0}
+.status-dot.loading{background:var(--color-gold);animation:pulse 1s ease-in-out infinite}
+.status-dot.error{background:var(--color-error)}
+.status-spacer{margin-left:auto}
+.status-action{font-size:11px;padding:4px 10px;border-radius:999px;border:1px solid var(--color-border);background:var(--color-surface);color:var(--color-text);font-weight:600}
+.status-action:hover{background:var(--color-surface-dynamic)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+/* MAIN LAYOUT */
+.main-layout{display:grid;gap:0;grid-template-columns:1fr;min-height:calc(100dvh - 180px)}
+@media(min-width:900px){.main-layout{grid-template-columns:400px 1fr}}
+
+/* SIDEBAR */
+.sidebar{border-right:1px solid var(--color-divider);overflow-y:auto;max-height:calc(100dvh - 180px);background:var(--color-surface)}
+@media(max-width:899px){
+  .sidebar{max-height:none}
+  .sidebar.mobile-hide{display:none}
+}
+.sidebar-header{padding:var(--space-4) var(--space-4) var(--space-3);border-bottom:1px solid var(--color-divider);position:sticky;top:0;z-index:10;background:var(--color-surface)}
+.results-count{font-size:var(--text-sm);color:var(--color-text-muted)}
+.results-count strong{color:var(--color-text)}
+.sort-select{font-size:var(--text-xs);border:1px solid var(--color-border);border-radius:var(--radius-md);padding:var(--space-1) var(--space-2);background:var(--color-surface-offset);color:var(--color-text);outline:none;cursor:pointer}
+.sort-select:hover{border-color:var(--color-primary)}
+
+/* STATION CARD */
+.station-list{padding:var(--space-2);display:flex;flex-direction:column;gap:var(--space-2)}
+.station-card{background:color-mix(in oklch,var(--color-surface-2) 92%,transparent);border:1px solid oklch(from var(--color-text) l c h/.07);border-radius:var(--radius-lg);padding:var(--space-3) var(--space-4);cursor:pointer;transition:all var(--transition-interactive);backdrop-filter:blur(6px)}
+.station-card:hover,.station-card.selected{background:var(--color-primary-highlight);border-color:var(--color-primary);box-shadow:var(--shadow-md)}
+.station-header{display:flex;align-items:flex-start;gap:var(--space-2);margin-bottom:var(--space-2)}
+.station-brand-badge{width:38px;height:38px;border-radius:var(--radius-md);flex-shrink:0;background:var(--color-primary-highlight);color:var(--color-primary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:var(--text-xs)}
+.station-info{flex:1;min-width:0}
+.station-name{font-size:var(--text-sm);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.station-address{font-size:var(--text-xs);color:var(--color-text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.station-distance{font-size:10px;color:var(--color-text-faint);margin-top:2px}
+.station-schedule{font-size:var(--text-xs);flex-shrink:0}
+.schedule-open{color:var(--color-success);font-weight:500}
+.schedule-closed{color:var(--color-error)}
+.schedule-unknown{color:var(--color-text-faint)}
+.fuel-prices{display:flex;flex-wrap:wrap;gap:var(--space-1);margin-top:var(--space-2)}
+.fuel-price-tag{display:inline-flex;align-items:center;gap:4px;padding:2px var(--space-2);border-radius:var(--radius-full);font-size:11px;font-weight:500;border:1px solid transparent}
+.fuel-gasolina95{background:color-mix(in oklch,var(--color-orange) 12%,var(--color-surface));color:var(--color-orange);border-color:color-mix(in oklch,var(--color-orange) 20%,transparent)}
+.fuel-gasolina98{background:color-mix(in oklch,var(--color-gold) 12%,var(--color-surface));color:var(--color-gold);border-color:color-mix(in oklch,var(--color-gold) 20%,transparent)}
+.fuel-diesel{background:color-mix(in oklch,var(--color-blue) 12%,var(--color-surface));color:var(--color-blue);border-color:color-mix(in oklch,var(--color-blue) 20%,transparent)}
+.fuel-dieselplus{background:color-mix(in oklch,var(--color-primary) 12%,var(--color-surface));color:var(--color-primary);border-color:color-mix(in oklch,var(--color-primary) 20%,transparent)}
+.fuel-glp{background:color-mix(in oklch,var(--color-success) 12%,var(--color-surface));color:var(--color-success);border-color:color-mix(in oklch,var(--color-success) 20%,transparent)}
+.fuel-gnc{background:color-mix(in oklch,var(--color-error) 12%,var(--color-surface));color:var(--color-error);border-color:color-mix(in oklch,var(--color-error) 20%,transparent)}
+.fuel-hidrogeno{background:color-mix(in oklch,var(--color-warning) 12%,var(--color-surface));color:var(--color-warning);border-color:color-mix(in oklch,var(--color-warning) 20%,transparent)}
+
+/* PRICE BADGE (vs media) */
+.price-vs{font-size:9px;font-weight:700;padding:1px 5px;border-radius:var(--radius-full);margin-left:2px}
+.price-cheap{background:var(--color-success-highlight);color:var(--color-success)}
+.price-expensive{background:var(--color-error-highlight);color:var(--color-error)}
+
+/* RANKING BANNER */
+.ranking-bar{background:linear-gradient(135deg in oklch,color-mix(in oklch,var(--color-success) 10%,var(--color-surface)) 0%,var(--color-surface) 100%);border-bottom:1px solid var(--color-divider);padding-block:var(--space-3)}
+.ranking-inner{display:flex;align-items:center;gap:var(--space-3);flex-wrap:wrap}
+.ranking-label{font-size:var(--text-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint);white-space:nowrap;display:flex;align-items:center;gap:var(--space-1)}
+.ranking-pills{display:flex;gap:var(--space-2);flex-wrap:wrap;align-items:center}
+.ranking-pill{display:inline-flex;align-items:center;gap:var(--space-1);padding:var(--space-1) var(--space-3);border-radius:var(--radius-full);font-size:var(--text-xs);font-weight:600;background:var(--color-success-highlight);color:var(--color-success);border:1px solid color-mix(in oklch,var(--color-success) 20%,transparent);cursor:pointer;transition:all var(--transition-interactive)}
+.ranking-pill:hover{background:color-mix(in oklch,var(--color-success) 15%,var(--color-surface));box-shadow:var(--shadow-sm)}
+.ranking-pill .rank-pos{width:18px;height:18px;border-radius:var(--radius-full);background:var(--color-success);color:white;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:800;flex-shrink:0}
+.ranking-pill.gold .rank-pos{background:#d4a017}
+.ranking-pill.gold{background:color-mix(in oklch,#d4a017 12%,var(--color-surface));color:#b8860b;border-color:color-mix(in oklch,#d4a017 25%,transparent)}
+.ranking-pill.silver .rank-pos{background:#9e9e9e}
+.ranking-pill.silver{background:color-mix(in oklch,#9e9e9e 12%,var(--color-surface));color:#757575;border-color:color-mix(in oklch,#9e9e9e 25%,transparent)}
+.ranking-pill.bronze .rank-pos{background:#cd7f32}
+.ranking-pill.bronze{background:color-mix(in oklch,#cd7f32 12%,var(--color-surface));color:#a0522d;border-color:color-mix(in oklch,#cd7f32 25%,transparent)}
+
+/* STATION CARD RANK BADGE */
+.rank-badge{position:absolute;top:-8px;left:-8px;width:24px;height:24px;border-radius:var(--radius-full);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;color:white;box-shadow:var(--shadow-sm);z-index:2}
+.rank-1{background:#d4a017}
+.rank-2{background:#9e9e9e}
+.rank-3{background:#cd7f32}
+.rank-other{background:var(--color-primary)}
+.station-card{position:relative}
+.cheapest-banner{background:var(--color-success-highlight);border:1px solid color-mix(in oklch,var(--color-success) 30%,transparent);border-radius:var(--radius-md);padding:var(--space-1) var(--space-3);font-size:var(--text-xs);font-weight:700;color:var(--color-success);display:inline-flex;align-items:center;gap:var(--space-1);margin-bottom:var(--space-2)}
+
+/* EMPTY STATE */
+.empty-state{display:flex;flex-direction:column;align-items:center;text-align:center;padding:var(--space-16) var(--space-8);color:var(--color-text-muted)}
+.empty-state i{color:var(--color-text-faint);margin-bottom:var(--space-4)}
+.empty-state h3{color:var(--color-text);margin-bottom:var(--space-2);font-size:var(--text-base)}
+.empty-state p{font-size:var(--text-sm);max-width:32ch}
+
+/* DETAIL PANEL */
+.detail-panel{background:var(--color-bg);overflow-y:auto;max-height:calc(100dvh - 180px)}
+@media(max-width:899px){
+  .detail-panel{display:none;max-height:none}
+  .detail-panel.mobile-show{display:block}
+}
+.detail-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;min-height:300px;color:var(--color-text-muted);text-align:center;padding:var(--space-8);gap:var(--space-4)}
+.detail-placeholder p{font-size:var(--text-sm);max-width:30ch}
+
+/* STATION DETAIL */
+.detail-content{padding:var(--space-6)}
+.detail-back{display:none}
+@media(max-width:899px){.detail-back{display:flex;margin-bottom:var(--space-4)}}
+.btn-back{display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);color:var(--color-text-muted);padding:0}
+.btn-back:hover{color:var(--color-primary)}
+.detail-title{font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;margin-bottom:var(--space-1)}
+.detail-locality{font-size:var(--text-sm);color:var(--color-text-muted);margin-bottom:var(--space-3);display:flex;align-items:center;gap:var(--space-1);flex-wrap:wrap}
+.detail-section{margin-bottom:var(--space-6)}
+.detail-section-title{font-size:var(--text-xs);font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--color-text-faint);margin-bottom:var(--space-3)}
+.fuel-price-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-4)}
+.fuel-price-card{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/.08);border-radius:var(--radius-xl);padding:var(--space-5) var(--space-4) var(--space-4);display:flex;flex-direction:column;align-items:center;text-align:center;gap:var(--space-2);transition:all var(--transition-interactive);cursor:default}
+.fuel-price-card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.fuel-price-card.cheap{border-color:var(--color-success);background:color-mix(in oklch,var(--color-success) 6%,var(--color-surface))}
+.fuel-price-card.expensive{border-color:color-mix(in oklch,var(--color-error) 30%,var(--color-border))}
+.fuel-icon-wrap{width:64px;height:64px;border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:28px;margin-bottom:var(--space-1);font-weight:900;font-family:var(--font-display);letter-spacing:-1px;flex-shrink:0}
+.fuel-price-name{font-size:var(--text-sm);font-weight:600;color:var(--color-text);line-height:1.2}
+.fuel-price-value{font-size:var(--text-xl);font-weight:800;font-variant-numeric:tabular-nums;line-height:1;margin-top:var(--space-1)}
+.fuel-price-unit{font-size:var(--text-xs);color:var(--color-text-muted);margin-top:2px}
+.fuel-vs-media{font-size:var(--text-xs);font-weight:600;display:inline-flex;align-items:center;gap:2px;padding:2px 8px;border-radius:var(--radius-full);margin-top:var(--space-1)}
+.fuel-vs-media.below{background:var(--color-success-highlight);color:var(--color-success)}
+.fuel-vs-media.above{background:var(--color-error-highlight);color:var(--color-error)}
+.fuel-vs-media.equal{color:var(--color-text-faint);background:var(--color-surface-offset)}
+
+/* INFO GRID */
+.detail-info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:var(--space-2)}
+.detail-info-item{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/.07);border-radius:var(--radius-md);padding:var(--space-3)}
+.detail-info-label{font-size:var(--text-xs);color:var(--color-text-muted);margin-bottom:2px}
+.detail-info-value{font-size:var(--text-sm);font-weight:600;color:var(--color-text)}
+
+/* GOOGLE MAPS BTN */
+.maps-section{background:var(--color-surface);border:1px solid oklch(from var(--color-text) l c h/.07);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);display:flex;align-items:center;gap:var(--space-4);flex-wrap:wrap}
+.maps-info{flex:1}
+.maps-info-title{font-size:var(--text-sm);font-weight:600;margin-bottom:2px}
+.maps-info-address{font-size:var(--text-xs);color:var(--color-text-muted)}
+.maps-btn{display:inline-flex;align-items:center;gap:var(--space-2);background:var(--color-primary);color:white;padding:var(--space-3) var(--space-5);border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:600;text-decoration:none;white-space:nowrap;box-shadow:var(--shadow-sm)}
+.maps-btn:hover{background:var(--color-primary-hover);box-shadow:var(--shadow-md)}
+.maps-btn-secondary{display:inline-flex;align-items:center;gap:var(--space-2);background:var(--color-surface-offset);color:var(--color-text);padding:var(--space-2) var(--space-4);border-radius:var(--radius-lg);font-size:var(--text-sm);font-weight:500;text-decoration:none;border:1px solid oklch(from var(--color-text) l c h/.1);white-space:nowrap}
+.maps-btn-secondary:hover{background:var(--color-surface-dynamic)}
+
+/* BADGE ESTADO */
+.open-badge{display:inline-flex;align-items:center;gap:var(--space-1);font-size:var(--text-xs);font-weight:600;padding:var(--space-1) var(--space-2);border-radius:var(--radius-full);margin-bottom:var(--space-4)}
+.open-badge.open{background:var(--color-success-highlight);color:var(--color-success)}
+.open-badge.unknown{background:var(--color-surface-offset);color:var(--color-text-muted)}
+
+/* LIVE MAP */
+.live-map-wrap{position:relative;border-bottom:1px solid var(--color-divider);background:var(--color-surface)}
+.live-map{height:min(44vh,420px);min-height:260px;width:100%;z-index:1}
+.map-hud{position:absolute;top:12px;left:12px;z-index:450;background:color-mix(in oklch,var(--color-surface) 92%,transparent);backdrop-filter:blur(8px);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:8px 10px;display:flex;gap:8px;align-items:center;box-shadow:var(--shadow-md)}
+.map-hud .dot{width:8px;height:8px;border-radius:999px;background:var(--color-success);animation:pulse 1.4s infinite}
+.map-hud span{font-size:11px;color:var(--color-text-muted)}
+.price-pin{background:var(--color-surface);border:1px solid var(--color-border);border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700;box-shadow:var(--shadow-sm);white-space:nowrap}
+.price-pin .t{color:var(--color-text-muted);margin-right:4px}
+.price-pin .p{color:var(--color-primary)}
+.price-pin.selected{border-color:var(--color-primary);box-shadow:0 0 0 2px color-mix(in oklch,var(--color-primary) 24%,transparent),var(--shadow-md)}
+.price-pin.selected .p{color:var(--color-primary-hover)}
+.user-pin{background:var(--color-primary);color:#fff;border:2px solid #fff;border-radius:999px;padding:4px 8px;font-size:11px;font-weight:700;box-shadow:var(--shadow-md);white-space:nowrap}
+
+.leaflet-control-fullscreen {
+  display:flex!important;align-items:center;justify-content:center;
+  background:var(--color-surface);width:34px!important;height:34px!important;
+  color:var(--color-text)!important;border-bottom:1px solid var(--color-border);
+}
+.leaflet-control-fullscreen:hover { background:var(--color-surface-offset); }
+
+/* MOBILE */
+@media(max-width:899px){
+  .main-layout{display:block}
+  .live-map{height:38vh;min-height:240px}
+  .btn-primary,.btn-secondary{min-height:44px;padding-inline:var(--space-4)}
+  .fuel-chip{min-height:36px}
+  .status-action{min-height:34px}
+}
+</style>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4995152189601827"
+     crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="container header-inner">
+    <a href="#" class="logo" onclick="resetView();return false;">
+      <svg class="logo-icon" width="28" height="28" viewBox="0 0 28 28" fill="none" aria-label="Gasolineras España">
+        <rect x="4" y="18" width="14" height="7" rx="1.5" fill="currentColor" opacity=".15"/>
+        <rect x="6" y="10" width="10" height="9" rx="1" fill="currentColor" opacity=".3"/>
+        <path d="M6 10V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M18 12h2a2 2 0 0 1 2 2v3a1 1 0 0 0 1 1v0a1 1 0 0 0 1-1v-5l-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="11" y1="10" x2="11" y2="18" stroke="currentColor" stroke-width="1.5" opacity=".4"/>
+        <rect x="3" y="24" width="16" height="2" rx="1" fill="currentColor" opacity=".2"/>
+      </svg>
+      <span class="logo-text">Gasolineras<span>España</span></span>
+    </a>
+    <span class="header-date" id="headerDate"></span>
+    <div class="header-actions">
+      <button class="btn-theme" data-theme-toggle aria-label="Cambiar tema">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PRECIOS MEDIOS NACIONALES -->
+<div class="avg-banner">
+  <div class="container">
+    <div class="avg-banner-inner">
+      <div class="avg-banner-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        Media nacional hoy
+      </div>
+      <div class="avg-prices" id="avgPrices">
+        <div class="skeleton avg-skeleton"></div>
+        <div class="skeleton avg-skeleton"></div>
+        <div class="skeleton avg-skeleton"></div>
+        <div class="skeleton avg-skeleton"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TENDENCIA HOY VS AYER -->
+<div class="trend-banner">
+  <div class="container">
+    <div class="trend-inner">
+      <div class="trend-label">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+        Tendencia reciente
+      </div>
+      <div class="trend-list" id="trendList">
+        <span class="trend-note">Calculando tendencia…</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EXPLICACION CLIENTE -->
+<div class="insight-banner">
+  <div class="container insight-inner">
+    <div class="insight-card">
+      <svg class="insight-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+      <p class="insight-text" id="marketInsightText">Analizando tendencia diaria de precios para ofrecer una explicacion clara al cliente…</p>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <h1 class="hero-title">Todas las gasolineras de España</h1>
+    <p class="hero-sub">Precios reales actualizados diariamente por el Ministerio de Industria. Busca por municipio o usa tu localización GPS.</p>
+    <div class="search-bar">
+      <div class="search-input-wrap">
+        <i data-lucide="map-pin" width="18" height="18"></i>
+        <input type="text" class="search-input" id="municipioInput" placeholder="Municipio o ciudad…" autocomplete="off" aria-label="Buscar municipio"/>
+      </div>
+      <div class="search-divider"></div>
+      <button class="btn-secondary" id="btnGeolocate">
+        <i data-lucide="crosshair" width="16" height="16"></i>
+        <span>Mi ubicación</span>
+      </button>
+      <button class="btn-primary" id="btnSearch">
+        <i data-lucide="search" width="16" height="16"></i>
+        <span>Buscar</span>
+      </button>
+    </div>
+    <p class="location-note" id="locationNote" style="display:none">
+      <i data-lucide="info" width="13" height="13"></i>
+      <span id="locationNoteText"></span>
+    </p>
+    <div class="autocomplete-wrap" id="autocompleteList"></div>
+  </div>
+</section>
+
+<!-- FILTROS -->
+<div class="filters-bar">
+  <div class="container">
+    <div class="filters-inner">
+      <span class="filter-label">Filtrar:</span>
+      <div class="fuel-filters" id="fuelFilters">
+        <button class="fuel-chip active" data-fuel="all">Todos</button>
+        <button class="fuel-chip" data-fuel="G95"><span class="fuel-dot" style="background:var(--color-orange)"></span>Gasolina 95</button>
+        <button class="fuel-chip" data-fuel="G98"><span class="fuel-dot" style="background:var(--color-gold)"></span>Gasolina 98</button>
+        <button class="fuel-chip" data-fuel="GOA"><span class="fuel-dot" style="background:var(--color-blue)"></span>Diésel A</button>
+        <button class="fuel-chip" data-fuel="G+"><span class="fuel-dot" style="background:var(--color-primary)"></span>Diésel+</button>
+        <button class="fuel-chip" data-fuel="GLP"><span class="fuel-dot" style="background:var(--color-success)"></span>GLP</button>
+        <button class="fuel-chip" data-fuel="GNC"><span class="fuel-dot" style="background:var(--color-error)"></span>GNC</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATUS -->
+<div class="status-bar">
+  <span class="status-dot" id="statusDot"></span>
+  <span id="statusText">Introduce un municipio o usa tu ubicación para buscar gasolineras</span>
+  <span class="status-spacer"></span>
+  <span id="nextSyncText" style="font-size:11px;color:var(--color-text-faint)">Sync: —</span>
+  <button class="status-action" id="btnRefreshNow" title="Actualizar datos ahora">Actualizar</button>
+</div>
+
+<!-- RANKING BAR -->
+<div class="ranking-bar" id="rankingBar" style="display:none">
+  <div class="container">
+    <div class="ranking-inner">
+      <div class="ranking-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 20 18 10"/><polyline points="12 20 12 4"/><polyline points="6 20 6 14"/></svg>
+        Más baratas en
+        <strong id="rankingMunicipio" style="color:var(--color-text)">—</strong>
+      </div>
+      <div class="ranking-pills" id="rankingPills"></div>
+      <button class="fuel-chip" id="rankingFuelToggle" data-fuel="G95" style="margin-left:auto;font-size:10px">
+        <span class="fuel-dot" style="background:var(--color-orange)"></span>
+        <span id="rankingFuelLabel">G95</span>
+        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- LIVE MAP -->
+<section class="live-map-wrap">
+  <div id="liveMap" class="live-map" aria-label="Mapa en vivo de gasolineras"></div>
+  <div class="map-hud">
+    <span class="dot"></span>
+    <span id="mapHudText">Mapa realtime: esperando búsqueda</span>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main>
+  <div class="main-layout container" style="padding-inline:0">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:var(--space-2)">
+          <span class="results-count" id="resultsCount">—</span>
+          <select class="sort-select" id="sortSelect" aria-label="Ordenar por">
+            <option value="g95">💚 G95 más barata primero</option>
+            <option value="goa">💙 Diésel más barato primero</option>
+            <option value="g98">💛 G98 más barata primero</option>
+            <option value="glp">💚 GLP más barato primero</option>
+            <option value="distance">📍 Más cercanas primero</option>
+            <option value="name">🔤 Nombre A-Z</option>
+          </select>
+        </div>
+      </div>
+      <div id="stationList" class="station-list">
+        <div class="empty-state">
+          <i data-lucide="fuel" width="48" height="48"></i>
+          <h3>Busca tu municipio</h3>
+          <p>Escribe una ciudad o pulsa "Mi ubicación" para ver las gasolineras cercanas</p>
+        </div>
+      </div>
+    </aside>
+
+    <section class="detail-panel" id="detailPanel">
+      <div class="detail-placeholder" id="detailPlaceholder">
+        <i data-lucide="mouse-pointer-2" width="40" height="40"></i>
+        <p>Selecciona una gasolinera para ver precios detallados y cómo llegar</p>
+      </div>
+      <div id="detailContent" style="display:none"></div>
+    </section>
+  </div>
+</main>
+
+<script>
+// ===== THEME =====
+(function(){
+  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
+  let d=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+  r.setAttribute('data-theme',d);
+  if(t) t.addEventListener('click',()=>{
+    d=d==='dark'?'light':'dark';
+    r.setAttribute('data-theme',d);
+    t.innerHTML=d==='dark'
+      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  });
+})();
+
+// ===== DATE =====
+const dateEl=document.getElementById('headerDate');
+const now=new Date();
+dateEl.textContent='Datos del '+now.toLocaleDateString('es-ES',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ===== STATE =====
+let allStations=[], filteredStations=[], activeFuel='all', selectedId=null, municipios=[];
+let nationalAvg={};
+let realtimeTimer=null;
+let latestSearchLabel='España';
+let map=null,mapMarkers=[];
+let markerByStationId=new Map();
+let userMapMarker=null;
+let userPosition=null;
+let lastGasUpdateAt=null;
+const SNAPSHOT_KEY='gasolineras_snapshot_v1';
+let yesterdaySnapshot=null;
+let comparisonSnapshot=null;
+let globalHistorySeries=[];
+let trendLoading=true;
+
+// ===== FUEL CONFIG =====
+const FUEL_MAP={
+  'Precio Gasolina 95 E5':        {label:'95 E5',    cls:'fuel-gasolina95', color:'var(--color-orange)',  chipKey:'G95',  name:'Gasolina 95 E5'},
+  'Precio Gasolina 98 E5':        {label:'98 E5',    cls:'fuel-gasolina98', color:'var(--color-gold)',    chipKey:'G98',  name:'Gasolina 98 E5'},
+  'Precio Gasoil A':              {label:'Diésel A', cls:'fuel-diesel',     color:'var(--color-blue)',    chipKey:'GOA',  name:'Diésel A'},
+  'Precio Gasoil B':              {label:'Diésel B', cls:'fuel-diesel',     color:'var(--color-blue)',    chipKey:'GOA',  name:'Diésel B (agrícola)'},
+  'Precio Gasoil Premium':        {label:'Diésel+',  cls:'fuel-dieselplus', color:'var(--color-primary)', chipKey:'G+',   name:'Diésel Premium'},
+  'Precio GLP':                   {label:'GLP',      cls:'fuel-glp',        color:'var(--color-success)', chipKey:'GLP',  name:'GLP'},
+  'Precio Gas Natural Comprimido':{label:'GNC',      cls:'fuel-gnc',        color:'var(--color-error)',   chipKey:'GNC',  name:'Gas Natural (GNC)'},
+  'Precio Hidrogeno':             {label:'H₂',       cls:'fuel-hidrogeno',  color:'var(--color-warning)', chipKey:'H2',   name:'Hidrógeno'},
+  'Precio Gasolina 95 E10':       {label:'95 E10',   cls:'fuel-gasolina95', color:'var(--color-orange)',  chipKey:'G95',  name:'Gasolina 95 E10'},
+  'Precio Gasolina 95 E5 Premium':{label:'95 Prem',  cls:'fuel-gasolina95', color:'var(--color-orange)',  chipKey:'G95',  name:'Gasolina 95 Premium'},
+};
+const FUEL_KEY_ALIASES={
+  'Precio Gasoleo A':'Precio Gasoil A',
+  'Precio Gasóleo A':'Precio Gasoil A',
+  'Precio Gasoleo Premium':'Precio Gasoil Premium',
+  'Precio Gasóleo Premium':'Precio Gasoil Premium',
+  'Precio Gases licuados del petróleo':'Precio GLP',
+  'Precio Gases licuados del petr�leo':'Precio GLP',
+  'Precio Diésel A':'Precio Gasoil A',
+  'Precio Diesel A':'Precio Gasoil A',
+  'Precio Diésel Premium':'Precio Gasoil Premium',
+  'Precio Diesel Premium':'Precio Gasoil Premium'
+};
+const CHIP_FUELKEYS={
+  'G95':'Precio Gasolina 95 E5','G98':'Precio Gasolina 98 E5',
+  'GOA':'Precio Gasoil A','G+':'Precio Gasoil Premium',
+  'GLP':'Precio GLP','GNC':'Precio Gas Natural Comprimido'
+};
+
+function canonicalFuelKey(key){
+  return FUEL_KEY_ALIASES[key]||key;
+}
+
+function readFuelValueByCanonical(station,canonicalKey){
+  if(station[canonicalKey]!==undefined)return station[canonicalKey];
+  if(canonicalKey==='Precio Gasoil A')return station['Precio Gasoleo A'];
+  if(canonicalKey==='Precio Gasoil Premium')return station['Precio Gasoleo Premium'];
+  if(canonicalKey==='Precio GLP')return station['Precio Gases licuados del petróleo']??station['Precio Gases licuados del petr�leo'];
+  return undefined;
+}
+
+// ===== DOM =====
+const $=id=>document.getElementById(id);
+const statusDot=$('statusDot'),statusText=$('statusText');
+const stationList=$('stationList'),resultsCount=$('resultsCount');
+const detailContent=$('detailContent'),detailPlaceholder=$('detailPlaceholder');
+const municipioInput=$('municipioInput'),autocompleteList=$('autocompleteList');
+const sortSelect=$('sortSelect');
+const mapHudText=$('mapHudText');
+const liveMap=$('liveMap');
+const trendList=$('trendList');
+const marketInsightText=$('marketInsightText');
+const nextSyncText=$('nextSyncText');
+const btnRefreshNow=$('btnRefreshNow');
+
+let nextSyncAt=null;
+let syncTicker=null;
+const UI_PREFS_KEY='gasolineras_ui_prefs_v1';
+let autocompleteTimer=null;
+const API_BASE='https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes';
+
+function setStatus(state,msg){
+  statusDot.className='status-dot'+(state==='loading'?' loading':state==='error'?' error':'');
+  statusText.textContent=msg;
+}
+
+function normalizeText(v){
+  return (v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+}
+
+function loadUIPrefs(){
+  try{
+    const raw=localStorage.getItem(UI_PREFS_KEY);
+    if(!raw)return null;
+    return JSON.parse(raw);
+  }catch(_){return null}
+}
+
+function saveUIPrefs(extra={}){
+  try{
+    const current=loadUIPrefs()||{};
+    const merged={
+      ...current,
+      ...extra,
+      activeFuel,
+      sort:sortSelect?.value||'g95',
+      lastMunicipioText:municipioInput?.value||'',
+      updatedAt:new Date().toISOString()
+    };
+    localStorage.setItem(UI_PREFS_KEY,JSON.stringify(merged));
+  }catch(_){}
+}
+
+function rememberMunicipio(id,name){
+  if(!id||!name)return;
+  const prefs=loadUIPrefs()||{};
+  const prev=Array.isArray(prefs.recentMunicipios)?prefs.recentMunicipios:[];
+  const cleaned=prev.filter(x=>String(x.id)!==String(id));
+  const next=[{id:String(id),name:String(name)},...cleaned].slice(0,6);
+  saveUIPrefs({recentMunicipios:next});
+}
+
+// ===== LOAD MUNICIPIOS =====
+async function loadMunicipios(){
+  try{
+    const r=await fetch('https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/Listados/Municipios/');
+    municipios=await r.json()||[];
+  }catch(e){console.warn('municipios error',e)}
+}
+
+// ===== LOAD NATIONAL AVG =====
+async function loadNationalAvg(){
+  try{
+    const data=await fetchData('/.netlify/functions/prices?scope=all&source=nationalAvg','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+    const list=(data.ListaEESSPrecio||[]);
+    nationalAvg=calculateNationalAvgFromStations(list);
+    if(!Object.keys(nationalAvg).length){
+      throw new Error('No se pudieron calcular medias nacionales');
+    }
+    renderAvgBanner();
+    trendLoading=true;
+    trendList.innerHTML='<span class="trend-note">Calculando tendencia global en tiempo real…</span>';
+    if(marketInsightText){
+      marketInsightText.textContent='Analizando tendencia diaria de precios para ofrecer una explicacion clara al cliente…';
+    }
+    loadGlobalHistoricalTrend(5)
+      .then(()=>{trendLoading=false;renderTrendBanner();})
+      .catch(()=>{trendLoading=false;renderTrendBanner();});
+  }catch(e){
+    $('avgPrices').innerHTML='<span style="font-size:var(--text-xs);color:var(--color-text-faint)">No disponible</span>';
+    trendLoading=false;
+    trendList.innerHTML='<span class="trend-note">Sin datos de tendencia por ahora.</span>';
+    renderMarketInsight(null);
+  }
+}
+
+function calculateNationalAvgFromStations(list){
+  const sums={},counts={},out={};
+  for(const s of (list||[])){
+    for(const rawKey of Object.keys(s||{})){
+      if(!String(rawKey).startsWith('Precio'))continue;
+      const key=canonicalFuelKey(rawKey);
+      if(!FUEL_MAP[key])continue;
+      const v=s[rawKey];
+      if(v&&String(v).trim()!==''){
+        const p=parseFloat(String(v).replace(',','.'));
+        if(!isNaN(p)&&p>0){sums[key]=(sums[key]||0)+p;counts[key]=(counts[key]||0)+1}
+      }
+    }
+  }
+  for(const key of Object.keys(sums)){out[key]=sums[key]/counts[key]}
+  return out;
+}
+
+function renderAvgBanner(){
+  const SHOW=[
+    {key:'Precio Gasolina 95 E5',  name:'G95',      color:'var(--color-orange)'},
+    {key:'Precio Gasolina 98 E5',  name:'G98',      color:'var(--color-gold)'},
+    {key:'Precio Gasoil A',        name:'Diésel A', color:'var(--color-blue)'},
+    {key:'Precio Gasoil Premium',  name:'Diésel+',  color:'var(--color-primary)'},
+    {key:'Precio GLP',             name:'GLP',      color:'var(--color-success)'},
+  ];
+  $('avgPrices').innerHTML=SHOW.filter(x=>nationalAvg[x.key]).map(x=>`
+    <div class="avg-price-item">
+      <span class="avg-price-dot" style="background:${x.color}"></span>
+      <span class="avg-price-name">${x.name}</span>
+      <span class="avg-price-val" style="color:${x.color}">${nationalAvg[x.key].toFixed(3)} €/L</span>
+    </div>`).join('');
+}
+
+async function fetchData(localUrl,fallbackUrl){
+  async function fetchWithTimeout(url,timeoutMs=15000){
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),timeoutMs);
+    try{
+      const r=await fetch(url,{cache:'no-store',signal:controller.signal});
+      if(!r.ok)throw new Error(`HTTP ${r.status}`);
+      return await r.json();
+    }finally{
+      clearTimeout(timer);
+    }
+  }
+  try{
+    return await fetchWithTimeout(localUrl,15000);
+  }catch(_){
+    try{
+      return await fetchWithTimeout(localUrl,20000);
+    }catch(__){
+      return await fetchWithTimeout(fallbackUrl,20000);
+    }
+  }
+}
+
+
+function loadYesterdaySnapshot(){
+  try{
+    const raw=localStorage.getItem(SNAPSHOT_KEY);
+    if(!raw)return null;
+    const parsed=JSON.parse(raw);
+    const todayStr=new Date().toISOString().slice(0,10);
+    const yDate=new Date();
+    yDate.setDate(yDate.getDate()-1);
+    const yesterdayStr=yDate.toISOString().slice(0,10);
+
+    // Nuevo formato: historial por fecha
+    if(parsed&&typeof parsed==='object'&&parsed.byDate&&typeof parsed.byDate==='object'){
+      if(parsed.byDate[yesterdayStr])return parsed.byDate[yesterdayStr];
+      const prevDates=Object.keys(parsed.byDate).filter(d=>d<todayStr).sort().reverse();
+      return prevDates.length?parsed.byDate[prevDates[0]]:null;
+    }
+
+    // Compatibilidad con formato antiguo (un único snapshot)
+    if(parsed&&typeof parsed==='object'&&parsed.date&&parsed.date!==todayStr)return parsed;
+    return null;
+  }catch(_){return null}
+}
+
+function loadSnapshotStore(){
+  try{
+    const parsed=JSON.parse(localStorage.getItem(SNAPSHOT_KEY)||'null');
+    if(parsed&&typeof parsed==='object'&&parsed.byDate&&typeof parsed.byDate==='object'){
+      return parsed;
+    }
+    if(parsed&&typeof parsed==='object'&&parsed.date){
+      return {byDate:{[parsed.date]:parsed}};
+    }
+    return {byDate:{}};
+  }catch(_){
+    return {byDate:{}};
+  }
+}
+
+function toApiDate(dateObj){
+  const dd=String(dateObj.getDate()).padStart(2,'0');
+  const mm=String(dateObj.getMonth()+1).padStart(2,'0');
+  const yyyy=dateObj.getFullYear();
+  return `${dd}-${mm}-${yyyy}`;
+}
+
+function toIsoDate(dateObj){
+  const dd=String(dateObj.getDate()).padStart(2,'0');
+  const mm=String(dateObj.getMonth()+1).padStart(2,'0');
+  const yyyy=dateObj.getFullYear();
+  return `${yyyy}-${mm}-${dd}`;
+}
+
+async function loadGlobalHistoricalTrend(days=5){
+  async function fetchHistForDay(offsetDays){
+    const d=new Date();
+    d.setDate(d.getDate()-offsetDays);
+    const apiDate=toApiDate(d);
+    const isoDate=toIsoDate(d);
+    const endpoint=`${API_BASE}/EstacionesTerrestresHist/${apiDate}`;
+    const controller=new AbortController();
+    const timer=setTimeout(()=>controller.abort(),45000);
+    try{
+      const r=await fetch(endpoint,{cache:'no-store',signal:controller.signal});
+      if(!r.ok)throw new Error(`HTTP ${r.status}`);
+      const data=await r.json();
+      const avg=calculateNationalAvgFromStations(data.ListaEESSPrecio||[]);
+      if(Object.keys(avg).length)return {date:isoDate,nationalAvg:avg};
+      return null;
+    }finally{
+      clearTimeout(timer);
+    }
+  }
+
+  const series=[];
+  // Primero garantizamos ayer para que siempre haya comparativa básica.
+  try{
+    const y=await fetchHistForDay(1);
+    if(y){
+      series.push(y);
+      globalHistorySeries=[...series];
+      comparisonSnapshot=series[0];
+      // Mostrar al momento la tendencia inicial.
+      renderTrendBanner();
+    }
+  }catch(_){}
+
+  // Después ampliamos últimos días en paralelo.
+  const offsets=[];
+  for(let i=2;i<=days;i++)offsets.push(i);
+  const results=await Promise.allSettled(offsets.map(fetchHistForDay));
+  for(const r of results){
+    if(r.status==='fulfilled'&&r.value)series.push(r.value);
+  }
+
+  series.sort((a,b)=>String(b.date).localeCompare(String(a.date)));
+  globalHistorySeries=series;
+  comparisonSnapshot=series[0]||null;
+}
+
+function saveSnapshot(label){
+  try{
+    if(!Object.keys(nationalAvg).length||!Array.isArray(allStations)||!allStations.length)return;
+    const stationPrices={};
+    const stationLimit=Math.min(allStations.length,1200);
+    for(let i=0;i<stationLimit;i++){
+      const s=allStations[i];
+      if(!s?.id)continue;
+      stationPrices[s.id]=s.fuels||{};
+    }
+    const snap={
+      date:new Date().toISOString().slice(0,10),
+      label:label||latestSearchLabel||'España',
+      nationalAvg,
+      stationPrices
+    };
+
+    // Guardar historial por fecha para no perder "ayer" al actualizar hoy.
+    let store=loadSnapshotStore();
+    store.byDate[snap.date]=snap;
+
+    // Mantener solo los ultimos 7 dias para no inflar localStorage.
+    const dates=Object.keys(store.byDate).sort();
+    while(dates.length>7){
+      const oldest=dates.shift();
+      if(oldest)delete store.byDate[oldest];
+    }
+
+    localStorage.setItem(SNAPSHOT_KEY,JSON.stringify(store));
+  }catch(_){}
+}
+
+function renderTrendBanner(){
+  if(!trendList)return;
+  if(!comparisonSnapshot||!comparisonSnapshot.nationalAvg){
+    trendList.innerHTML='<span class="trend-note">Aun no hay datos historicos globales disponibles para comparar.</span>';
+    renderMarketInsight(null);
+    return;
+  }
+  const SHOW=[
+    {key:'Precio Gasolina 95 E5',name:'G95'},
+    {key:'Precio Gasoil A',name:'Diesel A'},
+    {key:'Precio Gasolina 98 E5',name:'G98'},
+    {key:'Precio GLP',name:'GLP'}
+  ];
+  const items=SHOW.map(x=>{
+    const today=nationalAvg[x.key],yesterday=comparisonSnapshot.nationalAvg?.[x.key];
+    if(!today||!yesterday)return '';
+    const diff=today-yesterday;
+    const cls=diff<0?'down':diff>0?'up':'equal';
+    const arrow=cls==='down'?'▼':cls==='up'?'▲':'≈';
+    const text=cls==='equal'?`${x.name} sin cambio`:`${x.name} ${arrow} ${Math.abs(diff).toFixed(4)} €/L`;
+    const refLabel='ultimo dia registrado (global)';
+    return `<span class="trend-pill ${cls}" title="Hoy ${today.toFixed(3)} vs ${refLabel} ${yesterday.toFixed(3)}">${text}</span>`;
+  }).filter(Boolean);
+  trendList.innerHTML=items.length?items.join(''):'<span class="trend-note">No hay suficientes datos historicos globales para comparar.</span>';
+  renderMarketInsight(SHOW);
+}
+
+function renderMarketInsight(showConfig){
+  if(!marketInsightText)return;
+  if(trendLoading){
+    marketInsightText.textContent='Analizando tendencia diaria de precios para ofrecer una explicacion clara al cliente…';
+    return;
+  }
+  if(!comparisonSnapshot||!comparisonSnapshot.nationalAvg||!showConfig){
+    marketInsightText.innerHTML='<strong>Informe de mercado:</strong> aun no hay historico global suficiente de la fuente oficial para valorar tendencia.';
+    return;
+  }
+  const trendBasis=globalHistorySeries.length?globalHistorySeries.slice(0,5):[comparisonSnapshot];
+
+  const diffs=showConfig.map(x=>{
+    const t=nationalAvg[x.key];
+    if(!Number.isFinite(t))return null;
+    const baseVals=trendBasis
+      .map(s=>s?.nationalAvg?.[x.key])
+      .filter(v=>Number.isFinite(v));
+    if(!baseVals.length)return null;
+    const base=baseVals.reduce((a,b)=>a+b,0)/baseVals.length;
+    return {name:x.name,diff:t-base};
+  }).filter(Boolean);
+  if(!diffs.length){
+    marketInsightText.innerHTML='<strong>Informe de mercado:</strong> ultimamente no hay suficientes datos consolidados para emitir tendencia fiable.';
+    return;
+  }
+  const avgMove=diffs.reduce((a,b)=>a+b.diff,0)/diffs.length;
+  const strongest=diffs.reduce((p,c)=>Math.abs(c.diff)>Math.abs(p.diff)?c:p,diffs[0]);
+  const dir=avgMove>0?'mas caras':avgMove<0?'mas baratas':'estables';
+  const refLabel=`respecto a la media de los ultimos ${trendBasis.length} dia${trendBasis.length!==1?'s':''}`;
+  const strongestDir=strongest.diff>0?'sube':strongest.diff<0?'baja':'se mantiene';
+  const reason=avgMove>0.001
+    ?'presion de costes logistica/energia y ajuste de margen comercial'
+    :avgMove<-0.001
+      ?'normalizacion de oferta y menor tension en costes mayoristas'
+      :'equilibrio temporal entre oferta y demanda en el mercado local';
+  const moveText=Math.abs(avgMove)<0.0001?'sin cambios apreciables':`${Math.abs(avgMove).toFixed(4)} €/L`;
+  marketInsightText.innerHTML=`<strong>Informe de mercado:</strong> <strong>ultimamente</strong> las gasolinas estan <strong>${dir}</strong> de media (${moveText} ${refLabel}). El mayor movimiento lo marca <strong>${strongest.name}</strong>, que ${strongestDir} ${Math.abs(strongest.diff).toFixed(4)} €/L. Posible causa: ${reason}.`;
+}
+
+function getYesterdayStationPrice(stationId,fuelKey){
+  const p=yesterdaySnapshot?.stationPrices?.[stationId]?.[fuelKey];
+  return Number.isFinite(p)?p:null;
+}
+
+loadMunicipios();
+loadNationalAvg();
+yesterdaySnapshot=loadYesterdaySnapshot();
+if(btnRefreshNow){
+  btnRefreshNow.addEventListener('click',()=>manualRefresh());
+}
+(() => {
+  const prefs=loadUIPrefs();
+  if(!prefs)return;
+  if(prefs.activeFuel&&document.querySelector(`#fuelFilters .fuel-chip[data-fuel="${prefs.activeFuel}"]`)){
+    document.querySelectorAll('#fuelFilters .fuel-chip').forEach(c=>c.classList.toggle('active',c.dataset.fuel===prefs.activeFuel));
+    activeFuel=prefs.activeFuel;
+  }
+  if(prefs.sort&&sortSelect?.querySelector(`option[value="${prefs.sort}"]`)){
+    sortSelect.value=prefs.sort;
+  }
+  if(prefs.lastMunicipioText)municipioInput.value=prefs.lastMunicipioText;
+})();
+
+// ===== AUTOCOMPLETE =====
+municipioInput.addEventListener('input',()=>{
+  clearTimeout(autocompleteTimer);
+  autocompleteTimer=setTimeout(()=>{
+    const q=normalizeText(municipioInput.value);
+    if(q.length<2){autocompleteList.innerHTML='';return}
+    const matches=municipios.filter(m=>normalizeText(m.Municipio).includes(q)).slice(0,8);
+    if(!matches.length){autocompleteList.innerHTML='';return}
+    autocompleteList.innerHTML=`<div class="autocomplete-dropdown">${
+      matches.map(m=>`<div class="autocomplete-item" data-id="${m.IDMunicipio}" data-name="${m.Municipio}">
+        <strong>${m.Municipio}</strong> <span style="color:var(--color-text-muted);font-size:var(--text-xs)">${m.Provincia||''}</span>
+      </div>`).join('')}</div>`;
+    autocompleteList.querySelectorAll('.autocomplete-item').forEach(el=>{
+      el.addEventListener('click',()=>{
+        municipioInput.value=el.dataset.name;
+        currentMunicipioId=el.dataset.id;
+        autocompleteList.innerHTML='';
+        fetchByMunicipio(el.dataset.id,el.dataset.name);
+      });
+    });
+  },120);
+});
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#autocompleteList')&&!e.target.closest('#municipioInput'))
+    autocompleteList.innerHTML='';
+});
+municipioInput.addEventListener('keydown',e=>{if(e.key==='Enter')$('btnSearch').click()});
+
+let currentMunicipioId=null;
+
+$('btnSearch').addEventListener('click',()=>{
+  const q=normalizeText(municipioInput.value);
+  if(!q)return;
+  if(currentMunicipioId){fetchByMunicipio(currentMunicipioId,municipioInput.value);return}
+  const match=municipios.find(m=>normalizeText(m.Municipio)===q)||municipios.find(m=>normalizeText(m.Municipio).startsWith(q));
+  if(match){municipioInput.value=match.Municipio;fetchByMunicipio(match.IDMunicipio,match.Municipio)}
+  else setStatus('error','Municipio no encontrado. Prueba a escribir más letras.');
+});
+
+// ===== GEOLOCATION =====
+$('btnGeolocate').addEventListener('click',()=>{
+  if(!navigator.geolocation){setStatus('error','Tu navegador no soporta geolocalización');return}
+  setStatus('loading','Obteniendo tu ubicación…');
+  navigator.geolocation.getCurrentPosition(async pos=>{
+    const {latitude:lat,longitude:lon}=pos.coords;
+    userPosition={lat,lon};
+    updateUserMarker();
+    showNote(`GPS: ${lat.toFixed(4)}, ${lon.toFixed(4)}`);
+    try{
+      const r=await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json&accept-language=es`);
+      const d=await r.json();
+      const town=d.address?.city||d.address?.town||d.address?.village||d.address?.municipality;
+      if(town){
+        const m=municipios.find(x=>x.Municipio.toLowerCase()===town.toLowerCase())
+          ||municipios.find(x=>x.Municipio.toLowerCase().includes(town.toLowerCase().split(' ')[0]));
+        if(m){municipioInput.value=m.Municipio;currentMunicipioId=m.IDMunicipio;showNote('📍 '+m.Municipio);fetchByMunicipio(m.IDMunicipio,m.Municipio);return}
+      }
+      fetchAllAndFilter(lat,lon);
+    }catch(e){fetchAllAndFilter(lat,lon)}
+  },err=>setStatus('error','No se pudo obtener la ubicación: '+err.message),{
+    enableHighAccuracy:true,maximumAge:10000,timeout:12000
+  });
+});
+
+function showNote(txt){$('locationNote').style.display='flex';$('locationNoteText').textContent=txt}
+
+function startPreciseGPSWatcher(){
+  if(!navigator.geolocation)return;
+  navigator.geolocation.watchPosition(pos=>{
+    const {latitude,longitude,accuracy}=pos.coords||{};
+    if(!Number.isFinite(latitude)||!Number.isFinite(longitude))return;
+    userPosition={lat:latitude,lon:longitude,accuracy:Number(accuracy||0)};
+    updateUserMarker();
+    if(Array.isArray(allStations)&&allStations.length){
+      allStations=allStations.map(s=>{
+        if(s.lat&&s.lon)s.distanceKm=haversine(latitude,longitude,s.lat,s.lon);
+        return s;
+      });
+      if(sortSelect?.value==='distance')applyFiltersAndRender(latestSearchLabel||'tu zona');
+    }
+  },()=>{},{
+    enableHighAccuracy:true,
+    maximumAge:5000,
+    timeout:12000
+  });
+}
+
+// ===== FETCH BY MUNICIPIO =====
+async function fetchByMunicipio(id,name){
+  currentMunicipioId=id;
+  latestSearchLabel=name;
+  rememberMunicipio(id,name);
+  setStatus('loading',`Cargando gasolineras de ${name}…`);
+  showSkeletons();
+  try{
+    const d=await fetchData(`/.netlify/functions/prices?municipio=${id}&label=${encodeURIComponent(name)}`,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${id}`);
+    allStations=(d.ListaEESSPrecio||[]).map(parseStation);
+    if(userPosition){
+      allStations=allStations.map(s=>{
+        if(s.lat&&s.lon)s.distanceKm=haversine(userPosition.lat,userPosition.lon,s.lat,s.lon);
+        return s;
+      });
+    }
+    lastGasUpdateAt=new Date();
+    applyFiltersAndRender(name);
+    saveSnapshot(name);
+    restartRealtimePolling();
+  }catch(e){setStatus('error','Error al cargar datos. Comprueba tu conexión.')}
+}
+
+// ===== FETCH ALL + NEARBY =====
+async function fetchAllAndFilter(lat,lon){
+  latestSearchLabel='tu ubicación';
+  setStatus('loading','Buscando gasolineras cercanas…');
+  showSkeletons();
+  try{
+    const d=await fetchData('/.netlify/functions/prices?scope=all&source=geo','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+    const all=(d.ListaEESSPrecio||[]).map(parseStation);
+    lastGasUpdateAt=new Date();
+    allStations=all.filter(s=>s.lat&&s.lon&&haversine(lat,lon,s.lat,s.lon)<=10)
+      .map(s=>{s.distanceKm=haversine(lat,lon,s.lat,s.lon);return s;})
+      .sort((a,b)=>(a.distanceKm??9999)-(b.distanceKm??9999));
+    applyFiltersAndRender('tu ubicación');
+    saveSnapshot('tu ubicación');
+    restartRealtimePolling();
+  }catch(e){setStatus('error','Error al cargar datos.')}
+}
+
+function haversine(la1,lo1,la2,lo2){
+  const R=6371,dL=(la2-la1)*Math.PI/180,dO=(lo2-lo1)*Math.PI/180;
+  const a=Math.sin(dL/2)**2+Math.cos(la1*Math.PI/180)*Math.cos(la2*Math.PI/180)*Math.sin(dO/2)**2;
+  return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
+}
+
+// ===== PARSE =====
+function parseStation(s){
+  const lat=parseFloat((s['Latitud']||'').replace(',','.'));
+  const lon=parseFloat((s['Longitud (WGS84)']||'').replace(',','.'));
+  const fuels={};
+  // Capturar TODOS los campos que empiecen por "Precio" con valor > 0
+  for(const key of Object.keys(s)){
+    if(key.startsWith('Precio')){
+      const canonicalKey=canonicalFuelKey(key);
+      const v=s[key];
+      if(v&&v.trim()!==''&&v.trim()!=='0'){
+        const p=parseFloat(v.replace(',','.'));
+        if(!isNaN(p)&&p>0.01)fuels[canonicalKey]=p;
+      }
+    }
+  }
+  return{id:s['IDEESS'],name:s['Rótulo']||'Sin nombre',address:s['Dirección']||'',
+    locality:s['Municipio']||'',province:s['Provincia']||'',cp:s['C.P.']||'',
+    schedule:s['Horario']||'',lat:isNaN(lat)?null:lat,lon:isNaN(lon)?null:lon,distanceKm:null,fuels,raw:s};
+}
+
+// ===== FILTERS =====
+$('fuelFilters').addEventListener('click',e=>{
+  const chip=e.target.closest('.fuel-chip');
+  if(!chip)return;
+  document.querySelectorAll('#fuelFilters .fuel-chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  activeFuel=chip.dataset.fuel;
+  saveUIPrefs();
+  applyFiltersAndRender();
+});
+sortSelect.addEventListener('change',()=>{saveUIPrefs();applyFiltersAndRender();});
+
+const SORT_KEYS={
+  'g95':'Precio Gasolina 95 E5','goa':'Precio Gasoil A',
+  'g98':'Precio Gasolina 98 E5','glp':'Precio GLP','distance':'__distance__','name':null
+};
+function applyFiltersAndRender(label){
+  let stations=[...allStations];
+  if(activeFuel!=='all'){
+    const fk=CHIP_FUELKEYS[activeFuel];
+    if(fk)stations=stations.filter(s=>s.fuels[fk]!==undefined);
+  }
+  const sort=sortSelect.value;
+  const sortKey=SORT_KEYS[sort];
+  if(sortKey&&sortKey!=='__distance__'){
+    stations.sort((a,b)=>{
+      const pa=a.fuels[sortKey]||9999,pb=b.fuels[sortKey]||9999;
+      return pa-pb;
+    });
+  }else if(sortKey==='__distance__'){
+    stations.sort((a,b)=>(a.distanceKm??9999)-(b.distanceKm??9999));
+  }else{
+    stations.sort((a,b)=>a.name.localeCompare(b.name,'es'));
+  }
+  filteredStations=stations;
+  const lbl=label||municipioInput.value||'…';
+  latestSearchLabel=lbl;
+  const n=filteredStations.length;
+  resultsCount.innerHTML=`<strong>${n}</strong> gasolinera${n!==1?'s':''} en <strong>${lbl}</strong>`;
+  setStatus('ok',`${n} gasolinera${n!==1?'s':''} encontrada${n!==1?'s':''} — datos de hoy`);
+  updateRankingBar(lbl,sortKey);
+  updateMapScene();
+  renderList();
+  renderTrendBanner();
+  saveUIPrefs();
+}
+
+function updateRankingBar(lbl,sortKey){
+  const bar=document.getElementById('rankingBar');
+  const pills=document.getElementById('rankingPills');
+  const munEl=document.getElementById('rankingMunicipio');
+  const labelEl=document.getElementById('rankingFuelLabel');
+  if(!sortKey){bar.style.display='none';return}
+  // Top 5 con precio de ese carburante
+  const top=filteredStations.filter(s=>s.fuels[sortKey]).slice(0,5);
+  if(!top.length){bar.style.display='none';return}
+  bar.style.display='block';
+  munEl.textContent=lbl;
+  const fuelShort=sortKey.replace('Precio ','').replace(' E5','').replace(' E10','');
+  labelEl.textContent=fuelShort;
+  const rankCls=['gold','silver','bronze','','',''];
+  const rankEmoji=['🥇','🥈','🥉','4º','5º'];
+  pills.innerHTML=top.map((s,i)=>`
+    <button class="ranking-pill ${rankCls[i]||''}" onclick="showDetail('${s.id}')">
+      <span class="rank-pos">${rankEmoji[i]}</span>
+      <span>${s.name}</span>
+      <strong>${s.fuels[sortKey].toFixed(3)}€</strong>
+    </button>`).join('');
+}
+
+// ===== RENDER LIST =====
+function renderList(){
+  if(!filteredStations.length){
+    stationList.innerHTML=`<div class="empty-state">
+      <i data-lucide="search-x" width="48" height="48"></i>
+      <h3>Sin resultados</h3><p>No hay gasolineras para el filtro seleccionado</p></div>`;
+    lucide.createIcons({nodes:stationList.querySelectorAll('[data-lucide]')});
+    return;
+  }
+  const displayedStations = filteredStations.slice(0, 10);
+  stationList.innerHTML=displayedStations.map(s=>{
+    const tags=Object.entries(s.fuels).map(([key,price])=>{
+      const fm=FUEL_MAP[key]||{label:key.replace('Precio ',''),cls:'fuel-diesel',color:'var(--color-text-muted)',chipKey:'',name:key.replace('Precio ','')};
+      const avg=nationalAvg[key];
+      let badge='';
+      if(avg){
+        const diff=price-avg;
+        if(diff<-0.01)badge=`<span class="price-vs price-cheap">▼${Math.abs(diff).toFixed(2)}</span>`;
+        else if(diff>0.01)badge=`<span class="price-vs price-expensive">▲${diff.toFixed(2)}</span>`;
+      }
+      return`<span class="fuel-price-tag ${fm.cls}">${fm.label} ${price.toFixed(3)}€${badge}</span>`;
+    }).join('');
+    const open=isOpenNow(s.schedule);
+    const sched=open===true?`<span class="schedule-open">● Abierta</span>`:open===false?`<span class="schedule-closed">● Cerrada</span>`:`<span class="schedule-unknown">24h/variable</span>`;
+    const init=(s.name||'?').slice(0,2).toUpperCase();
+    const sortKey2=SORT_KEYS[sortSelect.value];
+    const cardRank=sortKey2?filteredStations.filter(x=>x.fuels[sortKey2]).findIndex(x=>x.id===s.id):-1;
+    const rankBadgeHtml=cardRank>=0&&cardRank<10?`<span class="rank-badge rank-${cardRank<3?cardRank+1:'other'}">${cardRank===0?'🥇':cardRank===1?'🥈':cardRank===2?'🥉':cardRank+1}</span>`:'' ;
+    return`<div class="station-card${selectedId===s.id?' selected':''}" data-id="${s.id}" role="button" tabindex="0" aria-label="${s.name}">
+      ${rankBadgeHtml}
+      <div class="station-header">
+        <div class="station-brand-badge">${init}</div>
+        <div class="station-info">
+          <div class="station-name">${s.name}</div>
+          <div class="station-address">${s.address}${s.locality?' · '+s.locality:''}</div>
+          ${Number.isFinite(s.distanceKm)?`<div class="station-distance">A ${s.distanceKm.toFixed(1)} km de ti</div>`:''}
+        </div>
+        <div class="station-schedule">${sched}</div>
+      </div>
+      <div class="fuel-prices">${tags||'<span style="font-size:var(--text-xs);color:var(--color-text-faint)">Sin precios</span>'}</div>
+    </div>`;
+  }).join('');
+  if (filteredStations.length > 10) {
+    stationList.innerHTML += `<div style="padding:var(--space-4);text-align:center;color:var(--color-text-muted);font-size:var(--text-sm)">Mostrando solo las 10 opciones más relevantes de ${filteredStations.length}. Puedes ver el resto de gasolineras navegando por el mapa o filtrando.</div>`;
+  }
+  stationList.querySelectorAll('.station-card').forEach(c=>{
+    c.addEventListener('click',()=>showDetail(c.dataset.id));
+    c.addEventListener('keydown',e=>{
+      if(e.key==='Enter'||e.key===' '){
+        e.preventDefault();
+        showDetail(c.dataset.id);
+      }
+    });
+  });
+  lucide.createIcons({nodes:stationList.querySelectorAll('[data-lucide]')});
+}
+
+function initMap(){
+  if(!liveMap||typeof L==='undefined')return;
+  map=L.map(liveMap,{zoomControl:true,attributionControl:true}).setView([40.4168,-3.7038],6);
+  L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}',{
+    maxZoom:20,attribution:'&copy; Google Maps'
+  }).addTo(map);
+
+  L.Control.Fullscreen = L.Control.extend({
+    options: { position: 'topleft' },
+    onAdd: function(map) {
+      var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
+      var button = L.DomUtil.create('a', 'leaflet-control-fullscreen', container);
+      button.href = '#';
+      button.title = 'Pantalla completa';
+      button.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/></svg>';
+      L.DomEvent.disableClickPropagation(button);
+      L.DomEvent.on(button, 'click', function(e) {
+        L.DomEvent.stop(e);
+        var mapContainer = map.getContainer();
+        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
+           if(mapContainer.requestFullscreen) { mapContainer.requestFullscreen().catch(function(){}); }
+           else if(mapContainer.webkitRequestFullscreen) { mapContainer.webkitRequestFullscreen(); }
+        } else {
+           if(document.exitFullscreen) { document.exitFullscreen(); }
+           else if(document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+        }
+      });
+      return container;
+    }
+  });
+  map.addControl(new L.Control.Fullscreen());
+}
+
+function updateUserMarker(){
+  if(!map||!userPosition?.lat||!userPosition?.lon)return;
+  const html='<div class="user-pin">Tu ubicacion</div>';
+  if(userMapMarker){
+    userMapMarker.setLatLng([userPosition.lat,userPosition.lon]);
+    userMapMarker.setIcon(L.divIcon({className:'',html,iconSize:[92,30],iconAnchor:[46,15]}));
+    return;
+  }
+  userMapMarker=L.marker([userPosition.lat,userPosition.lon],{
+    icon:L.divIcon({className:'',html,iconSize:[92,30],iconAnchor:[46,15]}),
+    zIndexOffset:1000
+  }).addTo(map);
+}
+
+function updateMapScene(){
+  if(!map)return;
+  mapMarkers.forEach(m=>map.removeLayer(m));
+  mapMarkers=[];
+  markerByStationId.clear();
+  const fuelKey=SORT_KEYS[sortSelect.value]||'Precio Gasolina 95 E5';
+  const candidates=filteredStations.filter(s=>s.lat&&s.lon).slice(0,120);
+  if(!candidates.length){
+    mapHudText.textContent='Mapa realtime: sin datos para mostrar';
+    updateUserMarker();
+    return;
+  }
+  mapHudText.textContent=`Mapa realtime: ${candidates.length} estaciones en ${latestSearchLabel}`;
+  for(const s of candidates){
+    const p=s.fuels[fuelKey];
+    const html=`<div class="price-pin${selectedId===s.id?' selected':''}"><span class="t">${(FUEL_MAP[fuelKey]?.label)||'€'}</span><span class="p">${p?p.toFixed(3)+'€':'--'}</span></div>`;
+    const marker=L.marker([s.lat,s.lon],{
+      icon:L.divIcon({className:'',html,iconSize:[88,28],iconAnchor:[44,14]})
+    }).addTo(map);
+    marker.bindTooltip(`<strong>${s.brand||s.name}</strong><br>${p?p.toFixed(3)+'€':'--'}`);
+    marker.on('click',()=>showDetail(s.id));
+    mapMarkers.push(marker);
+    markerByStationId.set(s.id,marker);
+  }
+  updateUserMarker();
+  const selectedMarker=selectedId?markerByStationId.get(selectedId):null;
+  if(selectedMarker){
+    const ll=selectedMarker.getLatLng();
+    const targetZoom=Math.max(map.getZoom(),15);
+    map.setView(ll,targetZoom,{animate:true});
+    return;
+  }
+  const allMarkers=[...mapMarkers];
+  if(userMapMarker)allMarkers.push(userMapMarker);
+  if(!allMarkers.length)return;
+  const group=L.featureGroup(allMarkers);
+  map.fitBounds(group.getBounds().pad(0.15),{animate:true,duration:0.6,maxZoom:13});
+}
+
+function restartRealtimePolling(){
+  const RT_INTERVAL_MS=300000;
+  clearInterval(realtimeTimer);
+  if(syncTicker)clearInterval(syncTicker);
+  nextSyncAt=Date.now()+RT_INTERVAL_MS;
+  syncTicker=setInterval(()=>{
+    if(!nextSyncText||!nextSyncAt)return;
+    const left=Math.max(0,nextSyncAt-Date.now());
+    const min=Math.floor(left/60000);
+    const sec=Math.floor((left%60000)/1000).toString().padStart(2,'0');
+    nextSyncText.textContent=`Sync en ${min}:${sec}`;
+  },1000);
+  realtimeTimer=setInterval(async()=>{
+    nextSyncAt=Date.now()+RT_INTERVAL_MS;
+    if(currentMunicipioId){
+      try{
+        const d=await fetchData(`/.netlify/functions/prices?municipio=${currentMunicipioId}&rt=1`,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${currentMunicipioId}`);
+        allStations=(d.ListaEESSPrecio||[]).map(parseStation);
+        applyFiltersAndRender(latestSearchLabel);
+      }catch(_){}
+    }else if(userPosition){
+      fetchAllAndFilter(userPosition.lat,userPosition.lon);
+    }
+  },RT_INTERVAL_MS);
+}
+
+async function manualRefresh(){
+  if(btnRefreshNow){
+    btnRefreshNow.disabled=true;
+    btnRefreshNow.textContent='Actualizando…';
+  }
+  if(currentMunicipioId){
+    await fetchByMunicipio(currentMunicipioId,latestSearchLabel||municipioInput.value||'tu zona');
+  }else if(userPosition){
+    await fetchAllAndFilter(userPosition.lat,userPosition.lon);
+  }else{
+    setStatus('loading','Actualizando datos nacionales…');
+    try{
+      const d=await fetchData('/.netlify/functions/prices?scope=all&source=manual','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+      allStations=(d.ListaEESSPrecio||[]).map(parseStation);
+      lastGasUpdateAt=new Date();
+      applyFiltersAndRender('España');
+      saveSnapshot('España');
+      setStatus('ok','Datos actualizados correctamente');
+    }catch(_){
+      setStatus('error','No se pudo actualizar ahora mismo');
+    }
+  }
+  if(btnRefreshNow){
+    btnRefreshNow.disabled=false;
+    btnRefreshNow.textContent='Actualizar';
+  }
+}
+
+// ===== SHOW DETAIL =====
+function showDetail(id){
+  selectedId=id;
+  const s=filteredStations.find(x=>x.id===id);
+  if(!s)return;
+  document.querySelectorAll('.station-card').forEach(c=>c.classList.toggle('selected',c.dataset.id===id));
+  if(map&&s.lat&&s.lon){
+    map.flyTo([s.lat,s.lon],15,{animate:true,duration:0.6});
+    const marker=markerByStationId.get(s.id);
+    if(marker)marker.openPopup();
+    // refresca estilo del pin seleccionado en el mapa
+    updateMapScene();
+  }
+
+  const open=isOpenNow(s.schedule);
+  const sortKey3=SORT_KEYS[sortSelect.value];
+  const rankPos=sortKey3?filteredStations.filter(x=>x.fuels[sortKey3]).findIndex(x=>x.id===id):-1;
+  const isCheapest=rankPos===0;
+  const cheapestBanner=isCheapest?`<div class="cheapest-banner">🥇 La más barata del municipio en ${sortKey3?sortKey3.replace('Precio ',''):''}</div>`:'';
+  const openBadge=open===true
+    ?`<span class="open-badge open"><i data-lucide="check-circle" width="12" height="12"></i> Abierta ahora</span>`
+    :`<span class="open-badge unknown"><i data-lucide="clock" width="12" height="12"></i> ${s.schedule||'Horario no disponible'}</span>`;
+
+  const FUEL_ICONS={
+    'Precio Gasolina 95 E5':      {icon:'95',  bg:'linear-gradient(135deg,#2d7a2d,#4caf50)', text:'#fff'},
+    'Precio Gasolina 98 E5':      {icon:'98',  bg:'linear-gradient(135deg,#1a5c8a,#2196f3)', text:'#fff'},
+    'Precio Gasoil A':            {icon:'DA',  bg:'linear-gradient(135deg,#1a3a6b,#1565c0)', text:'#fff'},
+    'Precio Gasoil B':            {icon:'DB',  bg:'linear-gradient(135deg,#37474f,#607d8b)', text:'#fff'},
+    'Precio Gasoil Premium':      {icon:'D+',  bg:'linear-gradient(135deg,#b8860b,#ffc107)', text:'#fff'},
+    'Precio GLP':                 {icon:'GLP', bg:'linear-gradient(135deg,#2e7d32,#66bb6a)', text:'#fff'},
+    'Precio Gas Natural Comprimido':{icon:'GNC',bg:'linear-gradient(135deg,#6a1b9a,#ab47bc)', text:'#fff'},
+    'Precio Hidrogeno':           {icon:'H₂',  bg:'linear-gradient(135deg,#00838f,#26c6da)', text:'#fff'},
+    'Precio Gasolina 95 E10':     {icon:'E10', bg:'linear-gradient(135deg,#388e3c,#81c784)', text:'#fff'},
+    'Precio Gasolina 95 E5 Premium':{icon:'95+',bg:'linear-gradient(135deg,#1b5e20,#43a047)', text:'#fff'},
+  };
+  // Para campos no mapeados en FUEL_MAP, crear entrada dinámica
+  const fuelCards=Object.entries(s.fuels).map(([key,price])=>{
+    const fm=FUEL_MAP[key]||{label:key.replace('Precio ',''),cls:'fuel-diesel',color:'var(--color-text-muted)',chipKey:'',name:key.replace('Precio ','')};
+    const fi=FUEL_ICONS[key]||{icon:(key.replace('Precio ','').slice(0,3)),bg:'linear-gradient(135deg,#455a64,#607d8b)',text:'#fff'};
+    const avg=nationalAvg[key];
+    let vsHtml='',cardCls='';
+    if(avg){
+      const diff=price-avg;
+      if(diff<-0.015){
+        vsHtml=`<span class="fuel-vs-media below">▼ ${Math.abs(diff).toFixed(3)}€ bajo media</span>`;
+        cardCls=' cheap';
+      }else if(diff>0.015){
+        vsHtml=`<span class="fuel-vs-media above">▲ ${diff.toFixed(3)}€ sobre media</span>`;
+        cardCls=' expensive';
+      }else{
+        vsHtml=`<span class="fuel-vs-media equal">≈ En la media</span>`;
+      }
+    }
+    const yPrice=getYesterdayStationPrice(s.id,key);
+    const dayDiffText=yPrice!==null
+      ?`<span class="fuel-vs-media ${price-yPrice<-0.001?'below':price-yPrice>0.001?'above':'equal'}">${price-yPrice<-0.001?'▼':price-yPrice>0.001?'▲':'≈'} vs ayer ${Math.abs(price-yPrice).toFixed(3)}€</span>`
+      :'';
+    return`<div class="fuel-price-card${cardCls}">
+      <div class="fuel-icon-wrap" style="background:${fi.bg};color:${fi.text}">${fi.icon}</div>
+      <div class="fuel-price-name">${fm.name}</div>
+      <div class="fuel-price-value" style="color:${fm.color}">${price.toFixed(3)}</div>
+      <div class="fuel-price-unit">€ / litro</div>
+      ${vsHtml}
+      ${dayDiffText}
+    </div>`;
+  }).join('');
+
+  // Google Maps URLs
+  const destCoords=s.lat&&s.lon?`${s.lat},${s.lon}`:'';
+  const destSearch=encodeURIComponent(`${s.name} ${s.address} ${s.locality} España`);
+  const mapsNavUrl=destCoords
+    ?`https://www.google.com/maps/dir/?api=1&destination=${destCoords}&travelmode=driving`
+    :`https://www.google.com/maps/search/?api=1&query=${destSearch}`;
+  const mapsViewUrl=destCoords
+    ?`https://www.google.com/maps/search/?api=1&query=${destCoords}`
+    :`https://www.google.com/maps/search/?api=1&query=${destSearch}`;
+
+  const wazeUrl=destCoords
+    ?`https://waze.com/ul?ll=${destCoords}&navigate=yes`
+    :`https://waze.com/ul?q=${destSearch}`;
+
+  detailContent.innerHTML=`
+    <div class="detail-content">
+      <div class="detail-back">
+        <button class="btn-back" id="backBtn">
+          <i data-lucide="arrow-left" width="16" height="16"></i> Volver a resultados
+        </button>
+      </div>
+
+      ${cheapestBanner}
+      <h2 class="detail-title">${s.name}</h2>
+      <div class="detail-locality">
+        <i data-lucide="map-pin" width="14" height="14"></i>
+        ${s.address}${s.locality?' · '+s.locality:''}${s.province?', '+s.province:''}${s.cp?' ('+s.cp+')':''}
+      </div>
+      ${openBadge}
+
+      ${Object.keys(s.fuels).length?`
+      <div class="detail-section">
+        <div class="detail-section-title">
+          Precios actualizados hoy · ${now.toLocaleDateString('es-ES',{day:'numeric',month:'long',year:'numeric'})}
+        </div>
+        <div class="fuel-price-grid">${fuelCards}</div>
+      </div>`:`<p style="color:var(--color-text-muted);font-size:var(--text-sm);margin:var(--space-4) 0">Sin precios disponibles en este momento.</p>`}
+
+      <!-- GOOGLE MAPS PROMINENTE -->
+      <div class="detail-section">
+        <div class="detail-section-title">Cómo llegar</div>
+        <div class="maps-section">
+          <div class="maps-info">
+            <div class="maps-info-title">${s.name}</div>
+            <div class="maps-info-address">${s.address}${s.locality?' · '+s.locality:''}${s.province?', '+s.province:''}</div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:var(--space-2)">
+            <a href="${mapsNavUrl}" target="_blank" rel="noopener noreferrer" class="maps-btn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+              Ir con Google Maps
+            </a>
+            <a href="${mapsViewUrl}" target="_blank" rel="noopener noreferrer" class="maps-btn-secondary">
+              <i data-lucide="map" width="15" height="15"></i>
+              Ver en mapa
+            </a>
+            <a href="${wazeUrl}" target="_blank" rel="noopener noreferrer" class="maps-btn-secondary">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 3.5 2.5 6.5 6 7.5l2 4 2-4c3.5-1 6-4 6-7.5a8 8 0 0 0-8-8z"/></svg>
+              Waze
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-section">
+        <div class="detail-section-title">Información de la estación</div>
+        <div class="detail-info-grid">
+          ${s.locality?`<div class="detail-info-item"><div class="detail-info-label">Municipio</div><div class="detail-info-value">${s.locality}</div></div>`:''}
+          ${s.province?`<div class="detail-info-item"><div class="detail-info-label">Provincia</div><div class="detail-info-value">${s.province}</div></div>`:''}
+          ${s.cp?`<div class="detail-info-item"><div class="detail-info-label">Código Postal</div><div class="detail-info-value">${s.cp}</div></div>`:''}
+          ${s.schedule?`<div class="detail-info-item"><div class="detail-info-label">Horario</div><div class="detail-info-value" style="font-size:var(--text-xs)">${s.schedule}</div></div>`:''}
+          ${s.lat&&s.lon?`<div class="detail-info-item"><div class="detail-info-label">Coordenadas</div><div class="detail-info-value" style="font-size:10px">${s.lat.toFixed(5)}, ${s.lon.toFixed(5)}</div></div>`:''}
+          ${s.id?`<div class="detail-info-item"><div class="detail-info-label">ID Ministerio</div><div class="detail-info-value">${s.id}</div></div>`:''}
+        </div>
+      </div>
+    </div>`;
+
+  detailPlaceholder.style.display='none';
+  detailContent.style.display='block';
+  if(window.innerWidth < 900) {
+    document.getElementById('detailPanel').classList.add('mobile-show');
+    document.getElementById('sidebar').classList.add('mobile-hide');
+    setTimeout(() => {
+      const headerOffset = document.querySelector('header')?.offsetHeight || 60;
+      const elementPosition = document.getElementById('detailPanel').getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+    }, 50);
+  }
+  lucide.createIcons({nodes:detailContent.querySelectorAll('[data-lucide]')});
+  document.getElementById('backBtn')?.addEventListener('click',()=>{
+    if(window.innerWidth < 900) {
+      document.getElementById('detailPanel').classList.remove('mobile-show');
+      document.getElementById('sidebar').classList.remove('mobile-hide');
+      setTimeout(() => {
+        const headerOffset = document.querySelector('header')?.offsetHeight || 60;
+        const targetElement = document.querySelector('.station-card.selected') || document.getElementById('sidebar');
+        if (targetElement) {
+          const elementPosition = targetElement.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset - 20;
+          window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+        }
+      }, 50);
+    }
+  });
+}
+
+function resetView(){
+  detailPlaceholder.style.display='flex';
+  detailContent.style.display='none';
+  if(window.innerWidth < 900) {
+    document.getElementById('detailPanel').classList.remove('mobile-show');
+    document.getElementById('sidebar').classList.remove('mobile-hide');
+  }
+  selectedId=null;
+  document.querySelectorAll('.station-card').forEach(c=>c.classList.remove('selected'));
+  updateMapScene();
+}
+
+// ===== IS OPEN NOW =====
+function isOpenNow(schedule){
+  if(!schedule)return null;
+  const s=schedule.trim().toUpperCase();
+  if(s.includes('24H')||s.includes('24 H'))return true;
+  const n=new Date(),day=n.getDay(),h=n.getHours()*60+n.getMinutes();
+  const dm={'L':1,'M':2,'X':3,'J':4,'V':5,'S':6,'D':0};
+  for(const seg of schedule.split(';')){
+    const m=seg.match(/([LMXJVSD])-?([LMXJVSD])?\s*:\s*(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/i);
+    if(!m)continue;
+    const ds=dm[m[1].toUpperCase()],de=m[2]?dm[m[2].toUpperCase()]:ds;
+    const ts=parseInt(m[3])*60+parseInt(m[4]),te=parseInt(m[5])*60+parseInt(m[6]);
+    const inDay=de>=ds?(day>=ds&&day<=de):(day>=ds||day<=de);
+    if(inDay&&h>=ts&&h<=te)return true;
+  }
+  return null;
+}
+
+// ===== SKELETONS =====
+function showSkeletons(){
+  stationList.innerHTML=Array(5).fill(0).map(()=>`<div class="skeleton skeleton-card"></div>`).join('');
+  detailPlaceholder.style.display='flex';
+  detailContent.style.display='none';
+  selectedId=null;
+}
+
+// ===== INIT =====
+lucide.createIcons();
+initMap();
+startPreciseGPSWatcher();
+window.addEventListener('unhandledrejection',()=>setStatus('error','Ha ocurrido un error temporal de red. Reintenta en unos segundos.'));
+window.addEventListener('error',()=>setStatus('error','Se detecto un error inesperado. Puedes usar "Actualizar" para recuperarte.'));
+setTimeout(()=>{
+  if(userPosition){
+    fetchAllAndFilter(userPosition.lat,userPosition.lon);
+    return;
+  }
+  navigator.geolocation?.getCurrentPosition(
+    pos=>fetchAllAndFilter(pos.coords.latitude,pos.coords.longitude),
+    ()=>fetchData('/.netlify/functions/prices?scope=all&source=init','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/').then(d=>{
+      allStations=(d.ListaEESSPrecio||[]).map(parseStation);
+      lastGasUpdateAt=new Date();
+      applyFiltersAndRender('España');
+      saveSnapshot('España');
+      restartRealtimePolling();
+    }).catch(()=>{})
+  );
+},300);
+</script>
+<footer style="background:var(--color-surface);border-top:1px solid var(--color-divider);padding:var(--space-4) 0;margin-top:auto">
+  <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-2)">
+    <div style="display:flex;align-items:center;gap:var(--space-2)">
+      <svg width="18" height="18" viewBox="0 0 28 28" fill="none" style="color:var(--color-primary)">
+        <rect x="4" y="18" width="14" height="7" rx="1.5" fill="currentColor" opacity=".2"/>
+        <rect x="6" y="10" width="10" height="9" rx="1" fill="currentColor" opacity=".35"/>
+        <path d="M6 10V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        <rect x="3" y="24" width="16" height="2" rx="1" fill="currentColor" opacity=".2"/>
+      </svg>
+      <span style="font-family:var(--font-display);font-weight:700;font-size:var(--text-xs);color:var(--color-text)">Gasolineras<span style="color:var(--color-primary)">España</span></span>
+    </div>
+    <p style="font-size:var(--text-xs);color:var(--color-text-muted);text-align:center">
+      Datos: API Ministerio de Industria de España · Actualización diaria
+    </p>
+    <div style="display:flex;gap:var(--space-3);justify-content:center;align-items:center;flex-wrap:wrap">
+      <a href="/blog/" style="font-size:var(--text-xs);color:var(--color-primary);text-decoration:none;font-weight:600">Blog</a>
+      <a href="sobre-nosotros.html" style="font-size:var(--text-xs);color:var(--color-text-faint);text-decoration:none">Sobre nosotros</a>
+      <a href="aviso-legal.html" style="font-size:var(--text-xs);color:var(--color-text-faint);text-decoration:none">Aviso legal</a>
+      <a href="politica-privacidad.html" style="font-size:var(--text-xs);color:var(--color-text-faint);text-decoration:none">Política de privacidad</a>
+    </div>
+    <p style="font-size:var(--text-xs);color:var(--color-text-faint)">
+      © 2026 <strong style="color:var(--color-text-muted)">Alejandro Sibaja</strong>. Todos los derechos reservados.
+    </p>
+  </div>
+</footer>
+</body>
+</html>

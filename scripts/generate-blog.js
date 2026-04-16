@@ -1,0 +1,144 @@
+const fs = require('fs');
+const https = require('https');
+const path = require('path');
+
+const API_URL = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/';
+const TEMPLATE_PATH = path.join(__dirname, '../templates/blog-template.html');
+const BLOG_DIR = path.join(__dirname, '../blog');
+const SITEMAP_PATH = path.join(__dirname, '../sitemap.xml');
+
+// Fuel mapping same as index.html
+const FUEL_MAP = {
+    'G95': 'Precio Gasolina 95 E5',
+    'G98': 'Precio Gasolina 98 E5',
+    'GOA': 'Precio Gasoil A',
+    'G+': 'Precio Gasoil Premium',
+    'GLP': 'Precio GLP'
+};
+
+async function fetchData() {
+    return new Promise((resolve, reject) => {
+        https.get(API_URL, (res) => {
+            let data = '';
+            res.on('data', chunk => data += chunk);
+            res.on('end', () => resolve(JSON.parse(data)));
+        }).on('error', reject);
+    });
+}
+
+function calculateAverages(stations) {
+    const sums = {};
+    const counts = {};
+    
+    stations.forEach(s => {
+        Object.entries(FUEL_MAP).forEach(([key, apiFieldName]) => {
+            const val = s[apiFieldName];
+            if (val) {
+                const price = parseFloat(val.replace(',', '.'));
+                if (!isNaN(price) && price > 0) {
+                    sums[key] = (sums[key] || 0) + price;
+                    counts[key] = (counts[key] || 0) + 1;
+                }
+            }
+        });
+    });
+
+    const avgs = {};
+    Object.keys(sums).forEach(key => {
+        avgs[key] = (sums[key] / counts[key]).toFixed(3);
+    });
+    return avgs;
+}
+
+async function run() {
+    try {
+        console.log('Fetching data...');
+        const data = await fetchData();
+        const stations = data.ListaEESSPrecio || [];
+        const avgs = calculateAverages(stations);
+        
+        const now = new Date();
+        const dateStr = now.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
+        const fileDate = now.toISOString().split('T')[0];
+        
+        const title = `Precios de gasolina en España hoy: ${dateStr}`;
+        const description = `Consulta los precios medios de los combustibles en España hoy ${dateStr}. Análisis diario de Gasolina 95, 98 y Diésel.`;
+        
+        let content = `
+            <p>Hoy, <strong>${dateStr}</strong>, los precios de los carburantes en España muestran los siguientes valores medios nacionales. Estos datos son obtenidos directamente del Ministerio de Industria y actualizados en tiempo real.</p>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Gasolina 95</div>
+                    <div class="stat-value">${avgs.G95} €/L</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Diésel A</div>
+                    <div class="stat-value">${avgs.GOA} €/L</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Gasolina 98</div>
+                    <div class="stat-value">${avgs.G98} €/L</div>
+                </div>
+            </div>
+
+            <h2>Análisis del mercado hoy</h2>
+            <p>En el reporte de hoy, vemos que el precio medio de la <strong>Gasolina 95</strong> se sitúa en los <strong>${avgs.G95} €/L</strong>. Por su parte, el <strong>Diésel (Gasoil A)</strong> tiene un coste medio de <strong>${avgs.GOA} €/L</strong>.</p>
+            
+            <p>Si estás buscando ahorrar, te recomendamos utilizar nuestro buscador en la página principal para encontrar la gasolinera más barata cerca de tu ubicación actual, ya que las diferencias entre provincias y estaciones pueden ser significativas.</p>
+            
+            <h2>Precios por tipo de combustible</h2>
+            <p>A continuación detallamos el resto de carburantes analizados hoy:</p>
+            <ul>
+                <li><strong>Gasolina 98:</strong> ${avgs.G98} €/L</li>
+                <li><strong>Diésel Plus:</strong> ${avgs.Gplus || avgs['G+']} €/L</li>
+                <li><strong>GLP:</strong> ${avgs.GLP} €/L</li>
+            </ul>
+        `;
+
+        let template = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
+        template = template.replace(/{{TITLE}}/g, title)
+                          .replace(/{{DESCRIPTION}}/g, description)
+                          .replace(/{{DATE}}/g, dateStr)
+                          .replace(/{{CONTENT}}/g, content);
+
+        if (!fs.existsSync(BLOG_DIR)) fs.mkdirSync(BLOG_DIR);
+        
+        const fileName = `${fileDate}-precios-gasolina.html`;
+        const filePath = path.join(BLOG_DIR, fileName);
+        fs.writeFileSync(filePath, template);
+        console.log(`Blog post created: ${fileName}`);
+
+        // Update Sitemap
+        updateSitemap(`https://gasolinerasespaña.es/blog/${fileName}`);
+
+    } catch (err) {
+        console.error('Error details:', err);
+    }
+}
+
+function updateSitemap(newUrl) {
+    try {
+        if (!fs.existsSync(SITEMAP_PATH)) return;
+        let sitemap = fs.readFileSync(SITEMAP_PATH, 'utf-8');
+        
+        if (sitemap.includes(newUrl)) {
+            console.log('URL already in sitemap');
+            return;
+        }
+
+        const newEntry = `  <url>
+    <loc>${newUrl}</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>\n</urlset>`;
+
+        sitemap = sitemap.replace('</urlset>', newEntry);
+        fs.writeFileSync(SITEMAP_PATH, sitemap);
+        console.log('Sitemap updated');
+    } catch (err) {
+        console.error('Sitemap update error:', err);
+    }
+}
+
+run();
