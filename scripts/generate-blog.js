@@ -126,8 +126,50 @@ async function run() {
         // Update Blog Index
         updateBlogIndex();
 
+        // Update Homepage with latest posts
+        updateHomepageBlog();
+
     } catch (err) {
         console.error('Error details:', err);
+    }
+}
+
+function updateHomepageBlog() {
+    try {
+        const indexPath = path.join(__dirname, '../index.html');
+        if (!fs.existsSync(indexPath)) return;
+
+        const files = fs.readdirSync(BLOG_DIR)
+            .filter(f => f.endsWith('.html') && f !== 'index.html')
+            .sort()
+            .reverse()
+            .slice(0, 3); // Only top 3
+
+        const postsHtml = files.map(f => {
+            const date = f.substring(0, 10);
+            const d = new Date(date);
+            const imgIdx = d.getDate() % HERO_IMAGES.length;
+            const thumb = HERO_IMAGES[imgIdx];
+            
+            return `<a href="/blog/${f}" class="post-card" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4);text-decoration:none;color:inherit;transition:all var(--transition-interactive);display:flex;flex-direction:column;gap:var(--space-2)">
+                <div style="height:120px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg)"></div>
+                <span style="font-size:10px;color:var(--color-primary);font-weight:700;text-transform:uppercase">${date}</span>
+                <h3 style="font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;line-height:1.2">Precios de hoy: ${date}</h3>
+                <p style="font-size:var(--text-xs);color:var(--color-text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Consulta el reporte diario y ahorra en tu combustible hoy.</p>
+            </a>`;
+        }).join('\n');
+
+        let indexContent = fs.readFileSync(indexPath, 'utf-8');
+        const marker = '<!-- LATEST_BLOG_POSTS -->';
+        const regex = new RegExp(`${marker}[\\s\\S]*${marker}`, 'g');
+        
+        if (indexContent.includes(marker)) {
+            indexContent = indexContent.replace(regex, `${marker}\n${postsHtml}\n${marker}`);
+            fs.writeFileSync(indexPath, indexContent);
+            console.log('Homepage blog section updated');
+        }
+    } catch (err) {
+        console.error('Homepage blog update error:', err);
     }
 }
 
