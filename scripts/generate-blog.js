@@ -151,11 +151,12 @@ function updateHomepageBlog() {
             const imgIdx = d.getDate() % HERO_IMAGES.length;
             const thumb = HERO_IMAGES[imgIdx];
             
-            return `<a href="/blog/${f}" class="post-card" data-date="${date}" style="background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4);text-decoration:none;color:inherit;transition:all var(--transition-interactive);display:flex;flex-direction:column;gap:var(--space-2)">
-                <div style="height:120px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg)"></div>
-                <span style="font-size:10px;color:var(--color-primary);font-weight:700;text-transform:uppercase">${date}</span>
-                <h3 style="font-family:var(--font-display);font-size:var(--text-sm);font-weight:700;line-height:1.2">Precios del día: ${date}</h3>
-                <p style="font-size:var(--text-xs);color:var(--color-text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
+            return `<a href="/blog/${f}" class="news-card" data-date="${date}">
+                <div class="news-card-badge">HOY</div>
+                <div class="news-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
+                <div class="news-card-date">${date}</div>
+                <h3 class="news-card-title">Precios del día: ${date}</h3>
+                <p class="news-card-excerpt">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
             </a>`;
         }).join('\n');
 
