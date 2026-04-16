@@ -16,6 +16,12 @@ const FUEL_MAP = {
     'GLP': 'Precio GLP'
 };
 
+const HERO_IMAGES = [
+    '/assets/blog/hero1.png',
+    '/assets/blog/hero2.png',
+    '/assets/blog/hero3.png'
+];
+
 async function fetchData() {
     return new Promise((resolve, reject) => {
         https.get(API_URL, (res) => {
@@ -96,10 +102,15 @@ async function run() {
             </ul>
         `;
 
+        // Pick a random hero image (based on date for consistency)
+        const imageIndex = now.getDate() % HERO_IMAGES.length;
+        const heroImage = HERO_IMAGES[imageIndex];
+
         let template = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
         template = template.replace(/{{TITLE}}/g, title)
                           .replace(/{{DESCRIPTION}}/g, description)
                           .replace(/{{DATE}}/g, dateStr)
+                          .replace(/{{HERO_IMAGE}}/g, heroImage)
                           .replace(/{{CONTENT}}/g, content);
 
         if (!fs.existsSync(BLOG_DIR)) fs.mkdirSync(BLOG_DIR);
@@ -132,7 +143,12 @@ function updateBlogIndex() {
 
         const postListHtml = files.map(f => {
             const date = f.substring(0, 10);
+            const d = new Date(date);
+            const imgIdx = d.getDate() % HERO_IMAGES.length;
+            const thumb = HERO_IMAGES[imgIdx];
+            
             return `<a href="${f}" class="post-card">
+                <div style="height:160px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg);margin-bottom:var(--space-2)"></div>
                 <span class="post-card-date">${date}</span>
                 <h2 class="post-card-title">Precios de hoy: ${date}</h2>
                 <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día ${date}.</p>

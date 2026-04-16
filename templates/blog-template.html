@@ -55,11 +55,17 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
 .logo-text span{color:var(--color-primary)}
 
 .article-hero{background:
-  linear-gradient(135deg in oklch,var(--color-primary-highlight) 0%,var(--color-bg) 65%),
-  radial-gradient(600px 240px at 80% 0%,color-mix(in oklch,var(--color-gold) 18%,transparent),transparent 70%);
-  padding-block:var(--space-16) var(--space-12);border-bottom:1px solid var(--color-divider)}
-.blog-date{font-size:var(--text-xs);color:var(--color-primary);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-2);display:block}
-.blog-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;line-height:1.1;margin-bottom:var(--space-4);color:var(--color-text)}
+  linear-gradient(to bottom, rgba(0,0,0,0.3), rgba(0,0,0,0.6)),
+  url('{{HERO_IMAGE}}');
+  background-size: cover;
+  background-position: center;
+  padding-block: var(--space-16) var(--space-12);
+  border-bottom: 1px solid var(--color-divider);
+  color: white;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+.blog-date{font-size:var(--text-xs);color:var(--color-primary-highlight);font-weight:600;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:var(--space-2);display:block}
+.blog-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;line-height:1.1;margin-bottom:var(--space-4);color:white}
 
 .blog-content{padding-block:var(--space-12);flex:1}
 .article{max-width:800px;margin:0 auto;background:color-mix(in oklch,var(--color-surface-2) 92%,transparent);border:1px solid oklch(from var(--color-text) l c h/.07);border-radius:var(--radius-xl);padding:var(--space-10);backdrop-filter:blur(8px);box-shadow:var(--shadow-md)}
@@ -99,6 +105,12 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
       </svg>
       <span class="logo-text">Gasolineras<span>España</span></span>
     </a>
+    <nav style="margin-left:var(--space-4);display:flex;gap:var(--space-4);align-items:center">
+      <a href="/blog/" style="text-decoration:none;color:var(--color-primary);font-weight:600;font-size:var(--text-sm);display:flex;align-items:center;gap:var(--space-1)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+        Blog
+      </a>
+    </nav>
   </div>
 </header>
 
