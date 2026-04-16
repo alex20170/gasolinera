@@ -733,7 +733,7 @@ async function loadMunicipios(){
 // ===== LOAD NATIONAL AVG =====
 async function loadNationalAvg(){
   try{
-    const data=await fetchData('/.netlify/functions/prices?scope=all&source=nationalAvg','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+    const data=await fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
     const list=(data.ListaEESSPrecio||[]);
     nationalAvg=calculateNationalAvgFromStations(list);
     if(!Object.keys(nationalAvg).length){
@@ -791,6 +791,9 @@ function renderAvgBanner(){
 }
 
 async function fetchData(localUrl,fallbackUrl){
+  // En la nueva arquitectura estática, siempre preferimos el JSON pre-generado
+  const staticUrl = '/assets/data/prices.json';
+  
   async function fetchWithTimeout(url,timeoutMs=15000){
     const controller=new AbortController();
     const timer=setTimeout(()=>controller.abort(),timeoutMs);
@@ -803,11 +806,12 @@ async function fetchData(localUrl,fallbackUrl){
     }
   }
   try{
-    return await fetchWithTimeout(localUrl,15000);
+    return await fetchWithTimeout(staticUrl,15000);
   }catch(_){
     try{
-      return await fetchWithTimeout(localUrl,20000);
+      return await fetchWithTimeout(staticUrl,20000);
     }catch(__){
+      // Fallback al proxy externo (puede fallar por CORS en GitHub Pages)
       return await fetchWithTimeout(fallbackUrl,20000);
     }
   }
@@ -1131,7 +1135,7 @@ async function fetchByMunicipio(id,name){
   setStatus('loading',`Cargando gasolineras de ${name}…`);
   showSkeletons();
   try{
-    const d=await fetchData(`/.netlify/functions/prices?municipio=${id}&label=${encodeURIComponent(name)}`,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${id}`);
+    const d=await fetchData(null,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${id}`);
     allStations=(d.ListaEESSPrecio||[]).map(parseStation);
     if(userPosition){
       allStations=allStations.map(s=>{
@@ -1152,7 +1156,7 @@ async function fetchAllAndFilter(lat,lon){
   setStatus('loading','Buscando gasolineras cercanas…');
   showSkeletons();
   try{
-    const d=await fetchData('/.netlify/functions/prices?scope=all&source=geo','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+    const d=await fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
     const all=(d.ListaEESSPrecio||[]).map(parseStation);
     lastGasUpdateAt=new Date();
     allStations=all.filter(s=>s.lat&&s.lon&&haversine(lat,lon,s.lat,s.lon)<=10)
@@ -1682,7 +1686,7 @@ setTimeout(()=>{
   }
   navigator.geolocation?.getCurrentPosition(
     pos=>fetchAllAndFilter(pos.coords.latitude,pos.coords.longitude),
-    ()=>fetchData('/.netlify/functions/prices?scope=all&source=init','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/').then(d=>{
+    ()=>fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/').then(d=>{
       allStations=(d.ListaEESSPrecio||[]).map(parseStation);
       lastGasUpdateAt=new Date();
       applyFiltersAndRender('España');

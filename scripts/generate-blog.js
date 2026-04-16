@@ -6,6 +6,8 @@ const API_URL = 'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburante
 const TEMPLATE_PATH = path.join(__dirname, '../templates/blog-template.html');
 const BLOG_DIR = path.join(__dirname, '../blog');
 const SITEMAP_PATH = path.join(__dirname, '../sitemap.xml');
+const DATA_DIR = path.join(__dirname, '../assets/data');
+const PRICES_JSON_PATH = path.join(DATA_DIR, 'prices.json');
 
 // Fuel mapping same as index.html
 const FUEL_MAP = {
@@ -122,6 +124,11 @@ async function run() {
 
         // Update Sitemap
         updateSitemap(`https://xn--gasolinerasespaa-lub.es/blog/${fileName}`);
+
+        // --- NEW: Save prices.json for static frontend ---
+        if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+        fs.writeFileSync(PRICES_JSON_PATH, JSON.stringify(data));
+        console.log(`Static data saved: assets/data/prices.json`);
 
         // Update Blog Index
         updateBlogIndex();

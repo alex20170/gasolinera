@@ -5,6 +5,9 @@ on:
     - cron: '30 8 * * *' # Every day at 08:30 UTC
   workflow_dispatch: # Allows manual trigger
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,12 +20,12 @@ jobs:
         with:
           node-version: '18'
 
-      - name: Generate Blog Post
+      - name: Generate Blog Post and Prices
         run: node scripts/generate-blog.js
 
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "chore: add daily blog post [skip ci]"
+          commit_message: "chore: daily update (blog & prices) [skip ci]"
           branch: main
-          file_pattern: 'blog/*.html sitemap.xml'
+          file_pattern: 'blog/*.html sitemap.xml assets/data/*.json index.html'
