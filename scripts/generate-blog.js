@@ -9,13 +9,13 @@ const SITEMAP_PATH = path.join(__dirname, '../sitemap.xml');
 const DATA_DIR = path.join(__dirname, '../assets/data');
 const PRICES_JSON_PATH = path.join(DATA_DIR, 'prices.json');
 
-// Fuel mapping same as index.html
+// Fuel mapping same as index.html (Corrected API keys)
 const FUEL_MAP = {
     'G95': 'Precio Gasolina 95 E5',
     'G98': 'Precio Gasolina 98 E5',
-    'GOA': 'Precio Gasoil A',
-    'G+': 'Precio Gasoil Premium',
-    'GLP': 'Precio GLP'
+    'GOA': 'Precio Gasoleo A',
+    'Gplus': 'Precio Gasoleo Premium',
+    'GLP': 'Precio Gases licuados del petróleo'
 };
 
 const HERO_IMAGES = [
