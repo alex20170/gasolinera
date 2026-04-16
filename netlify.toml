@@ -1,0 +1,14 @@
+[build]
+  publish = "."
+  command = ""
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[build.processing]
+  skip_node_bundling = true
+
+[build.processing.html]
+  pretty_urls = true
