@@ -1,0 +1,11 @@
+[build]
+  publish = "."
+  command = "echo 'Deploying static site'"
+
+[functions]
+  directory = "functions"
+
+[[redirects]]
+  from = "/prices/*"
+  to = "/.netlify/functions/prices"
+  status = 200
