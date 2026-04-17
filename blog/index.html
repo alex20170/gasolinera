@@ -52,52 +52,67 @@ body{min-height:100dvh;line-height:1.6;font-family:var(--font-body);font-size:va
   radial-gradient(1000px 450px at 100% 10%,color-mix(in oklch,var(--color-success) 10%,transparent),transparent 55%),
   var(--color-bg);display:flex;flex-direction:column}
 .container{max-width:var(--content-default);margin-inline:auto;padding-inline:var(--space-4);width:100%}
+a,button,[role="button"],input,select{transition:color var(--transition-interactive),background var(--transition-interactive),border-color var(--transition-interactive),box-shadow var(--transition-interactive)}
 
+/* HEADER */
 header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--color-surface) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid oklch(from var(--color-text) l c h/.08);box-shadow:var(--shadow-sm)}
 .header-inner{display:flex;align-items:center;gap:var(--space-4);padding-block:var(--space-3);flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:var(--space-2);text-decoration:none;color:var(--color-text)}
 .logo-icon{color:var(--color-primary)}
 .logo-text{font-family:var(--font-display);font-weight:700;font-size:var(--text-base)}
 .logo-text span{color:var(--color-primary)}
+.btn-theme{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--radius-full);color:var(--color-text-muted);border:1px solid var(--color-border);background:var(--color-surface-offset);cursor:pointer;transition:all var(--transition-interactive)}
+.btn-theme:hover{background:var(--color-surface-dynamic);color:var(--color-text)}
 
+/* HERO */
 .hero-blog{background:
   linear-gradient(135deg in oklch,var(--color-primary-highlight) 0%,var(--color-bg) 65%),
   radial-gradient(600px 240px at 80% 0%,color-mix(in oklch,var(--color-gold) 18%,transparent),transparent 70%);
   padding-block:var(--space-16) var(--space-12);border-bottom:1px solid var(--color-divider);text-align:center;position:relative;overflow:hidden}
-.hero-blog::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.05);z-index:1}
+[data-theme="dark"] .hero-blog{background:linear-gradient(135deg in oklch,color-mix(in oklch,var(--color-primary) 18%,var(--color-bg)) 0%,var(--color-bg) 65%)}
+.hero-blog::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.03);z-index:1}
 .hero-blog .container{position:relative;z-index:2}
-.hero-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--color-text);margin-bottom:var(--space-2);text-shadow:0 1px 1px rgba(255,255,255,0.5)}
-[data-theme="dark"] .hero-title{color:white;text-shadow:0 2px 4px rgba(0,0,0,0.3)}
+.hero-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--color-text);margin-bottom:var(--space-2)}
 .hero-sub{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-6);max-width:55ch;margin-inline:auto;font-weight:500}
-[data-theme="dark"] .hero-sub{color:rgba(255,255,255,0.8)}
 
-.search-container{margin-top:calc(-1 * var(--space-8));background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);display:flex;align-items:center;gap:var(--space-3);max-width:500px;margin-inline:auto;box-shadow:var(--shadow-lg);position:relative;z-index:10}
-.search-label{display:flex;align-items:center;gap:var(--space-2);color:var(--color-primary);font-weight:700;font-size:var(--text-xs);text-transform:uppercase;white-space:nowrap;flex-shrink:0}
+/* SEARCH BAR */
+.search-container{margin-top:calc(-1 * var(--space-8));background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-4) var(--space-5);display:flex;align-items:center;gap:var(--space-3);max-width:520px;margin-inline:auto;box-shadow:var(--shadow-lg);position:relative;z-index:10}
+.search-label{display:flex;align-items:center;gap:var(--space-2);color:var(--color-primary);font-weight:700;font-size:var(--text-xs);text-transform:uppercase;white-space:nowrap;flex-shrink:0;cursor:pointer;user-select:none}
+.search-label:hover{opacity:0.8}
 .date-input{flex:1;border:1px solid var(--color-divider);border-radius:var(--radius-md);padding:var(--space-2) var(--space-3);font-family:inherit;font-size:var(--text-sm);background:var(--color-surface-offset);color:var(--color-text);outline:none;transition:border-color var(--transition-interactive);color-scheme:light}
 [data-theme="dark"] .date-input{color-scheme:dark}
 .date-input:focus{border-color:var(--color-primary)}
 .btn-clear{background:none;border:none;color:var(--color-text-faint);cursor:pointer;padding:var(--space-1);display:none;align-items:center;justify-content:center;transition:color var(--transition-interactive)}
 .btn-clear:hover{color:var(--color-error)}
 
+/* EMPTY STATE */
 .empty-state{display:none;flex-direction:column;align-items:center;padding:var(--space-16) var(--space-8);text-align:center;color:var(--color-text-muted);background:var(--color-surface-2);border:1px solid var(--color-border);border-radius:var(--radius-xl);margin-top:var(--space-12)}
 .empty-state i{color:var(--color-text-faint);margin-bottom:var(--space-4)}
+.empty-state h3{font-size:var(--text-base);font-weight:600;margin-bottom:var(--space-2);color:var(--color-text)}
+.empty-state p{font-size:var(--text-sm)}
 
-.post-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(340px, 1fr));gap:var(--space-6);padding-block:var(--space-12)}
-.post-card{background:color-mix(in oklch,var(--color-surface-2) 92%,transparent);border:1px solid oklch(from var(--color-text) l c h/.07);border-radius:var(--radius-xl);padding:var(--space-6);cursor:pointer;transition:all var(--transition-interactive);backdrop-filter:blur(8px);display:flex;flex-direction:column;gap:var(--space-3);text-decoration:none;color:inherit}
-.post-card:hover{background:color-mix(in oklch, var(--color-surface-2) 97%, var(--color-primary) 3%);border-color:var(--color-primary);transform:translateY(-2px);box-shadow:var(--shadow-md)}
-.post-card-date{font-size:var(--text-xs);font-weight:600;color:var(--color-primary);text-transform:uppercase;letter-spacing:0.05em}
+/* POST GRID */
+.post-grid{display:grid;grid-template-columns:repeat(auto-fill, minmax(320px, 1fr));gap:var(--space-6);padding-block:var(--space-10)}
+.post-card{background:color-mix(in oklch,var(--color-surface-2) 92%,transparent);border:1px solid oklch(from var(--color-text) l c h/.07);border-radius:var(--radius-xl);padding:0;cursor:pointer;transition:all var(--transition-interactive);backdrop-filter:blur(8px);display:flex;flex-direction:column;text-decoration:none;color:inherit;overflow:hidden}
+.post-card:hover{border-color:var(--color-primary);transform:translateY(-3px);box-shadow:var(--shadow-md)}
+.post-card-img{height:180px;width:100%;background:var(--color-surface-dynamic);overflow:hidden;flex-shrink:0}
+.post-card-img div{width:100%;height:100%;background-size:cover;background-position:center;transition:transform 0.4s ease}
+.post-card:hover .post-card-img div{transform:scale(1.05)}
+.post-card-body{padding:var(--space-5);display:flex;flex-direction:column;gap:var(--space-2);flex:1}
+.post-card-date{font-size:var(--text-xs);font-weight:600;color:var(--color-primary);text-transform:uppercase;letter-spacing:0.06em}
 .post-card-title{font-family:var(--font-display);font-size:var(--text-lg);font-weight:700;line-height:1.2;color:var(--color-text)}
-.post-card-excerpt{font-size:var(--text-sm);color:var(--color-text-muted);display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.post-card-excerpt{font-size:var(--text-sm);color:var(--color-text-muted);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:auto}
 
+/* FOOTER */
 footer{background:var(--color-surface);border-top:1px solid var(--color-divider);padding:var(--space-8) 0;margin-top:auto}
 .footer-inner{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4)}
-.footer-links{display:flex;gap:var(--space-4)}
-.footer-links a{color:var(--color-text-faint);text-decoration:none;font-size:var(--text-xs)}
-.empty-state i{color:var(--color-text-faint);margin-bottom:var(--space-4)}
+.footer-links{display:flex;gap:var(--space-4);flex-wrap:wrap}
+.footer-links a{color:var(--color-text-faint);text-decoration:none;font-size:var(--text-xs);transition:color var(--transition-interactive)}
+.footer-links a:hover{color:var(--color-primary)}
 
 /* DYNAMIC DOCK */
 .dynamic-dock{position:fixed;left:var(--space-4);top:50%;transform:translateY(-50%);z-index:1000;background:#0e0e0e;border:1px solid #282828;border-radius:var(--radius-full);padding:var(--space-2);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:0 12px 40px rgba(0,0,0,0.6);transition:all var(--transition-interactive)}
-.dock-item{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:#fff;text-decoration:none;transition:all var(--transition-interactive);position:relative;opacity:0.8}
+.dock-item{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:#fff;text-decoration:none;transition:all var(--transition-interactive);position:relative;opacity:0.8;cursor:pointer;background:none;border:none}
 .dock-item:hover{background:rgba(255,255,255,0.15);color:#fff;transform:scale(1.1);opacity:1}
 .dock-item::after{content:attr(data-label);position:absolute;left:calc(100% + var(--space-4));background:#fff;color:#000;padding:var(--space-1) var(--space-3);border-radius:var(--radius-md);font-size:10px;font-weight:800;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity var(--transition-interactive);text-transform:uppercase;box-shadow:var(--shadow-md)}
 .dock-item:hover::after{opacity:1}
@@ -108,6 +123,7 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
   .dock-item::after{display:none}
   .dock-sep{width:1px;height:24px;margin-block:auto}
   body{padding-bottom:var(--space-16)}
+  .post-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -124,7 +140,11 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
       </svg>
       <span class="logo-text">Gasolineras<span>España</span></span>
     </a>
-    <div style="margin-left:auto"></div>
+    <div style="margin-left:auto">
+      <button class="btn-theme" data-theme-toggle aria-label="Cambiar tema">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -136,13 +156,14 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
     </div>
   </section>
 
-  <div class="container" style="position:relative">
-    <a href="/" style="display:inline-flex;align-items:center;gap:var(--space-1);text-decoration:none;color:var(--color-text-faint);font-size:var(--text-xs);font-weight:600;margin-bottom:var(--space-4);transition:color var(--transition-interactive)">
+  <div class="container" style="position:relative; padding-top: var(--space-6)">
+    <a href="/" style="display:inline-flex;align-items:center;gap:var(--space-1);text-decoration:none;color:var(--color-text-faint);font-size:var(--text-xs);font-weight:600;margin-bottom:var(--space-6);transition:color var(--transition-interactive)" onmouseover="this.style.color='var(--color-primary)'" onmouseout="this.style.color='var(--color-text-faint)'">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
       Volver al inicio
     </a>
+
     <div class="search-container">
-      <div class="search-label" onclick="document.getElementById('dateFilter').showPicker()" style="cursor:pointer">
+      <div class="search-label" onclick="try{document.getElementById('dateFilter').showPicker()}catch(e){document.getElementById('dateFilter').focus()}">
         <i data-lucide="calendar" width="18" height="18"></i>
         <span>Buscar fecha</span>
       </div>
@@ -161,17 +182,21 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
     <div class="post-grid" id="post-list">
       <!-- POSTS_GO_HERE -->
 <a href="2026-04-17-precios-gasolina.html" class="post-card" data-date="2026-04-17">
-                <div style="height:160px;width:100%;background:url('/assets/blog/hero3.png') center/cover;border-radius:var(--radius-lg);margin-bottom:var(--space-2)"></div>
-                <span class="post-card-date">2026-04-17</span>
-                <h2 class="post-card-title">Precios del día: 2026-04-17</h2>
-                <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día 2026-04-17.</p>
-            </a>
+    <div class="post-card-img"><div style="background:url('/assets/blog/hero3.png') center/cover"></div></div>
+    <div class="post-card-body">
+        <span class="post-card-date">2026-04-17</span>
+        <h2 class="post-card-title">Precios del día: 2026-04-17</h2>
+        <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día 2026-04-17.</p>
+    </div>
+</a>
 <a href="2026-04-16-precios-gasolina.html" class="post-card" data-date="2026-04-16">
-                <div style="height:160px;width:100%;background:url('/assets/blog/hero2.png') center/cover;border-radius:var(--radius-lg);margin-bottom:var(--space-2)"></div>
-                <span class="post-card-date">2026-04-16</span>
-                <h2 class="post-card-title">Precios del día: 2026-04-16</h2>
-                <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día 2026-04-16.</p>
-            </a>
+    <div class="post-card-img"><div style="background:url('/assets/blog/hero2.png') center/cover"></div></div>
+    <div class="post-card-body">
+        <span class="post-card-date">2026-04-16</span>
+        <h2 class="post-card-title">Precios del día: 2026-04-16</h2>
+        <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día 2026-04-16.</p>
+    </div>
+</a>
 <!-- POSTS_GO_HERE -->
     </div>
   </div>
@@ -192,29 +217,69 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
   </div>
 </footer>
 
+<!-- DYNAMIC DOCK -->
+<nav class="dynamic-dock">
+  <a href="javascript:history.back()" class="dock-item" data-label="Volver">
+    <i data-lucide="arrow-left" width="20" height="20"></i>
+  </a>
+  <a href="/" class="dock-item" data-label="Inicio">
+    <i data-lucide="home" width="20" height="20"></i>
+  </a>
+  <div class="dock-sep"></div>
+  <button class="dock-item" id="dockTheme" data-label="Tema" aria-label="Cambiar tema">
+    <i data-lucide="sun" width="20" height="20" id="dockSun"></i>
+    <i data-lucide="moon" width="20" height="20" id="dockMoon" style="display:none"></i>
+  </button>
+  <div class="dock-sep"></div>
+  <a href="mailto:contacto@gasolinerasespaña.es" class="dock-item" data-label="Contacto">
+    <i data-lucide="mail" width="20" height="20"></i>
+  </a>
+  <a href="https://instagram.com/gasolineras_esp" target="_blank" class="dock-item" data-label="Instagram">
+    <i data-lucide="instagram" width="20" height="20"></i>
+  </a>
+</nav>
+
 <script>
 lucide.createIcons();
 
 // ===== THEME =====
 (function(){
-  const t=document.querySelector('[data-theme-toggle]'),r=document.documentElement;
-  let d=localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');
-  r.setAttribute('data-theme',d);
+  const root = document.documentElement;
+  let theme = localStorage.getItem('theme') || (matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
   
-  const updateIcon=(theme)=>{
-    if(!t)return;
-    t.innerHTML=theme==='dark'
-      ?'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
-      :'<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
-  };
-  updateIcon(d);
+  function applyTheme(t) {
+    root.setAttribute('data-theme', t);
+    localStorage.setItem('theme', t);
+    // Update header button
+    const hBtn = document.querySelector('header [data-theme-toggle]');
+    if (hBtn) {
+      hBtn.innerHTML = t === 'dark'
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+    }
+    // Update dock icons
+    const sun = document.getElementById('dockSun');
+    const moon = document.getElementById('dockMoon');
+    if (sun) sun.style.display = t === 'dark' ? 'none' : 'block';
+    if (moon) moon.style.display = t === 'dark' ? 'block' : 'none';
+  }
 
-  if(t) t.addEventListener('click',()=>{
-    d=d==='dark'?'light':'dark';
-    r.setAttribute('data-theme',d);
-    localStorage.setItem('theme',d);
-    updateIcon(d);
+  applyTheme(theme);
+
+  document.querySelectorAll('[data-theme-toggle]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      applyTheme(theme);
+    });
   });
+
+  const dockBtn = document.getElementById('dockTheme');
+  if (dockBtn) {
+    dockBtn.addEventListener('click', () => {
+      theme = theme === 'dark' ? 'light' : 'dark';
+      applyTheme(theme);
+    });
+  }
 })();
 
 // ===== SEARCH FILTER =====
@@ -222,23 +287,17 @@ const dateFilter = document.getElementById('dateFilter');
 const btnClear = document.getElementById('btnClear');
 const postList = document.getElementById('post-list');
 const emptyState = document.getElementById('empty-state');
-const posts = document.querySelectorAll('.post-card');
 
-dateFilter.addEventListener('change', (e) => {
-  const selectedDate = e.target.value;
-  if (!selectedDate) {
-    resetFilter();
-    return;
-  }
-  
+dateFilter.addEventListener('change', () => {
+  const selected = dateFilter.value;
+  if (!selected) { resetFilter(); return; }
+
+  const posts = postList.querySelectorAll('.post-card');
   let count = 0;
   posts.forEach(post => {
-    if (post.getAttribute('data-date') === selectedDate) {
-      post.style.display = 'flex';
-      count++;
-    } else {
-      post.style.display = 'none';
-    }
+    const match = post.getAttribute('data-date') === selected;
+    post.style.display = match ? 'flex' : 'none';
+    if (match) count++;
   });
 
   btnClear.style.display = 'flex';
@@ -251,54 +310,10 @@ btnClear.addEventListener('click', resetFilter);
 function resetFilter() {
   dateFilter.value = '';
   btnClear.style.display = 'none';
-  posts.forEach(post => post.style.display = 'flex');
+  postList.querySelectorAll('.post-card').forEach(p => p.style.display = 'flex');
   postList.style.display = 'grid';
   emptyState.style.display = 'none';
 }
-</script>
-<!-- DYNAMIC DOCK -->
-<nav class="dynamic-dock">
-  <a href="javascript:history.back()" class="dock-item" data-label="Volver">
-    <i data-lucide="arrow-left" width="20" height="20"></i>
-  </a>
-  <a href="/" class="dock-item" data-label="Inicio">
-    <i data-lucide="home" width="20" height="20"></i>
-  </a>
-  <div class="dock-sep"></div>
-  <button class="dock-item" data-theme-toggle data-label="Tema">
-    <i data-lucide="sun" width="20" height="20" class="sun-icon"></i>
-    <i data-lucide="moon" width="20" height="20" class="moon-icon" style="display:none"></i>
-  </button>
-  <div class="dock-sep"></div>
-  <a href="mailto:contacto@gasolinerasespaña.es" class="dock-item" data-label="Contacto">
-    <i data-lucide="mail" width="20" height="20"></i>
-  </a>
-  <a href="https://instagram.com/gasolineras_esp" target="_blank" class="dock-item" data-label="Instagram">
-    <i data-lucide="instagram" width="20" height="20"></i>
-  </a>
-</nav>
-
-<script>
-  // Sync dock theme icon
-  const dockThemeToggle = document.querySelector('.dynamic-dock [data-theme-toggle]');
-  if(dockThemeToggle) {
-    const sun = dockThemeToggle.querySelector('.sun-icon');
-    const moon = dockThemeToggle.querySelector('.moon-icon');
-    const updateDockIcon = (theme) => {
-      sun.style.display = theme === 'dark' ? 'none' : 'block';
-      moon.style.display = theme === 'dark' ? 'block' : 'none';
-    };
-    updateDockIcon(document.documentElement.getAttribute('data-theme') || 'light');
-    
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          updateDockIcon(document.documentElement.getAttribute('data-theme'));
-        }
-      });
-    });
-    observer.observe(document.documentElement, { attributes: true });
-  }
 </script>
 </body>
 </html>

@@ -17,14 +17,14 @@ walkDir('.', (filePath) => {
   let content = fs.readFileSync(filePath, 'utf8');
   let changed = false;
 
-  // Replace Telegram with Mail (safe for all files)
+  // Replace Telegram with Mail
   if (telegramRegex.test(content)) {
     content = content.replace(telegramRegex, replacement);
     changed = true;
   }
 
-  // Fix Dark Mode ONLY in blog and template
-  if (filePath.replace(/\\/g, '/').includes('blog/') || filePath.replace(/\\/g, '/').includes('templates/')) {
+  // Fix Dark Mode in Blog
+  if (filePath.includes('blog') || filePath.includes('template')) {
     const goodDarkMode = `[data-theme="dark"]{
   --color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;
   --color-surface-offset:#1d1c1a;--color-surface-dynamic:#2d2c2a;
@@ -37,10 +37,8 @@ walkDir('.', (filePath) => {
   --color-orange:#fdab43;--color-gold:#e8af34;--color-blue:#5591c7;
   --shadow-sm:0 1px 2px oklch(0 0 0/.2);--shadow-md:0 4px 12px oklch(0 0 0/.3);--shadow-lg:0 12px 32px oklch(0 0 0/.4);
 }`;
-    // Replace broken dark mode. Be careful to match specifically.
-    const badDarkMode = /\[data-theme="dark"\]\{\s*--color-bg:#171614;--color-surface:#1c1b19;--color-surface-2:#201f1d;\s*--color-surface-offset:#1d1c1a;--color-surface-dynamic:#2d2c2a;\s*--color-divider:#262523;--color-border:#393836;\s*--color-text:#cdccca;--color-text-muted:#797876;--color-text-faint:#5a5957;--color-text-inverse:#2b2a28;\s*\}/;
-    if (badDarkMode.test(content)) {
-        content = content.replace(badDarkMode, goodDarkMode);
+    if (content.includes('--color-text-inverse:#2b2a28;') && !content.includes('--color-primary:#4f98a3;')) {
+        content = content.replace(/\[data-theme="dark"\]\{[\s\S]*?--color-text-inverse:#2b2a28;\s*\}/, goodDarkMode);
         changed = true;
     }
     

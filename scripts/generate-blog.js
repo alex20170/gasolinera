@@ -198,11 +198,13 @@ function updateBlogIndex() {
             const thumb = HERO_IMAGES[imgIdx];
             
             return `<a href="${f}" class="post-card" data-date="${date}">
-                <div style="height:160px;width:100%;background:url('${thumb}') center/cover;border-radius:var(--radius-lg);margin-bottom:var(--space-2)"></div>
-                <span class="post-card-date">${date}</span>
-                <h2 class="post-card-title">Precios del día: ${date}</h2>
-                <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día ${date}.</p>
-            </a>`;
+    <div class="post-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
+    <div class="post-card-body">
+        <span class="post-card-date">${date}</span>
+        <h2 class="post-card-title">Precios del día: ${date}</h2>
+        <p class="post-card-excerpt">Consulta los precios medios de la gasolina y el diésel en España para el día ${date}.</p>
+    </div>
+</a>`;
         }).join('\n');
 
         let indexContent = fs.readFileSync(indexPath, 'utf-8');
