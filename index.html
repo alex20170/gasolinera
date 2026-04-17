@@ -798,7 +798,8 @@ function renderAvgBanner(){
 }
 
 async function fetchData(localUrl,fallbackUrl){
-  // En la nueva arquitectura estática, siempre preferimos el JSON pre-generado
+  // En la nueva arquitectura estática, siempre preferimos el JSON pre-generado localmente
+  // para evitar problemas de CORS al llamar a la API del Ministerio desde el navegador.
   const staticUrl = '/assets/data/prices.json';
   
   async function fetchWithTimeout(url,timeoutMs=15000){
@@ -812,14 +813,19 @@ async function fetchData(localUrl,fallbackUrl){
       clearTimeout(timer);
     }
   }
+  
+  // Para llamadas históricas no tenemos JSON estático pre-generado
+  if(fallbackUrl && fallbackUrl.includes('EstacionesTerrestresHist')){
+    return await fetchWithTimeout(fallbackUrl, 20000);
+  }
+
   try{
-    return await fetchWithTimeout(staticUrl,15000);
+    return await fetchWithTimeout(staticUrl, 15000);
   }catch(_){
     try{
-      return await fetchWithTimeout(staticUrl,20000);
+      return await fetchWithTimeout(fallbackUrl, 20000);
     }catch(__){
-      // Fallback al proxy externo (puede fallar por CORS en GitHub Pages)
-      return await fetchWithTimeout(fallbackUrl,20000);
+      throw new Error('No se pudo obtener datos ni del caché estático ni de la API.');
     }
   }
 }
@@ -1143,7 +1149,19 @@ async function fetchByMunicipio(id,name){
   showSkeletons();
   try{
     const d=await fetchData(null,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${id}`);
-    allStations=(d.ListaEESSPrecio||[]).map(parseStation);
+    
+    // Como fetchData ahora usa el JSON global estático para evitar CORS,
+    // debemos filtrar la lista localmente por IDMunicipio si vienen todas.
+    let list = d.ListaEESSPrecio || [];
+    if (list.length > 0 && list[0].IDMunicipio !== undefined) {
+      const filteredList = list.filter(s => String(s.IDMunicipio) === String(id));
+      // Si la lista filtrada tiene elementos o la lista original es enorme (toda España), usamos la filtrada
+      if (filteredList.length > 0 || list.length > 5000) {
+        list = filteredList;
+      }
+    }
+
+    allStations=list.map(parseStation);
     if(userPosition){
       allStations=allStations.map(s=>{
         if(s.lat&&s.lon)s.distanceKm=haversine(userPosition.lat,userPosition.lon,s.lat,s.lon);
