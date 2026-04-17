@@ -2,7 +2,7 @@ name: Daily Blog Generator
 
 on:
   schedule:
-    - cron: '30 8 * * *' # Every day at 08:30 UTC
+    - cron: '30 8,11,14,17 * * *' # Update multiple times a day to catch latest prices
   workflow_dispatch: # Allows manual trigger
 
 permissions:

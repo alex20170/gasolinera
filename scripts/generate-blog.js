@@ -141,31 +141,31 @@ async function run() {
     }
 }
 
-function updateHomepageBlog() {
-    try {
-        const indexPath = path.join(__dirname, '../index.html');
-        if (!fs.existsSync(indexPath)) return;
-
-        const files = fs.readdirSync(BLOG_DIR)
-            .filter(f => f.endsWith('.html') && f !== 'index.html')
-            .sort()
-            .reverse()
-            .slice(0, 3); // Only top 3
-
-        const postsHtml = files.map(f => {
-            const date = f.substring(0, 10);
-            const d = new Date(date);
-            const imgIdx = d.getDate() % HERO_IMAGES.length;
-            const thumb = HERO_IMAGES[imgIdx];
-            
-            return `<a href="/blog/${f}" class="news-card" data-date="${date}">
-                <div class="news-card-badge">HOY</div>
-                <div class="news-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
-                <div class="news-card-date">${date}</div>
-                <h3 class="news-card-title">Precios del día: ${date}</h3>
-                <p class="news-card-excerpt">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
-            </a>`;
-        }).join('\n');
+    function updateHomepageBlog() {
+        try {
+            const indexPath = path.join(__dirname, '../index.html');
+            if (!fs.existsSync(indexPath)) return;
+    
+            const files = fs.readdirSync(BLOG_DIR)
+                .filter(f => f.endsWith('.html') && f !== 'index.html')
+                .sort()
+                .reverse()
+                .slice(0, 1); // Only top 1 (just today's)
+    
+            const postsHtml = files.map(f => {
+                const date = f.substring(0, 10);
+                const d = new Date(date);
+                const imgIdx = d.getDate() % HERO_IMAGES.length;
+                const thumb = HERO_IMAGES[imgIdx];
+                
+                return `<a href="/blog/${f}" class="news-card" data-date="${date}">
+                    <div class="news-card-badge">HOY</div>
+                    <div class="news-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
+                    <div class="news-card-date">${date}</div>
+                    <h3 class="news-card-title">Precios del día: ${date}</h3>
+                    <p class="news-card-excerpt">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
+                </a>`;
+            }).join('\n');
 
         let indexContent = fs.readFileSync(indexPath, 'utf-8');
         const marker = '<!-- LATEST_BLOG_POSTS -->';
