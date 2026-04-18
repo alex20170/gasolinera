@@ -158,11 +158,11 @@ async function run() {
                 const imgIdx = d.getDate() % HERO_IMAGES.length;
                 const thumb = HERO_IMAGES[imgIdx];
                 
-                return `<a href="/blog/${f}" class="news-card" data-date="${date}">
-                    <div class="news-card-badge">HOY</div>
+                return `<a href="/blog/${f}" class="news-card blog-list-card" data-date="${date}">
+                    <div class="news-card-badge" id="todayBadge">HOY</div>
                     <div class="news-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
-                    <div class="news-card-date">${date}</div>
-                    <h3 class="news-card-title">Precios del día: ${date}</h3>
+                    <div class="news-card-date" id="blogCardDate">${date}</div>
+                    <h3 class="news-card-title" id="blogCardTitle">Precios del día: ${date}</h3>
                     <p class="news-card-excerpt">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
                 </a>`;
             }).join('\n');
