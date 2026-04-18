@@ -439,11 +439,15 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
     
     <!-- Columna 1 (IZQUIERDA): Blog -->
     <div style="display: flex; flex-direction: column; gap: var(--space-4);">
-      <div class="news-hero-title" style="margin-bottom: var(--space-2)">
-        <i data-lucide="book-open" width="14" height="14"></i>
-        <span>Blog — Últimos reportes</span>
-        <a href="/blog/" style="margin-left:auto;font-size:10px;color:var(--color-primary);font-weight:700;text-decoration:none;text-transform:uppercase;letter-spacing:.05em;">Ver todos →</a>
+
+      <!-- Cabecera del Blog -->
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
+        <i data-lucide="book-open" width="20" height="20" style="color:var(--color-primary);flex-shrink:0"></i>
+        <span style="font-size:1.25rem;font-weight:900;background:linear-gradient(135deg,var(--color-primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Blog Diario</span>
+        <span style="display:inline-flex;align-items:center;gap:3px;background:var(--color-primary);color:#fff;font-size:9px;font-weight:800;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em;animation:pulse 2s infinite">&#9679; NUEVO</span>
       </div>
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0 0 4px;line-height:1.55">El reporte diario con los precios de gasolina actualizados. <strong style="color:var(--color-primary)">¡Pincha y ahorra hoy!</strong></p>
+
       <!-- Blog posts recientes: el script de generación los inyecta aquí -->
       <div id="latest-blog-posts" style="display:flex;flex-direction:column;gap:var(--space-3);">
         <!-- LATEST_BLOG_POSTS -->
@@ -456,9 +460,19 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
             </a>
 <!-- LATEST_BLOG_POSTS -->
       </div>
+
+      <!-- CTA prominente Ver Blog -->
+      <a href="/blog/" style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px;padding:16px 28px;background:linear-gradient(135deg,var(--color-primary) 0%,#0ea5e9 100%);color:#fff;font-size:var(--text-sm);font-weight:800;text-decoration:none;border-radius:var(--radius-lg);box-shadow:0 6px 24px rgba(0,0,0,.3);letter-spacing:.04em;transition:transform .2s,box-shadow .2s;text-transform:uppercase;"
+        onmouseover="this.style.transform='translateY(-3px)';this.style.boxShadow='0 10px 32px rgba(0,0,0,.45)'"
+        onmouseout="this.style.transform='translateY(0)';this.style.boxShadow='0 6px 24px rgba(0,0,0,.3)'">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        Ver todos los reportes del Blog
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+      </a>
+
     </div>
 
-    <!-- Columna 2 (DERECHA): Resumen del día + Precios -->
+        <!-- Columna 2 (DERECHA): Resumen del día + Precios -->
     <div style="display: flex; flex-direction: column; gap: var(--space-6);">
 
       <!-- Resumen análisis de mercado -->
