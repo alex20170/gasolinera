@@ -301,9 +301,23 @@ const btnClear = document.getElementById('btnClear');
 const postList = document.getElementById('post-list');
 const emptyState = document.getElementById('empty-state');
 
+function initBlogView() {
+  const posts = postList.querySelectorAll('.post-card');
+  posts.forEach((post, index) => {
+    // Solo mostramos el primer post (el más reciente/hoy) por defecto
+    post.style.display = (index === 0) ? 'flex' : 'none';
+  });
+  btnClear.style.display = 'none';
+  postList.style.display = 'grid';
+  emptyState.style.display = 'none';
+}
+
+// Inicializar vista al cargar
+initBlogView();
+
 dateFilter.addEventListener('change', () => {
   const selected = dateFilter.value;
-  if (!selected) { resetFilter(); return; }
+  if (!selected) { initBlogView(); return; }
 
   const posts = postList.querySelectorAll('.post-card');
   let count = 0;
@@ -318,15 +332,10 @@ dateFilter.addEventListener('change', () => {
   emptyState.style.display = count > 0 ? 'none' : 'flex';
 });
 
-btnClear.addEventListener('click', resetFilter);
-
-function resetFilter() {
+btnClear.addEventListener('click', () => {
   dateFilter.value = '';
-  btnClear.style.display = 'none';
-  postList.querySelectorAll('.post-card').forEach(p => p.style.display = 'flex');
-  postList.style.display = 'grid';
-  emptyState.style.display = 'none';
-}
+  initBlogView();
+});
 </script>
 </body>
 </html>
