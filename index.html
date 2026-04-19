@@ -371,6 +371,29 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
   .fuel-chip{min-height:36px}
   .status-action{min-height:34px}
 }
+
+/* PSEUDO-FULLSCREEN MAP */
+.live-map-wrap.is-fullscreen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
+  background: var(--color-bg);
+}
+.live-map-wrap.is-fullscreen .live-map {
+  height: 100% !important;
+}
+.live-map-wrap.is-fullscreen .map-hud {
+  top: auto;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+body.has-fullscreen-map {
+  overflow: hidden;
+}
 </style>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4995152189601827"
      crossorigin="anonymous"></script>
@@ -444,20 +467,20 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
       <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px">
         <i data-lucide="book-open" width="20" height="20" style="color:var(--color-primary);flex-shrink:0"></i>
         <span style="font-size:1.25rem;font-weight:900;background:linear-gradient(135deg,var(--color-primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Blog Diario</span>
-        <span style="display:inline-flex;align-items:center;gap:3px;background:var(--color-primary);color:#fff;font-size:9px;font-weight:800;padding:3px 9px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em;animation:pulse 2s infinite">&#9679; NUEVO</span>
+        <span style="display:inline-flex;align-items:center;gap:3px;background:var(--color-primary);color:#fff;font-size:9px;font-weight:800;padding:3px 99px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em;animation:pulse 2s infinite">&#9679; NUEVO</span>
       </div>
       <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0 0 4px;line-height:1.55">El reporte diario con los precios de gasolina actualizados. <strong style="color:var(--color-primary)">¡Pincha y ahorra hoy!</strong></p>
 
       <!-- Blog posts recientes: el script de generación los inyecta aquí -->
       <div id="latest-blog-posts" style="display:flex;flex-direction:column;gap:var(--space-3);">
         <!-- LATEST_BLOG_POSTS -->
-<a href="/blog/2026-04-18-precios-gasolina.html" class="news-card blog-list-card" data-date="2026-04-18">
-                    <div class="news-card-badge" id="todayBadge">HOY</div>
-                    <div class="news-card-img"><div style="background:url('/assets/blog/hero1.png') center/cover"></div></div>
-                    <div class="news-card-date" id="blogCardDate">2026-04-18</div>
-                    <h3 class="news-card-title" id="blogCardTitle">Precios del día: 2026-04-18</h3>
-                    <p class="news-card-excerpt">Consulta el reporte diario y ahorra en tu combustible cada día.</p>
-                </a>
+<a href="/blog/2026-04-19-precios-gasolina.html" class="news-card blog-list-card" data-date="2026-04-19">
+                <div class="news-card-badge" id="todayBadge">HOY</div>
+                <div class="news-card-img"><div style="background:url('/assets/blog/hero2.png') center/cover"></div></div>
+                <div class="news-card-date" id="blogCardDate">2026-04-19</div>
+                <h3 class="news-card-title" id="blogCardTitle">Informe Diario: Precios del 2026-04-19</h3>
+                <p class="news-card-excerpt">Análisis profesional de precios, tendencias por provincias y marcas más baratas del día.</p>
+            </a>
 <!-- LATEST_BLOG_POSTS -->
       </div>
 
@@ -657,15 +680,18 @@ dateEl.textContent='Datos del '+now.toLocaleDateString('es-ES',{weekday:'long',y
 
 // --- Automatización de fecha en Blog Card y Resumen ---
 (function updateDynamicDates(){
+  console.log("Updating dynamic dates...");
   const todayIso=now.toISOString().slice(0,10);
   const blogCard=document.querySelector('.blog-list-card');
   if(blogCard){
-    blogCard.setAttribute('href', '/blog/'+todayIso+'-precios-gasolina.html');
+    if (blogCard.getAttribute('data-date') !== todayIso) {
+      blogCard.setAttribute('href', '/blog/'+todayIso+'-precios-gasolina.html');
     blogCard.setAttribute('data-date', todayIso);
     const dateSpan=blogCard.querySelector('#blogCardDate');
     if(dateSpan) dateSpan.textContent=todayIso;
     const titleEl=blogCard.querySelector('#blogCardTitle');
     if(titleEl) titleEl.textContent='Precios del día: '+todayIso;
+    }
   }
   const summaryLabel=document.getElementById('summaryDateLabel');
   if(summaryLabel) summaryLabel.textContent=now.toLocaleDateString('es-ES',{day:'numeric',month:'long'});
@@ -715,7 +741,7 @@ const FUEL_KEY_ALIASES={
   'Precio Gasoleo Premium':'Precio Gasoil Premium',
   'Precio Gasóleo Premium':'Precio Gasoil Premium',
   'Precio Gases licuados del petróleo':'Precio GLP',
-  'Precio Gases licuados del petr�leo':'Precio GLP',
+  'Precio Gases licuados del petrleo':'Precio GLP',
   'Precio Diésel A':'Precio Gasoil A',
   'Precio Diesel A':'Precio Gasoil A',
   'Precio Diésel Premium':'Precio Gasoil Premium',
@@ -735,7 +761,7 @@ function readFuelValueByCanonical(station,canonicalKey){
   if(station[canonicalKey]!==undefined)return station[canonicalKey];
   if(canonicalKey==='Precio Gasoil A')return station['Precio Gasoleo A'];
   if(canonicalKey==='Precio Gasoil Premium')return station['Precio Gasoleo Premium'];
-  if(canonicalKey==='Precio GLP')return station['Precio Gases licuados del petróleo']??station['Precio Gases licuados del petr�leo'];
+  if(canonicalKey==='Precio GLP')return station['Precio Gases licuados del petróleo']??station['Precio Gases licuados del petrleo'];
   return undefined;
 }
 
@@ -880,8 +906,6 @@ function renderAvgBanner(){
 }
 
 async function fetchData(localUrl,fallbackUrl){
-  // En la nueva arquitectura estática, siempre preferimos el JSON pre-generado localmente
-  // para evitar problemas de CORS al llamar a la API del Ministerio desde el navegador.
   const staticUrl = '/assets/data/prices.json';
   
   async function fetchWithTimeout(url,timeoutMs=15000){
@@ -896,16 +920,23 @@ async function fetchData(localUrl,fallbackUrl){
     }
   }
 
-  // Para llamadas históricas no tenemos JSON estático pre-generado
   if(fallbackUrl && fallbackUrl.includes('EstacionesTerrestresHist')){
     return await fetchWithTimeout(fallbackUrl, 20000);
   }
 
   try{
-    return await fetchWithTimeout(staticUrl, 15000);
+    const cachedData = await fetchWithTimeout(staticUrl, 15000);
+    const todayStr = new Date().toLocaleDateString('es-ES');
+    const dataDate = cachedData.Fecha || "";
+    if (dataDate && !dataDate.includes(todayStr.split('/')[0])) {
+      console.log("Datos estáticos antiguos (" + dataDate + "), descargando tiempo real...");
+      throw new Error('Static data is stale');
+    }
+    return cachedData;
   }catch(_){
     try{
-      return await fetchWithTimeout(fallbackUrl, 20000);
+      console.log("Intentando fallback a API del Ministerio...");
+      return await fetchWithTimeout(fallbackUrl, 25000);
     }catch(__){
       throw new Error('No se pudo obtener datos ni del caché estático ni de la API.');
     }
@@ -922,14 +953,12 @@ function loadYesterdaySnapshot(){
     yDate.setDate(yDate.getDate()-1);
     const yesterdayStr=yDate.toISOString().slice(0,10);
 
-    // Nuevo formato: historial por fecha
     if(parsed&&typeof parsed==='object'&&parsed.byDate&&typeof parsed.byDate==='object'){
       if(parsed.byDate[yesterdayStr])return parsed.byDate[yesterdayStr];
       const prevDates=Object.keys(parsed.byDate).filter(d=>d<todayStr).sort().reverse();
       return prevDates.length?parsed.byDate[prevDates[0]]:null;
     }
 
-    // Compatibilidad con formato antiguo (un único snapshot)
     if(parsed&&typeof parsed==='object'&&parsed.date&&parsed.date!==todayStr)return parsed;
     return null;
   }catch(_){return null}
@@ -986,19 +1015,16 @@ async function loadGlobalHistoricalTrend(days=5){
   }
 
   const series=[];
-  // Primero garantizamos ayer para que siempre haya comparativa básica.
   try{
     const y=await fetchHistForDay(1);
     if(y){
       series.push(y);
       globalHistorySeries=[...series];
       comparisonSnapshot=series[0];
-      // Mostrar al momento la tendencia inicial.
       renderTrendBanner();
     }
   }catch(_){}
 
-  // Después ampliamos últimos días en paralelo.
   const offsets=[];
   for(let i=2;i<=days;i++)offsets.push(i);
   const results=await Promise.allSettled(offsets.map(fetchHistForDay));
@@ -1028,11 +1054,9 @@ function saveSnapshot(label){
       stationPrices
     };
 
-    // Guardar historial por fecha para no perder "ayer" al actualizar hoy.
     let store=loadSnapshotStore();
     store.byDate[snap.date]=snap;
 
-    // Mantener solo los ultimos 7 dias para no inflar localStorage.
     const dates=Object.keys(store.byDate).sort();
     while(dates.length>7){
       const oldest=dates.shift();
@@ -1125,7 +1149,7 @@ if(btnRefreshNow){
   const prefs=loadUIPrefs();
   if(!prefs)return;
   if(prefs.activeFuel&&document.querySelector(`#fuelFilters .fuel-chip[data-fuel="${prefs.activeFuel}"]`)){
-    document.querySelectorAll('#fuelFilters .fuel-chip').forEach(c=>c.classList.toggle('active',c.dataset.fuel===prefs.activeFuel));
+    document.querySelectorAll('#fuelFilters .fuel-chip').forEach(c=>c.classList.remove('active',c.dataset.fuel===prefs.activeFuel));
     activeFuel=prefs.activeFuel;
   }
   if(prefs.sort&&sortSelect?.querySelector(`option[value="${prefs.sort}"]`)){
@@ -1134,7 +1158,6 @@ if(btnRefreshNow){
   if(prefs.lastMunicipioText)municipioInput.value=prefs.lastMunicipioText;
 })();
 
-// ===== AUTOCOMPLETE =====
 municipioInput.addEventListener('input',()=>{
   clearTimeout(autocompleteTimer);
   autocompleteTimer=setTimeout(()=>{
@@ -1173,7 +1196,6 @@ $('btnSearch').addEventListener('click',()=>{
   else setStatus('error','Municipio no encontrado. Prueba a escribir más letras.');
 });
 
-// ===== GEOLOCATION =====
 $('btnGeolocate').addEventListener('click',()=>{
   if(!navigator.geolocation){setStatus('error','Tu navegador no soporta geolocalización');return}
   setStatus('loading','Obteniendo tu ubicación…');
@@ -1221,7 +1243,6 @@ function startPreciseGPSWatcher(){
   });
 }
 
-// ===== FETCH BY MUNICIPIO =====
 async function fetchByMunicipio(id,name){
   currentMunicipioId=id;
   latestSearchLabel=name;
@@ -1231,12 +1252,9 @@ async function fetchByMunicipio(id,name){
   try{
     const d=await fetchData(null,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${id}`);
     
-    // Como fetchData ahora usa el JSON global estático para evitar CORS,
-    // debemos filtrar la lista localmente por IDMunicipio si vienen todas.
     let list = d.ListaEESSPrecio || [];
     if (list.length > 0 && list[0].IDMunicipio !== undefined) {
       const filteredList = list.filter(s => String(s.IDMunicipio) === String(id));
-      // Si la lista filtrada tiene elementos o la lista original es enorme (toda España), usamos la filtrada
       if (filteredList.length > 0 || list.length > 5000) {
         list = filteredList;
       }
@@ -1256,7 +1274,6 @@ async function fetchByMunicipio(id,name){
   }catch(e){setStatus('error','Error al cargar datos. Comprueba tu conexión.')}
 }
 
-// ===== FETCH ALL + NEARBY =====
 async function fetchAllAndFilter(lat,lon){
   latestSearchLabel='tu ubicación';
   setStatus('loading','Buscando gasolineras cercanas…');
@@ -1280,12 +1297,10 @@ function haversine(la1,lo1,la2,lo2){
   return R*2*Math.atan2(Math.sqrt(a),Math.sqrt(1-a));
 }
 
-// ===== PARSE =====
 function parseStation(s){
   const lat=parseFloat((s['Latitud']||'').replace(',','.'));
   const lon=parseFloat((s['Longitud (WGS84)']||'').replace(',','.'));
   const fuels={};
-  // Capturar TODOS los campos que empiecen por "Precio" con valor > 0
   for(const key of Object.keys(s)){
     if(key.startsWith('Precio')){
       const canonicalKey=canonicalFuelKey(key);
@@ -1301,7 +1316,6 @@ function parseStation(s){
     schedule:s['Horario']||'',lat:isNaN(lat)?null:lat,lon:isNaN(lon)?null:lon,distanceKm:null,fuels,raw:s};
 }
 
-// ===== FILTERS =====
 $('fuelFilters').addEventListener('click',e=>{
   const chip=e.target.closest('.fuel-chip');
   if(!chip)return;
@@ -1354,7 +1368,6 @@ function updateRankingBar(lbl,sortKey){
   const munEl=document.getElementById('rankingMunicipio');
   const labelEl=document.getElementById('rankingFuelLabel');
   if(!sortKey){bar.style.display='none';return}
-  // Top 5 con precio de ese carburante
   const top=filteredStations.filter(s=>s.fuels[sortKey]).slice(0,5);
   if(!top.length){bar.style.display='none';return}
   bar.style.display='block';
@@ -1371,7 +1384,6 @@ function updateRankingBar(lbl,sortKey){
     </button>`).join('');
 }
 
-// ===== RENDER LIST =====
 function renderList(){
   if(!filteredStations.length){
     stationList.innerHTML=`<div class="empty-state">
@@ -1435,7 +1447,7 @@ function initMap(){
     maxZoom:20,attribution:'&copy; Google Maps'
   }).addTo(map);
 
-  L.Control.Fullscreen = L.Control.extend({
+  const FullscreenControl = L.Control.extend({
     options: { position: 'topleft' },
     onAdd: function(map) {
       var container = L.DomUtil.create('div', 'leaflet-bar leaflet-control');
@@ -1446,19 +1458,24 @@ function initMap(){
       L.DomEvent.disableClickPropagation(button);
       L.DomEvent.on(button, 'click', function(e) {
         L.DomEvent.stop(e);
-        var mapContainer = map.getContainer();
-        if (!document.fullscreenElement && !document.webkitFullscreenElement) {
-           if(mapContainer.requestFullscreen) { mapContainer.requestFullscreen().catch(function(){}); }
-           else if(mapContainer.webkitRequestFullscreen) { mapContainer.webkitRequestFullscreen(); }
-        } else {
-           if(document.exitFullscreen) { document.exitFullscreen(); }
-           else if(document.webkitExitFullscreen) { document.webkitExitFullscreen(); }
+        const mapWrap = document.querySelector('.live-map-wrap');
+        const isFS = mapWrap.classList.toggle('is-fullscreen');
+        document.body.classList.toggle('has-fullscreen-map', isFS);
+        
+        if (window.innerWidth > 900) {
+            var mapContainer = map.getContainer();
+            if (!document.fullscreenElement) {
+                if(mapContainer.requestFullscreen) { mapContainer.requestFullscreen().catch(()=>{}); }
+            } else {
+                if(document.exitFullscreen) { document.exitFullscreen(); }
+            }
         }
+        setTimeout(() => map.invalidateSize(), 300);
       });
       return container;
     }
   });
-  map.addControl(new L.Control.Fullscreen());
+  map.addControl(new FullscreenControl());
 }
 
 function updateUserMarker(){
@@ -1530,7 +1547,7 @@ function restartRealtimePolling(){
     nextSyncAt=Date.now()+RT_INTERVAL_MS;
     if(currentMunicipioId){
       try{
-        const d=await fetchData(`/.netlify/functions/prices?municipio=${currentMunicipioId}&rt=1`,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${currentMunicipioId}`);
+        const d=await fetchData(null,`https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/FiltroMunicipio/${currentMunicipioId}`);
         allStations=(d.ListaEESSPrecio||[]).map(parseStation);
         applyFiltersAndRender(latestSearchLabel);
       }catch(_){}
@@ -1552,7 +1569,7 @@ async function manualRefresh(){
   }else{
     setStatus('loading','Actualizando datos nacionales…');
     try{
-      const d=await fetchData('/.netlify/functions/prices?scope=all&source=manual','https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+      const d=await fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
       allStations=(d.ListaEESSPrecio||[]).map(parseStation);
       lastGasUpdateAt=new Date();
       applyFiltersAndRender('España');
@@ -1568,7 +1585,6 @@ async function manualRefresh(){
   }
 }
 
-// ===== SHOW DETAIL =====
 function showDetail(id){
   selectedId=id;
   const s=filteredStations.find(x=>x.id===id);
@@ -1578,7 +1594,6 @@ function showDetail(id){
     map.flyTo([s.lat,s.lon],15,{animate:true,duration:0.6});
     const marker=markerByStationId.get(s.id);
     if(marker)marker.openPopup();
-    // refresca estilo del pin seleccionado en el mapa
     updateMapScene();
   }
 
@@ -1603,7 +1618,6 @@ function showDetail(id){
     'Precio Gasolina 95 E10':     {icon:'E10', bg:'linear-gradient(135deg,#388e3c,#81c784)', text:'#fff'},
     'Precio Gasolina 95 E5 Premium':{icon:'95+',bg:'linear-gradient(135deg,#1b5e20,#43a047)', text:'#fff'},
   };
-  // Para campos no mapeados en FUEL_MAP, crear entrada dinámica
   const fuelCards=Object.entries(s.fuels).map(([key,price])=>{
     const fm=FUEL_MAP[key]||{label:key.replace('Precio ',''),cls:'fuel-diesel',color:'var(--color-text-muted)',chipKey:'',name:key.replace('Precio ','')};
     const fi=FUEL_ICONS[key]||{icon:(key.replace('Precio ','').slice(0,3)),bg:'linear-gradient(135deg,#455a64,#607d8b)',text:'#fff'};
@@ -1635,7 +1649,6 @@ function showDetail(id){
     </div>`;
   }).join('');
 
-  // Google Maps URLs
   const destCoords=s.lat&&s.lon?`${s.lat},${s.lon}`:'';
   const destSearch=encodeURIComponent(`${s.name} ${s.address} ${s.locality} España`);
   const mapsNavUrl=destCoords
@@ -1673,7 +1686,6 @@ function showDetail(id){
         <div class="fuel-price-grid">${fuelCards}</div>
       </div>`:`<p style="color:var(--color-text-muted);font-size:var(--text-sm);margin:var(--space-4) 0">Sin precios disponibles en este momento.</p>`}
 
-      <!-- GOOGLE MAPS PROMINENTE -->
       <div class="detail-section">
         <div class="detail-section-title">Cómo llegar</div>
         <div class="maps-section">
@@ -1753,7 +1765,6 @@ function resetView(){
   updateMapScene();
 }
 
-// ===== IS OPEN NOW =====
 function isOpenNow(schedule){
   if(!schedule)return null;
   const s=schedule.trim().toUpperCase();
@@ -1771,7 +1782,6 @@ function isOpenNow(schedule){
   return null;
 }
 
-// ===== SKELETONS =====
 function showSkeletons(){
   stationList.innerHTML=Array(5).fill(0).map(()=>`<div class="skeleton skeleton-card"></div>`).join('');
   detailPlaceholder.style.display='flex';
@@ -1779,7 +1789,6 @@ function showSkeletons(){
   selectedId=null;
 }
 
-// ===== INIT =====
 lucide.createIcons();
 initMap();
 startPreciseGPSWatcher();
@@ -1802,7 +1811,6 @@ setTimeout(()=>{
   );
 },300);
 </script>
-
 
 <footer style="background:var(--color-surface);border-top:1px solid var(--color-divider);padding:var(--space-4) 0;margin-top:auto">
   <div class="container" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-2)">
@@ -1852,7 +1860,6 @@ setTimeout(()=>{
 </nav>
 
 <script>
-  // Sync dock theme icon
   const dockThemeToggle = document.querySelector('.dynamic-dock [data-theme-toggle]');
   if(dockThemeToggle) {
     const sun = dockThemeToggle.querySelector('.sun-icon');
@@ -1863,7 +1870,6 @@ setTimeout(()=>{
     };
     updateDockIcon(document.documentElement.getAttribute('data-theme') || 'light');
     
-    // The main theme script is elsewhere, but let's make sure it updates this too
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (mutation.attributeName === 'data-theme') {
