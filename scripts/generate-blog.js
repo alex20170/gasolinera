@@ -248,6 +248,14 @@ function updateHomepageBlog() {
         
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(regex, `${marker}\n${postsHtml}\n${marker}`);
+            
+            // Update the CTA button link as well
+            if (files.length > 0) {
+                const latestFile = files[0];
+                const btnRegex = /id="blogBtnLink" href="[^"]*"/;
+                indexContent = indexContent.replace(btnRegex, `id="blogBtnLink" href="/blog/${latestFile}"`);
+            }
+
             fs.writeFileSync(indexPath, indexContent);
             console.log('Homepage blog section updated');
         }

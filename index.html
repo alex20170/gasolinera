@@ -469,7 +469,10 @@ body.has-fullscreen-map {
         <span style="font-size:1.25rem;font-weight:900;background:linear-gradient(135deg,var(--color-primary),#0ea5e9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Blog Diario</span>
         <span style="display:inline-flex;align-items:center;gap:3px;background:var(--color-primary);color:#fff;font-size:9px;font-weight:800;padding:3px 99px;border-radius:999px;text-transform:uppercase;letter-spacing:.08em;animation:pulse 2s infinite">&#9679; NUEVO</span>
       </div>
-      <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0 0 4px;line-height:1.55">El reporte diario con los precios de gasolina actualizados. <strong style="color:var(--color-primary)">¡Pincha y ahorra hoy!</strong></p>
+      <p style="font-size:var(--text-sm);color:var(--color-text-muted);margin:0 0 4px;line-height:1.55;display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        El reporte diario con los precios de gasolina actualizados.
+        <a href="/blog/2026-04-19-precios-gasolina.html" class="btn-primary" id="blogBtnLink" style="padding: 6px 14px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; text-decoration: none;">¡Pincha y ahorra hoy!</a>
+      </p>
 
       <!-- Blog posts recientes: el script de generación los inyecta aquí -->
       <div id="latest-blog-posts" style="display:flex;flex-direction:column;gap:var(--space-3);">
@@ -693,6 +696,8 @@ dateEl.textContent='Datos del '+now.toLocaleDateString('es-ES',{weekday:'long',y
     if(titleEl) titleEl.textContent='Precios del día: '+todayIso;
     }
   }
+  const blogBtnLink=document.getElementById('blogBtnLink');
+  if(blogBtnLink) blogBtnLink.setAttribute('href', '/blog/'+todayIso+'-precios-gasolina.html');
   const summaryLabel=document.getElementById('summaryDateLabel');
   if(summaryLabel) summaryLabel.textContent=now.toLocaleDateString('es-ES',{day:'numeric',month:'long'});
 })();
