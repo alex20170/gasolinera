@@ -187,10 +187,12 @@ async function run() {
 
         const imageIndex = now.getDate() % HERO_IMAGES.length;
         const heroImage = HERO_IMAGES[imageIndex];
+        const canonicalUrl = `https://xn--gasolinerasespaa-lub.es/blog/${fileDate}-precios-gasolina.html`;
 
         let template = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
         template = template.replace(/{{TITLE}}/g, title)
                           .replace(/{{DESCRIPTION}}/g, description)
+                          .replace(/{{CANONICAL}}/g, canonicalUrl)
                           .replace(/{{DATE}}/g, dateStr)
                           .replace(/{{HERO_IMAGE}}/g, heroImage)
                           .replace(/{{CONTENT}}/g, content);

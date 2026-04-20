@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+Disallow: /assets/
+Disallow: /templates/
+Disallow: /scripts/
 
-Sitemap: https://gasolinerasespaña.es/sitemap.xml
+Sitemap: https://xn--gasolinerasespaa-lub.es/sitemap.xml
