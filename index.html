@@ -94,20 +94,7 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
 .btn-theme:hover{background:var(--color-surface-offset);color:var(--color-text)}
 .header-date{font-size:var(--text-xs);color:var(--color-text-muted);display:none}
 
-/* DYNAMIC DOCK */
-.dynamic-dock{position:fixed;left:var(--space-4);top:50%;transform:translateY(-50%);z-index:1000;background:#0e0e0e;border:1px solid #282828;border-radius:var(--radius-full);padding:var(--space-2);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:0 12px 40px rgba(0,0,0,0.6);transition:all var(--transition-interactive)}
-.dock-item{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:#fff;text-decoration:none;transition:all var(--transition-interactive);position:relative;opacity:0.8}
-.dock-item:hover{background:rgba(255,255,255,0.15);color:#fff;transform:scale(1.1);opacity:1}
-.dock-item::after{content:attr(data-label);position:absolute;left:calc(100% + var(--space-4));background:#fff;color:#000;padding:var(--space-1) var(--space-3);border-radius:var(--radius-md);font-size:10px;font-weight:800;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity var(--transition-interactive);text-transform:uppercase;box-shadow:var(--shadow-md)}
-.dock-item:hover::after{opacity:1}
-.dock-sep{height:1px;background:#282828;margin-inline:var(--space-2)}
 
-@media(max-width:800px){
-  .dynamic-dock{left:50%;top:auto;bottom:var(--space-4);transform:translateX(-50%);flex-direction:row;padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);width:max-content}
-  .dock-item::after{display:none}
-  .dock-sep{width:1px;height:24px;margin-block:auto}
-  body{padding-bottom:var(--space-16)}
-}
 
 /* NEWS HERO */
 .news-hero{margin-bottom:var(--space-8)}
@@ -1843,48 +1830,56 @@ setTimeout(()=>{
     </p>
   </div>
 </footer>
-<!-- DYNAMIC DOCK -->
-<nav class="dynamic-dock">
-  <a href="javascript:history.back()" class="dock-item" data-label="Volver">
-    <i data-lucide="arrow-left" width="20" height="20"></i>
-  </a>
-  <a href="/" class="dock-item" data-label="Inicio">
-    <i data-lucide="home" width="20" height="20"></i>
-  </a>
-  <div class="dock-sep"></div>
-  <button class="dock-item" data-theme-toggle data-label="Tema">
-    <i data-lucide="sun" width="20" height="20" class="sun-icon"></i>
-    <i data-lucide="moon" width="20" height="20" class="moon-icon" style="display:none"></i>
-  </button>
-  <div class="dock-sep"></div>
-  <a href="mailto:contacto@gasolinerasespaña.es" class="dock-item" data-label="Contacto">
-    <i data-lucide="mail" width="20" height="20"></i>
-  </a>
-  <a href="https://instagram.com/gasolineras_esp" target="_blank" class="dock-item" data-label="Instagram">
-    <i data-lucide="instagram" width="20" height="20"></i>
-  </a>
-</nav>
+
+
+<!-- COOKIE BANNER -->
+<div id="cookieBanner" style="position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:min(90%,450px);background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-lg);padding:var(--space-4);box-shadow:var(--shadow-lg);z-index:10000;display:none;flex-direction:column;gap:var(--space-3);backdrop-filter:blur(10px)">
+  <div style="display:flex;align-items:center;gap:var(--space-2)">
+    <i data-lucide="cookie" style="color:var(--color-primary)"></i>
+    <span style="font-size:var(--text-sm);font-weight:700">Privacidad y Cookies</span>
+  </div>
+  <p style="font-size:var(--text-xs);color:var(--color-text-muted);line-height:1.5">
+    Utilizamos cookies propias y de terceros (como Google AdSense) para analizar el tráfico y personalizar los anuncios. Puedes aceptar todas o ver nuestra <a href="politica-privacidad.html" style="color:var(--color-primary);text-decoration:underline">Política de Cookies</a>.
+  </p>
+  <div style="display:flex;gap:var(--space-2)">
+    <button id="acceptCookies" class="btn-primary" style="flex:1;font-size:11px;padding:8px">Aceptar todo</button>
+    <button id="rejectCookies" class="btn-secondary" style="flex:1;font-size:11px;padding:8px">Solo necesarias</button>
+  </div>
+  </div>
+</div>
 
 <script>
-  const dockThemeToggle = document.querySelector('.dynamic-dock [data-theme-toggle]');
-  if(dockThemeToggle) {
-    const sun = dockThemeToggle.querySelector('.sun-icon');
-    const moon = dockThemeToggle.querySelector('.moon-icon');
-    const updateDockIcon = (theme) => {
-      sun.style.display = theme === 'dark' ? 'none' : 'block';
-      moon.style.display = theme === 'dark' ? 'block' : 'none';
-    };
-    updateDockIcon(document.documentElement.getAttribute('data-theme') || 'light');
+  // Cookie Banner Logic
+  (function() {
+    const banner = document.getElementById('cookieBanner');
+    const acceptBtn = document.getElementById('acceptCookies');
+    const rejectBtn = document.getElementById('rejectCookies');
     
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          updateDockIcon(document.documentElement.getAttribute('data-theme'));
-        }
-      });
+    if (!localStorage.getItem('cookiesAccepted')) {
+      setTimeout(() => {
+        banner.style.display = 'flex';
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }, 2000);
+    }
+    
+    const hideBanner = () => {
+      banner.style.opacity = '0';
+      banner.style.transform = 'translateX(-50%) translateY(20px)';
+      banner.style.transition = 'all 0.5s ease';
+      setTimeout(() => banner.style.display = 'none', 500);
+    };
+    
+    acceptBtn.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'true');
+      hideBanner();
     });
-    observer.observe(document.documentElement, { attributes: true });
-  }
+    
+    rejectBtn.addEventListener('click', () => {
+      localStorage.setItem('cookiesAccepted', 'partial');
+      hideBanner();
+    });
+  })();
+
 </script>
 </body>
 </html>

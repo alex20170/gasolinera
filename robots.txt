@@ -4,4 +4,10 @@ Disallow: /assets/
 Disallow: /templates/
 Disallow: /scripts/
 
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
 Sitemap: https://xn--gasolinerasespaa-lub.es/sitemap.xml

@@ -111,19 +111,6 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
 .footer-links a:hover{color:var(--color-primary)}
 
 /* DYNAMIC DOCK */
-.dynamic-dock{position:fixed;left:var(--space-4);top:50%;transform:translateY(-50%);z-index:1000;background:#0e0e0e;border:1px solid #282828;border-radius:var(--radius-full);padding:var(--space-2);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:0 12px 40px rgba(0,0,0,0.6);transition:all var(--transition-interactive)}
-.dock-item{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:#fff;text-decoration:none;transition:all var(--transition-interactive);position:relative;opacity:0.8}
-.dock-item:hover{background:rgba(255,255,255,0.15);color:#fff;transform:scale(1.1);opacity:1}
-.dock-item::after{content:attr(data-label);position:absolute;left:calc(100% + var(--space-4));background:#fff;color:#000;padding:var(--space-1) var(--space-3);border-radius:var(--radius-md);font-size:10px;font-weight:800;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity var(--transition-interactive);text-transform:uppercase;box-shadow:var(--shadow-md)}
-.dock-item:hover::after{opacity:1}
-.dock-sep{height:1px;background:#282828;margin-inline:var(--space-2)}
-
-@media(max-width:800px){
-  .dynamic-dock{left:50%;top:auto;bottom:var(--space-4);transform:translateX(-50%);flex-direction:row;padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);width:max-content}
-  .dock-item::after{display:none}
-  .dock-sep{width:1px;height:24px;margin-block:auto}
-  body{padding-bottom:var(--space-16)}
-}
 
 @media(max-width:600px){
   .header-inner{flex-direction:column;align-items:flex-start}
@@ -209,49 +196,8 @@ lucide.createIcons();
   }));
 })();
 </script>
-<!-- DYNAMIC DOCK -->
-<nav class="dynamic-dock">
-  <a href="javascript:history.back()" class="dock-item" data-label="Volver">
-    <i data-lucide="arrow-left" width="20" height="20"></i>
-  </a>
-  <a href="/" class="dock-item" data-label="Inicio">
-    <i data-lucide="home" width="20" height="20"></i>
-  </a>
-  <div class="dock-sep"></div>
-  <button class="dock-item" data-theme-toggle data-label="Tema">
-    <i data-lucide="sun" width="20" height="20" class="sun-icon"></i>
-    <i data-lucide="moon" width="20" height="20" class="moon-icon" style="display:none"></i>
-  </button>
-  <div class="dock-sep"></div>
-  <a href="mailto:gasolinerasespaña@gmail.com" class="dock-item" data-label="Contacto">
-    <i data-lucide="mail" width="20" height="20"></i>
-  </a>
-  <a href="https://instagram.com/gasolineras_esp" target="_blank" class="dock-item" data-label="Instagram">
-    <i data-lucide="instagram" width="20" height="20"></i>
-  </a>
-</nav>
 
 <script>
-  // Sync dock theme icon
-  const dockThemeToggle = document.querySelector('.dynamic-dock [data-theme-toggle]');
-  if(dockThemeToggle) {
-    const sun = dockThemeToggle.querySelector('.sun-icon');
-    const moon = dockThemeToggle.querySelector('.moon-icon');
-    const updateDockIcon = (theme) => {
-      sun.style.display = theme === 'dark' ? 'none' : 'block';
-      moon.style.display = theme === 'dark' ? 'block' : 'none';
-    };
-    updateDockIcon(document.documentElement.getAttribute('data-theme') || 'light');
-    
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        if (mutation.attributeName === 'data-theme') {
-          updateDockIcon(document.documentElement.getAttribute('data-theme'));
-        }
-      });
-    });
-    observer.observe(document.documentElement, { attributes: true });
-  }
   // Initialize icons
   lucide.createIcons();
 </script>

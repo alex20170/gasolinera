@@ -111,18 +111,7 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
 .footer-links a{color:var(--color-text-faint);text-decoration:none;font-size:var(--text-xs);transition:color var(--transition-interactive)}
 .footer-links a:hover{color:var(--color-primary)}
 
-/* DYNAMIC DOCK */
-.dynamic-dock{position:fixed;left:var(--space-4);top:50%;transform:translateY(-50%);z-index:1000;background:#0e0e0e;border:1px solid #282828;border-radius:var(--radius-full);padding:var(--space-2);display:flex;flex-direction:column;gap:var(--space-3);box-shadow:0 12px 40px rgba(0,0,0,0.6);transition:all var(--transition-interactive)}
-.dock-item{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius-full);color:#fff;text-decoration:none;transition:all var(--transition-interactive);position:relative;opacity:0.8;cursor:pointer;background:none;border:none}
-.dock-item:hover{background:rgba(255,255,255,0.15);color:#fff;transform:scale(1.1);opacity:1}
-.dock-item::after{content:attr(data-label);position:absolute;left:calc(100% + var(--space-4));background:#fff;color:#000;padding:var(--space-1) var(--space-3);border-radius:var(--radius-md);font-size:10px;font-weight:800;white-space:nowrap;opacity:0;pointer-events:none;transition:opacity var(--transition-interactive);text-transform:uppercase;box-shadow:var(--shadow-md)}
-.dock-item:hover::after{opacity:1}
-.dock-sep{height:1px;background:#282828;margin-inline:var(--space-2)}
-
 @media(max-width:800px){
-  .dynamic-dock{left:50%;top:auto;bottom:var(--space-4);transform:translateX(-50%);flex-direction:row;padding:var(--space-2) var(--space-4);border-radius:var(--radius-full);width:max-content}
-  .dock-item::after{display:none}
-  .dock-sep{width:1px;height:24px;margin-block:auto}
   body{padding-bottom:var(--space-16)}
   .post-grid{grid-template-columns:1fr}
 }
@@ -287,28 +276,6 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
   </div>
 </footer>
 
-<!-- DYNAMIC DOCK -->
-<nav class="dynamic-dock">
-  <a href="javascript:history.back()" class="dock-item" data-label="Volver">
-    <i data-lucide="arrow-left" width="20" height="20"></i>
-  </a>
-  <a href="/" class="dock-item" data-label="Inicio">
-    <i data-lucide="home" width="20" height="20"></i>
-  </a>
-  <div class="dock-sep"></div>
-  <button class="dock-item" id="dockTheme" data-label="Tema" aria-label="Cambiar tema">
-    <i data-lucide="sun" width="20" height="20" id="dockSun"></i>
-    <i data-lucide="moon" width="20" height="20" id="dockMoon" style="display:none"></i>
-  </button>
-  <div class="dock-sep"></div>
-  <a href="mailto:contacto@gasolinerasespaña.es" class="dock-item" data-label="Contacto">
-    <i data-lucide="mail" width="20" height="20"></i>
-  </a>
-  <a href="https://instagram.com/gasolineras_esp" target="_blank" class="dock-item" data-label="Instagram">
-    <i data-lucide="instagram" width="20" height="20"></i>
-  </a>
-</nav>
-
 <script>
 lucide.createIcons();
 
@@ -327,11 +294,6 @@ lucide.createIcons();
         ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>'
         : '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
     }
-    // Update dock icons
-    const sun = document.getElementById('dockSun');
-    const moon = document.getElementById('dockMoon');
-    if (sun) sun.style.display = t === 'dark' ? 'none' : 'block';
-    if (moon) moon.style.display = t === 'dark' ? 'block' : 'none';
   }
 
   applyTheme(theme);
@@ -342,14 +304,6 @@ lucide.createIcons();
       applyTheme(theme);
     });
   });
-
-  const dockBtn = document.getElementById('dockTheme');
-  if (dockBtn) {
-    dockBtn.addEventListener('click', () => {
-      theme = theme === 'dark' ? 'light' : 'dark';
-      applyTheme(theme);
-    });
-  }
 })();
 
 // ===== SEARCH FILTER =====
