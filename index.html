@@ -529,7 +529,7 @@ body.has-fullscreen-map {
     <div class="search-bar">
       <div class="search-input-wrap">
         <i data-lucide="map-pin" width="18" height="18"></i>
-        <input type="text" class="search-input" id="municipioInput" placeholder="Municipio o ciudad…" autocomplete="off" aria-label="Buscar municipio"/>
+        <input type="text" class="search-input" id="municipioInput" placeholder="Municipio, CP o marca…" autocomplete="off" aria-label="Buscar municipio o CP"/>
       </div>
       <div class="search-divider"></div>
       <button class="btn-secondary" id="btnGeolocate">
@@ -1152,6 +1152,7 @@ if(btnRefreshNow){
 })();
 
 municipioInput.addEventListener('input',()=>{
+  currentMunicipioId=null;
   clearTimeout(autocompleteTimer);
   autocompleteTimer=setTimeout(()=>{
     const q=normalizeText(municipioInput.value);
@@ -1185,9 +1186,35 @@ $('btnSearch').addEventListener('click',()=>{
   if(!q)return;
   if(currentMunicipioId){fetchByMunicipio(currentMunicipioId,municipioInput.value);return}
   const match=municipios.find(m=>normalizeText(m.Municipio)===q)||municipios.find(m=>normalizeText(m.Municipio).startsWith(q));
-  if(match){municipioInput.value=match.Municipio;fetchByMunicipio(match.IDMunicipio,match.Municipio)}
-  else setStatus('error','Municipio no encontrado. Prueba a escribir más letras.');
+  if(match){
+    municipioInput.value=match.Municipio;
+    fetchByMunicipio(match.IDMunicipio,match.Municipio);
+  } else {
+    // Si no es municipio, asumimos que es una búsqueda estricta de marca (ej: Repsol)
+    fetchAllAndFilterStrict(q);
+  }
 });
+
+async function fetchAllAndFilterStrict(query){
+  latestSearchLabel=query;
+  setStatus('loading',`Buscando estaciones que coincidan con "${query}"…`);
+  showSkeletons();
+  try{
+    const d=await fetchData(null,'/assets/data/prices.json').catch(()=>fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/'));
+    const all=(d.ListaEESSPrecio||[]).map(parseStation);
+    lastGasUpdateAt=new Date();
+    // Búsqueda estricta por nombre, marca o código postal
+    allStations=all.filter(s=>normalizeText(s.name) === query || normalizeText(s.name).includes(query) || normalizeText(s.cp) === query || normalizeText(s.cp).includes(query));
+    applyFiltersAndRender(query);
+    saveSnapshot(query);
+    restartRealtimePolling();
+    if(allStations.length === 0){
+      setStatus('error',`No se encontraron estaciones para "${query}"`);
+    } else {
+      setStatus('ok',`${allStations.length} gasolineras encontradas`);
+    }
+  }catch(e){setStatus('error','Error al buscar por marca.')}
+}
 
 $('btnGeolocate').addEventListener('click',()=>{
   if(!navigator.geolocation){setStatus('error','Tu navegador no soporta geolocalización');return}
@@ -1272,7 +1299,7 @@ async function fetchAllAndFilter(lat,lon){
   setStatus('loading','Buscando gasolineras cercanas…');
   showSkeletons();
   try{
-    const d=await fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+    const d=await fetchData(null,'/assets/data/prices.json').catch(()=>fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/'));
     const all=(d.ListaEESSPrecio||[]).map(parseStation);
     lastGasUpdateAt=new Date();
     allStations=all.filter(s=>s.lat&&s.lon&&haversine(lat,lon,s.lat,s.lon)<=10)
@@ -1297,6 +1324,7 @@ function parseStation(s){
   for(const key of Object.keys(s)){
     if(key.startsWith('Precio')){
       const canonicalKey=canonicalFuelKey(key);
+      if(canonicalKey.includes('Gasoil B') || canonicalKey.includes('Gasoil C')) continue;
       const v=s[key];
       if(v&&v.trim()!==''&&v.trim()!=='0'){
         const p=parseFloat(v.replace(',','.'));
@@ -1562,7 +1590,7 @@ async function manualRefresh(){
   }else{
     setStatus('loading','Actualizando datos nacionales…');
     try{
-      const d=await fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/');
+      const d=await fetchData(null,'/assets/data/prices.json').catch(()=>fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/'));
       allStations=(d.ListaEESSPrecio||[]).map(parseStation);
       lastGasUpdateAt=new Date();
       applyFiltersAndRender('España');
@@ -1794,7 +1822,7 @@ setTimeout(()=>{
   }
   navigator.geolocation?.getCurrentPosition(
     pos=>fetchAllAndFilter(pos.coords.latitude,pos.coords.longitude),
-    ()=>fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/').then(d=>{
+    ()=>fetchData(null,'/assets/data/prices.json').catch(()=>fetchData(null,'https://sedeaplicaciones.minetur.gob.es/ServiciosRESTCarburantes/PreciosCarburantes/EstacionesTerrestres/')).then(d=>{
       allStations=(d.ListaEESSPrecio||[]).map(parseStation);
       lastGasUpdateAt=new Date();
       applyFiltersAndRender('España');
