@@ -1205,7 +1205,18 @@ async function fetchAllAndFilterStrict(query){
     lastGasUpdateAt=new Date();
     // Búsqueda estricta por nombre, marca o código postal
     allStations=all.filter(s=>normalizeText(s.name) === query || normalizeText(s.name).includes(query) || normalizeText(s.cp) === query || normalizeText(s.cp).includes(query));
-    applyFiltersAndRender(query);
+    
+    if (allStations.length > 0) {
+      // Si la búsqueda parece un código postal (números), usamos el nombre de la localidad
+      if (/^\d{4,5}$/.test(query) && allStations[0].locality) {
+        latestSearchLabel = allStations[0].locality;
+        municipioInput.value = allStations[0].locality;
+      } else {
+        latestSearchLabel = query;
+      }
+    }
+
+    applyFiltersAndRender(latestSearchLabel);
     saveSnapshot(query);
     restartRealtimePolling();
     if(allStations.length === 0){
