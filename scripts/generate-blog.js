@@ -109,12 +109,28 @@ async function run() {
         const dateStr = now.toLocaleDateString('es-ES', { day: 'numeric', month: 'long', year: 'numeric' });
         const fileDate = now.toISOString().split('T')[0];
         
-        const title = `Análisis de precios de gasolina en España: Informe del ${dateStr}`;
-        const description = `Informe profesional sobre los precios de combustibles en España el ${dateStr}. Análisis por provincias, marcas y las gasolineras más baratas.`;
-        
-        // Sorting for reports
+        // Sorting for reports (moved up for title generation)
         const topProvinces95 = [...provinceAvgs].filter(p => p.avgs.G95).sort((a,b) => a.avgs.G95 - b.avgs.G95).slice(0, 5);
         const topBrands95 = [...brandAvgs].filter(b => b.avgs.G95).sort((a,b) => a.avgs.G95 - b.avgs.G95).slice(0, 5);
+
+        const cheapestProv = topProvinces95.length > 0 ? topProvinces95[0].name : '';
+        const cheapestPrice = cheapestStations.G95 ? cheapestStations.G95.price.toFixed(3) : '';
+        
+        const titlePrefixes = [
+            `¿Dónde está el combustible más barato? Informe del ${dateStr}`,
+            `Análisis de precios: ${cheapestProv} lidera el ahorro hoy ${dateStr}`,
+            `Precios gasolina hoy ${dateStr}: Bajada de precios detectada`,
+            `Reporte de carburantes ${dateStr}: Las marcas más baratas`,
+            `Ahorra hoy ${dateStr}: Informe completo de precios de gasolina`
+        ];
+        const title = titlePrefixes[now.getDate() % titlePrefixes.length];
+        
+        const descPrefixes = [
+            `Descubre dónde repostar más barato hoy ${dateStr}.`,
+            `Análisis detallado de los precios de gasolina y diésel para el ${dateStr}.`,
+            `Informe completo de carburantes. ${cheapestProv} ofrece los mejores precios hoy.`
+        ];
+        const description = `${descPrefixes[now.getDate() % descPrefixes.length]} Análisis por provincias, marcas y el ranking de las gasolineras más económicas con precios reales de hoy.`;
 
         let content = `
             <p class="lead">Hoy, <strong>${dateStr}</strong>, presentamos un análisis detallado del mercado de carburantes en España. Basado en los datos oficiales del Ministerio de Industria, evaluamos las tendencias y localizamos las mejores oportunidades de ahorro para los consumidores.</p>
@@ -134,8 +150,8 @@ async function run() {
                 </div>
             </div>
 
-            <h2>Resumen del día</h2>
-            <p>El mercado nacional muestra una estabilidad relativa. La <strong>Gasolina 95</strong> se mantiene con un promedio de <strong>${nationalAvgs.G95} €/L</strong>, mientras que el <strong>Gasoil A</strong> registra <strong>${nationalAvgs.GOA} €/L</strong>. Observamos una brecha significativa de hasta 0.40€ entre las estaciones más económicas y las más costosas, lo que subraya la importancia de comparar antes de repostar.</p>
+            <h2>Resumen del mercado hoy</h2>
+            <p>El mercado nacional muestra una estabilidad relativa con ligeras variaciones territoriales. La <strong>Gasolina 95</strong> se mantiene con un promedio de <strong>${nationalAvgs.G95} €/L</strong>, mientras que el <strong>Gasoil A</strong> registra <strong>${nationalAvgs.GOA} €/L</strong>. Observamos una brecha significativa de hasta 0.40€ entre las estaciones más económicas y las más costosas, lo que subraya la importancia de comparar antes de repostar.</p>
             
             <div class="cheapest-box">
                 <h3>📍 El precio más bajo de hoy (España)</h3>
@@ -152,7 +168,7 @@ async function run() {
             </div>
 
             <h2>Análisis Regional: Provincias más baratas</h2>
-            <p>A continuación, detallamos las 5 provincias que hoy ofrecen los mejores precios medios para Gasolina 95:</p>
+            <p>A continuación, detallamos las 5 provincias que hoy ofrecen los mejores precios medios para Gasolina 95, siendo <strong>${cheapestProv}</strong> la más económica actualmente:</p>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -165,8 +181,8 @@ async function run() {
                 </tbody>
             </table>
 
-            <h2>Ranking de Marcas (Low-cost vs Tradicionales)</h2>
-            <p>Las marcas independientes y cadenas automáticas continúan liderando el ahorro. Aquí las 5 marcas con mejor promedio nacional hoy:</p>
+            <h2>Ranking de Marcas (Ahorro garantizado)</h2>
+            <p>Las marcas independientes y cadenas automáticas continúan liderando el ahorro. Aquí las 5 marcas con mejor promedio nacional hoy, ideales para quienes buscan ajustar su presupuesto:</p>
             <table class="data-table">
                 <thead>
                     <tr>
@@ -180,7 +196,7 @@ async function run() {
             </table>
 
             <div class="pro-tip">
-                <h4>💡 Consejo de ahorro</h4>
+                <h4>💡 Consejo de ahorro para conductores</h4>
                 <p>Repostar en estaciones situadas en polígonos industriales o a las afueras de los centros urbanos puede suponer un ahorro de hasta 12€ por depósito lleno (50L). Usa nuestro mapa interactivo en tiempo real para localizar estas estaciones en tu ruta.</p>
             </div>
         `;
@@ -231,6 +247,10 @@ function updateHomepageBlog() {
 
         const postsHtml = files.map(f => {
             const date = f.substring(0, 10);
+            const content = fs.readFileSync(path.join(BLOG_DIR, f), 'utf-8');
+            const titleMatch = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+            const title = titleMatch ? titleMatch[1].trim() : `Informe Diario: Precios del ${date}`;
+            
             const d = new Date(date);
             const imgIdx = d.getDate() % HERO_IMAGES.length;
             const thumb = HERO_IMAGES[imgIdx];
@@ -239,7 +259,7 @@ function updateHomepageBlog() {
                 <div class="news-card-badge" id="todayBadge">HOY</div>
                 <div class="news-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
                 <div class="news-card-date" id="blogCardDate">${date}</div>
-                <h3 class="news-card-title" id="blogCardTitle">Informe Diario: Precios del ${date}</h3>
+                <h3 class="news-card-title" id="blogCardTitle">${title}</h3>
                 <p class="news-card-excerpt">Análisis profesional de precios, tendencias por provincias y marcas más baratas del día.</p>
             </a>`;
         }).join('\n');
@@ -251,11 +271,18 @@ function updateHomepageBlog() {
         if (indexContent.includes(marker)) {
             indexContent = indexContent.replace(regex, `${marker}\n${postsHtml}\n${marker}`);
             
-            // Update the CTA button link as well
+            // Update the CTA button link more robustly
             if (files.length > 0) {
                 const latestFile = files[0];
-                const btnRegex = /id="blogBtnLink" href="[^"]*"/;
-                indexContent = indexContent.replace(btnRegex, `id="blogBtnLink" href="/blog/${latestFile}"`);
+                // Match the <a> tag that has the id="blogBtnLink" and update its href
+                const btnRegex = /(<a\s+[^>]*id="blogBtnLink"[^>]*href=")([^"]*)(")/;
+                const btnRegexReverse = /(<a\s+[^>]*href=")([^"]*)("[^>]*id="blogBtnLink")/;
+                
+                if (btnRegex.test(indexContent)) {
+                    indexContent = indexContent.replace(btnRegex, `$1/blog/${latestFile}$3`);
+                } else if (btnRegexReverse.test(indexContent)) {
+                    indexContent = indexContent.replace(btnRegexReverse, `$1/blog/${latestFile}$3`);
+                }
             }
 
             fs.writeFileSync(indexPath, indexContent);
@@ -278,6 +305,10 @@ function updateBlogIndex() {
 
         const postListHtml = files.map(f => {
             const date = f.substring(0, 10);
+            const content = fs.readFileSync(path.join(BLOG_DIR, f), 'utf-8');
+            const titleMatch = content.match(/<h1[^>]*>([\s\S]*?)<\/h1>/);
+            const title = titleMatch ? titleMatch[1].trim() : `Análisis de precios: ${date}`;
+            
             const d = new Date(date);
             const imgIdx = d.getDate() % HERO_IMAGES.length;
             const thumb = HERO_IMAGES[imgIdx];
@@ -286,7 +317,7 @@ function updateBlogIndex() {
     <div class="post-card-img"><div style="background:url('${thumb}') center/cover"></div></div>
     <div class="post-card-body">
         <span class="post-card-date">${date}</span>
-        <h2 class="post-card-title">Análisis de precios: ${date}</h2>
+        <h2 class="post-card-title">${title}</h2>
         <p class="post-card-excerpt">Consulta el informe detallado de hoy con medias nacionales, provinciales y las mejores marcas.</p>
     </div>
 </a>`;
