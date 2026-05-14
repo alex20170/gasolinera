@@ -203,7 +203,7 @@ async function run() {
 
         const imageIndex = now.getDate() % HERO_IMAGES.length;
         const heroImage = HERO_IMAGES[imageIndex];
-        const canonicalUrl = `https://xn--gasolinerasespaa-lub.es/blog/${fileDate}-precios-gasolina.html`;
+        const canonicalUrl = `https://gasolinerasespaña.es/blog/${fileDate}-precios-gasolina.html`;
 
         let template = fs.readFileSync(TEMPLATE_PATH, 'utf-8');
         template = template.replace(/{{TITLE}}/g, title)
@@ -220,7 +220,7 @@ async function run() {
         fs.writeFileSync(filePath, template);
         console.log(`Blog post created: ${fileName}`);
 
-        updateSitemap(`https://xn--gasolinerasespaa-lub.es/blog/${fileName}`);
+        updateSitemap(`https://gasolinerasespaña.es/blog/${fileName}`);
 
         if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
         fs.writeFileSync(PRICES_JSON_PATH, JSON.stringify(data));

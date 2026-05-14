@@ -29,4 +29,4 @@ Content-Signal: search=yes,ai-train=no
 
 # Enlace al Sitemap
 
-Sitemap: https://xn--gasolinerasespaa-lub.es/sitemap.xml
+Sitemap: https://gasolinerasespaña.es/sitemap.xml
