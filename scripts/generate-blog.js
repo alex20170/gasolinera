@@ -132,8 +132,19 @@ async function run() {
         ];
         const description = `${descPrefixes[now.getDate() % descPrefixes.length]} Análisis por provincias, marcas y el ranking de las gasolineras más económicas con precios reales de hoy.`;
 
+        const marketContexts = [
+            `El mercado mundial de hidrocarburos sigue mostrando una notable sensibilidad ante las decisiones de producción de la OPEP+ y las dinámicas macroeconómicas globales. A nivel nacional, la carga impositiva en España sigue representando en torno al 50% del precio que el consumidor final abona en el surtidor, diluyendo en cierta medida las bajadas del crudo Brent.`,
+            `La evolución del precio de los combustibles en la península sigue fuertemente condicionada por los márgenes operativos de las distribuidoras y los impuestos especiales. Mientras las gasolineras independientes y las denominadas 'low cost' logran ajustar sus precios optimizando costes logísticos y de personal, las grandes petroleras mantienen sus tarifas apostando por combustibles premium y servicios adicionales en pista.`,
+            `Reparar en el coste real de los carburantes es hoy más necesario que nunca. La volatilidad geopolítica y las presiones inflacionistas tienen un impacto directo en las refinerías. Sin embargo, la amplia red de estaciones automáticas en nuestro país permite al conductor promedio ahorrar de forma efectiva si compara precios con antelación y planifica su ruta.`,
+            `El diésel y la gasolina continúan su pulso particular en los mercados internacionales. La transición energética y los ajustes en la oferta mundial de crudo hacen que los precios fluctúen a diario. En este contexto, aprovechar la competencia local entre estaciones de servicio de un mismo municipio es la estrategia más eficaz para mitigar el gasto en transporte.`
+        ];
+        const selectedContext = marketContexts[now.getDate() % marketContexts.length];
+
         let content = `
-            <p class="lead">Hoy, <strong>${dateStr}</strong>, presentamos un análisis detallado del mercado de carburantes en España. Basado en los datos oficiales del Ministerio de Industria, evaluamos las tendencias y localizamos las mejores oportunidades de ahorro para los consumidores.</p>
+            <p class="lead">Hoy, <strong>${dateStr}</strong>, presentamos un análisis detallado y actualizado del mercado de carburantes en España. Basado íntegramente en los datos oficiales publicados por el Ministerio para la Transición Ecológica, evaluamos las tendencias de precios y localizamos las mejores oportunidades de ahorro para los conductores.</p>
+            
+            <h2>Contexto del Mercado</h2>
+            <p>${selectedContext}</p>
             
             <div class="stats-grid">
                 <div class="stat-card">
@@ -198,6 +209,21 @@ async function run() {
             <div class="pro-tip">
                 <h4>💡 Consejo de ahorro para conductores</h4>
                 <p>Repostar en estaciones situadas en polígonos industriales o a las afueras de los centros urbanos puede suponer un ahorro de hasta 12€ por depósito lleno (50L). Usa nuestro mapa interactivo en tiempo real para localizar estas estaciones en tu ruta.</p>
+            </div>
+
+            <div class="share-bar">
+                <span class="share-label">Compartir artículo:</span>
+                <a href="#" class="share-btn" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(window.location.href)); return false;" aria-label="Compartir en Twitter"><i data-lucide="twitter" width="18" height="18"></i></a>
+                <a href="#" class="share-btn" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)); return false;" aria-label="Compartir en Facebook"><i data-lucide="facebook" width="18" height="18"></i></a>
+                <a href="#" class="share-btn" onclick="window.open('https://wa.me/?text=' + encodeURIComponent(document.title + ' ' + window.location.href)); return false;" aria-label="Compartir en WhatsApp"><i data-lucide="message-circle" width="18" height="18"></i></a>
+            </div>
+
+            <div class="author-box">
+                <div class="author-avatar">AS</div>
+                <div class="author-info">
+                    <h4>Alejandro Sibaja</h4>
+                    <p>Analista de Datos y Creador de Gasolineras España. Comprometido con la transparencia de precios y el ahorro ciudadano en hidrocarburos.</p>
+                </div>
             </div>
         `;
 

@@ -112,6 +112,16 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
 .footer-links a{color:var(--color-text-faint);text-decoration:none;font-size:var(--text-xs)}
 .footer-links a:hover{color:var(--color-primary)}
 
+/* AUTHOR & SOCIAL */
+.author-box { display: flex; align-items: center; gap: var(--space-4); background: var(--color-surface); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--space-6); margin-top: var(--space-10); }
+.author-avatar { width: 64px; height: 64px; background: var(--color-primary-highlight); border-radius: var(--radius-full); display: flex; align-items: center; justify-content: center; color: var(--color-primary); font-weight: 700; font-size: 1.5rem; flex-shrink: 0; }
+.author-info h4 { margin: 0 0 4px 0; font-family: var(--font-display); color: var(--color-text); font-size: var(--text-base); }
+.author-info p { margin: 0 !important; font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.4 !important; }
+.share-bar { display: flex; align-items: center; gap: var(--space-3); margin-top: var(--space-6); padding-top: var(--space-6); border-top: 1px solid var(--color-divider); }
+.share-label { font-size: var(--text-xs); font-weight: 700; text-transform: uppercase; color: var(--color-text-faint); letter-spacing: 0.05em; }
+.share-btn { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; border-radius: var(--radius-full); background: var(--color-surface); border: 1px solid var(--color-border); color: var(--color-text-muted); text-decoration: none; transition: all 0.2s; }
+.share-btn:hover { background: var(--color-primary); color: white; border-color: var(--color-primary); transform: translateY(-2px); }
+
 /* DYNAMIC DOCK */
 
 @media(max-width:600px){
@@ -150,25 +160,28 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
     <div class="container Article">
       <div class="article">
         
-            <p class="lead">Hoy, <strong>1 de junio de 2026</strong>, presentamos un análisis detallado del mercado de carburantes en España. Basado en los datos oficiales del Ministerio de Industria, evaluamos las tendencias y localizamos las mejores oportunidades de ahorro para los consumidores.</p>
+            <p class="lead">Hoy, <strong>1 de junio de 2026</strong>, presentamos un análisis detallado y actualizado del mercado de carburantes en España. Basado íntegramente en los datos oficiales publicados por el Ministerio para la Transición Ecológica, evaluamos las tendencias de precios y localizamos las mejores oportunidades de ahorro para los conductores.</p>
+            
+            <h2>Contexto del Mercado</h2>
+            <p>La evolución del precio de los combustibles en la península sigue fuertemente condicionada por los márgenes operativos de las distribuidoras y los impuestos especiales. Mientras las gasolineras independientes y las denominadas 'low cost' logran ajustar sus precios optimizando costes logísticos y de personal, las grandes petroleras mantienen sus tarifas apostando por combustibles premium y servicios adicionales en pista.</p>
             
             <div class="stats-grid">
                 <div class="stat-card">
                     <div class="stat-label">Media Gasolina 95</div>
-                    <div class="stat-value">1.542 €/L</div>
+                    <div class="stat-value">1.541 €/L</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Media Diésel A</div>
-                    <div class="stat-value">1.639 €/L</div>
+                    <div class="stat-value">1.638 €/L</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Media Gasolina 98</div>
-                    <div class="stat-value">1.707 €/L</div>
+                    <div class="stat-value">1.706 €/L</div>
                 </div>
             </div>
 
             <h2>Resumen del mercado hoy</h2>
-            <p>El mercado nacional muestra una estabilidad relativa con ligeras variaciones territoriales. La <strong>Gasolina 95</strong> se mantiene con un promedio de <strong>1.542 €/L</strong>, mientras que el <strong>Gasoil A</strong> registra <strong>1.639 €/L</strong>. Observamos una brecha significativa de hasta 0.40€ entre las estaciones más económicas y las más costosas, lo que subraya la importancia de comparar antes de repostar.</p>
+            <p>El mercado nacional muestra una estabilidad relativa con ligeras variaciones territoriales. La <strong>Gasolina 95</strong> se mantiene con un promedio de <strong>1.541 €/L</strong>, mientras que el <strong>Gasoil A</strong> registra <strong>1.638 €/L</strong>. Observamos una brecha significativa de hasta 0.40€ entre las estaciones más económicas y las más costosas, lo que subraya la importancia de comparar antes de repostar.</p>
             
             <div class="cheapest-box">
                 <h3>📍 El precio más bajo de hoy (España)</h3>
@@ -194,7 +207,7 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>PALMAS (LAS)</td><td>1.445 €/L</td></tr><tr><td>MELILLA</td><td>1.470 €/L</td></tr><tr><td>CEUTA</td><td>1.486 €/L</td></tr><tr><td>SANTA CRUZ DE TENERIFE</td><td>1.497 €/L</td></tr><tr><td>LLEIDA</td><td>1.502 €/L</td></tr>
+                    <tr><td>PALMAS (LAS)</td><td>1.445 €/L</td></tr><tr><td>MELILLA</td><td>1.470 €/L</td></tr><tr><td>CEUTA</td><td>1.486 €/L</td></tr><tr><td>SANTA CRUZ DE TENERIFE</td><td>1.497 €/L</td></tr><tr><td>LLEIDA</td><td>1.501 €/L</td></tr>
                 </tbody>
             </table>
 
@@ -215,6 +228,21 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
             <div class="pro-tip">
                 <h4>💡 Consejo de ahorro para conductores</h4>
                 <p>Repostar en estaciones situadas en polígonos industriales o a las afueras de los centros urbanos puede suponer un ahorro de hasta 12€ por depósito lleno (50L). Usa nuestro mapa interactivo en tiempo real para localizar estas estaciones en tu ruta.</p>
+            </div>
+
+            <div class="share-bar">
+                <span class="share-label">Compartir artículo:</span>
+                <a href="#" class="share-btn" onclick="window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(document.title) + '&url=' + encodeURIComponent(window.location.href)); return false;" aria-label="Compartir en Twitter"><i data-lucide="twitter" width="18" height="18"></i></a>
+                <a href="#" class="share-btn" onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href)); return false;" aria-label="Compartir en Facebook"><i data-lucide="facebook" width="18" height="18"></i></a>
+                <a href="#" class="share-btn" onclick="window.open('https://wa.me/?text=' + encodeURIComponent(document.title + ' ' + window.location.href)); return false;" aria-label="Compartir en WhatsApp"><i data-lucide="message-circle" width="18" height="18"></i></a>
+            </div>
+
+            <div class="author-box">
+                <div class="author-avatar">AS</div>
+                <div class="author-info">
+                    <h4>Alejandro Sibaja</h4>
+                    <p>Analista de Datos y Creador de Gasolineras España. Comprometido con la transparencia de precios y el ahorro ciudadano en hidrocarburos.</p>
+                </div>
             </div>
         
       </div>
