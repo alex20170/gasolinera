@@ -65,10 +65,12 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
 
 /* NAV */
 .main-nav { display: flex; align-items: center; gap: var(--space-4); margin-left: var(--space-6); flex: 1; }
-.nav-link { font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); text-decoration: none; transition: all var(--transition-interactive); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); }
-.nav-link:hover, .nav-link.active { color: var(--color-primary); background: var(--color-primary-highlight); }
+.nav-link { font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); text-decoration: none; transition: all var(--transition-interactive); padding: var(--space-1) 0; position: relative; white-space: nowrap; }
+.nav-link:hover, .nav-link.active { color: var(--color-primary); background: transparent; }
+.nav-link.active::after { content: ''; position: absolute; bottom: -4px; left: 0; right: 0; height: 2px; background: var(--color-primary); border-radius: 2px; }
 @media(max-width: 800px) {
-  .main-nav { margin-left: 0; width: 100%; order: 3; justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; border-top: 1px solid var(--color-divider); padding-top: var(--space-2); margin-top: 4px; }
+  .main-nav { margin-left: 0; width: 100%; order: 3; justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; border-top: 1px solid var(--color-divider); padding-top: var(--space-3); margin-top: 4px; -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: var(--space-5); }
+  .main-nav::-webkit-scrollbar { display: none; }
 }
 
 .article-hero{background:
@@ -225,7 +227,7 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Media Diésel A</div>
-                    <div class="stat-value">1.638 €/L</div>
+                    <div class="stat-value">1.637 €/L</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-label">Media Gasolina 98</div>
@@ -234,7 +236,7 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
             </div>
 
             <h2>Resumen del mercado hoy</h2>
-            <p>El mercado nacional muestra una estabilidad relativa con ligeras variaciones territoriales. La <strong>Gasolina 95</strong> se mantiene con un promedio de <strong>1.541 €/L</strong>, mientras que el <strong>Gasoil A</strong> registra <strong>1.638 €/L</strong>. Observamos una brecha significativa de hasta 0.40€ entre las estaciones más económicas y las más costosas, lo que subraya la importancia de comparar antes de repostar.</p>
+            <p>El mercado nacional muestra una estabilidad relativa con ligeras variaciones territoriales. La <strong>Gasolina 95</strong> se mantiene con un promedio de <strong>1.541 €/L</strong>, mientras que el <strong>Gasoil A</strong> registra <strong>1.637 €/L</strong>. Observamos una brecha significativa de hasta 0.40€ entre las estaciones más económicas y las más costosas, lo que subraya la importancia de comparar antes de repostar.</p>
             
             <div class="cheapest-box">
                 <h3>📍 El precio más bajo de hoy (España)</h3>
@@ -260,7 +262,7 @@ footer{background:var(--color-surface);border-top:1px solid var(--color-divider)
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>PALMAS (LAS)</td><td>1.445 €/L</td></tr><tr><td>MELILLA</td><td>1.470 €/L</td></tr><tr><td>CEUTA</td><td>1.486 €/L</td></tr><tr><td>SANTA CRUZ DE TENERIFE</td><td>1.497 €/L</td></tr><tr><td>LLEIDA</td><td>1.501 €/L</td></tr>
+                    <tr><td>PALMAS (LAS)</td><td>1.445 €/L</td></tr><tr><td>MELILLA</td><td>1.470 €/L</td></tr><tr><td>CEUTA</td><td>1.486 €/L</td></tr><tr><td>SANTA CRUZ DE TENERIFE</td><td>1.497 €/L</td></tr><tr><td>LLEIDA</td><td>1.500 €/L</td></tr>
                 </tbody>
             </table>
 
