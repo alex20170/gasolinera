@@ -91,10 +91,18 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
 .logo-icon{color:var(--color-primary)}
 .logo-text{font-family:var(--font-display);font-weight:700;font-size:var(--text-base)}
 .logo-text span{color:var(--color-primary)}
-.btn-theme:hover{background:var(--color-surface-offset);color:var(--color-text)}
-.header-date{font-size:var(--text-xs);color:var(--color-text-muted);display:none}
+.header-date{font-size:var(--text-sm);color:var(--color-text-muted);font-weight:500}
+.header-actions{display:flex;align-items:center;gap:var(--space-2)}
+.btn-theme{display:flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:var(--radius-full);color:var(--color-text-muted);border:1px solid var(--color-border);background:var(--color-surface-offset);cursor:pointer;transition:all var(--transition-interactive)}
+.btn-theme:hover{background:var(--color-surface-dynamic);color:var(--color-text)}
 
-
+/* NAV */
+.main-nav { display: flex; align-items: center; gap: var(--space-4); margin-left: var(--space-6); flex: 1; }
+.nav-link { font-size: var(--text-sm); font-weight: 600; color: var(--color-text-muted); text-decoration: none; transition: all var(--transition-interactive); padding: var(--space-2) var(--space-3); border-radius: var(--radius-md); }
+.nav-link:hover, .nav-link.active { color: var(--color-primary); background: var(--color-primary-highlight); }
+@media(max-width: 800px) {
+  .main-nav { margin-left: 0; width: 100%; order: 3; justify-content: flex-start; overflow-x: auto; padding-bottom: 4px; border-top: 1px solid var(--color-divider); padding-top: var(--space-2); margin-top: 4px; }
+}
 
 /* NEWS HERO */
 .news-hero{margin-bottom:var(--space-8)}
@@ -149,7 +157,8 @@ header{position:sticky;top:0;z-index:100;background:color-mix(in oklch,var(--col
   padding-block:var(--space-10) var(--space-8);border-bottom:1px solid var(--color-divider)}
 .hero-title{font-family:var(--font-display);font-size:var(--text-xl);font-weight:700;color:var(--color-text);margin-bottom:var(--space-2)}
 .hero-sub{color:var(--color-text-muted);font-size:var(--text-sm);margin-bottom:var(--space-6);max-width:55ch}
-.search-bar{display:flex;gap:var(--space-2);flex-wrap:wrap;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-3);box-shadow:var(--shadow-md)}
+.search-bar{display:flex;gap:var(--space-2);flex-wrap:wrap;background:var(--color-surface);border:1px solid var(--color-border);border-radius:var(--radius-xl);padding:var(--space-3);box-shadow:var(--shadow-md); transition: all var(--transition-interactive);}
+.search-bar:focus-within { border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-primary-highlight); transform: translateY(-2px); }
 .search-input-wrap{flex:1 1 220px;display:flex;align-items:center;gap:var(--space-2)}
 .search-input-wrap i{color:var(--color-text-muted);flex-shrink:0}
 .search-input{border:none;background:transparent;outline:none;font-size:var(--text-sm);color:var(--color-text);width:100%}
@@ -432,6 +441,13 @@ body.has-fullscreen-map {
       </svg>
       <span class="logo-text">Gasolineras<span>España</span></span>
     </a>
+    
+    <nav class="main-nav">
+      <a href="/" class="nav-link active">Buscar Gasolinera</a>
+      <a href="/blog/index.html" class="nav-link">Blog Diario</a>
+      <a href="/contacto.html" class="nav-link">Contacto</a>
+    </nav>
+
     <span class="header-date" id="headerDate" style="margin-left:auto"></span>
     <div class="header-actions">
       <button class="btn-theme" data-theme-toggle aria-label="Cambiar tema">
