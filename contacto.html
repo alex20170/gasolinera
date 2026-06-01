@@ -1,63 +1,107 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contacto - Gasolineras España</title>
+<meta name="description" content="Ponte en contacto con el equipo de Gasolineras España para sugerencias, reportar errores o consultas generales.">
 <link rel="canonical" href="https://gasolinerasespaña.es/contacto.html">
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c60b1e'/><rect y='10' width='32' height='12' fill='%23ffc400'/><text x='16' y='22' font-size='16' text-anchor='middle'>⛽</text></svg>">
-<style>
-  body { font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 2rem; background: #fdfdfc; }
-  h1 { color: #01696f; margin-bottom: 1.5rem; }
-  h2 { color: #0c4e54; margin-top: 2rem; font-size: 1.25rem; }
-  a { color: #006494; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .back { display: inline-block; margin-bottom: 2rem; font-weight: 600; color: #7a7974; }
-  .contact-card { background: #fff; border: 1px solid #d4d1ca; border-radius: 12px; padding: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-top: 2rem; }
-  .info-item { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem; }
-  .info-item i { color: #01696f; font-size: 1.5rem; }
-  .info-item div { font-weight: 600; color: #28251d; }
-  .info-item p { margin: 0; color: #7a7974; font-size: 0.9rem; }
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+<style>
+:root, [data-theme="light"] {
+  --color-bg:#f7f6f2; --color-surface:#f9f8f5; --color-surface-2:#fbfbf9;
+  --color-divider:#dcd9d5; --color-border:#d4d1ca;
+  --color-text:#28251d; --color-text-muted:#7a7974; --color-text-faint:#bab9b4;
+  --color-primary:#01696f; --color-primary-highlight:#cedcd8;
+  --font-display:'Sora','Inter',sans-serif; --font-body:'Inter',sans-serif;
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --space-4:1rem; --space-8:2rem; --space-12:3rem;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { min-height:100dvh; font-family:var(--font-body); font-size:var(--text-base); color:var(--color-text); background:var(--color-bg); line-height:1.7; display: flex; flex-direction: column; }
+.container { max-width: 800px; margin: 0 auto; padding: var(--space-8) var(--space-4); flex: 1; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--color-primary); margin-bottom: 1rem; line-height: 1.2; }
+h1 { font-size: 2.5rem; margin-bottom: 2rem; border-bottom: 3px solid var(--color-primary-highlight); padding-bottom: 0.5rem; display: inline-block; }
+h2 { font-size: 1.5rem; margin-top: 1rem; color: #0c4e54; }
+p { margin-bottom: 1.5rem; color: var(--color-text-muted); }
+.back { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; font-weight: 600; color: var(--color-text-muted); text-decoration: none; transition: color 0.2s; }
+.back:hover { color: var(--color-primary); }
+.contact-card { background: var(--color-surface); border: 1px solid var(--color-border); border-radius: 12px; padding: 2rem; margin-top: 2rem; box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+.info-item { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 2rem; }
+.info-item:last-child { margin-bottom: 0; }
+.info-item i { color: var(--color-primary); margin-top: 4px; }
+.info-item div { flex: 1; }
+.info-item h3 { font-size: 1.1rem; margin-bottom: 0.2rem; color: var(--color-text); font-family: var(--font-body); }
+.info-item p { margin: 0; font-size: 0.95rem; }
+.info-item a { color: var(--color-primary); text-decoration: none; font-weight: 600; }
+.info-item a:hover { text-decoration: underline; }
+.header { padding: 1rem; text-align: center; border-bottom: 1px solid var(--color-divider); background: var(--color-surface); }
+.header a { color: var(--color-text); text-decoration: none; font-weight: 700; font-family: var(--font-display); font-size: 1.25rem; }
+.header span { color: var(--color-primary); }
+footer { background: var(--color-surface); border-top: 1px solid var(--color-divider); padding: 2rem 0; margin-top: auto; text-align: center; }
+footer a { color: var(--color-text-muted); text-decoration: none; margin: 0 10px; font-size: 0.9rem; }
+footer a:hover { color: var(--color-primary); }
+</style>
 </head>
 <body>
-<a href="index.html" class="back">← Volver al buscador</a>
-<h1>Contacto</h1>
-<p>¿Tienes alguna duda sobre los precios mostrados? ¿Has detectado algún error en la ubicación de una gasolinera? ¿Te gustaría sugerir una nueva funcionalidad para la web?</p>
-<p>Estamos aquí para escucharte. Gasolineras España es un proyecto independiente que busca la transparencia en el sector de los carburantes, y tu feedback es fundamental para seguir mejorando.</p>
 
-<div class="contact-card">
-  <h2>Formas de Contacto</h2>
-  
-  <div class="info-item">
-    <i data-lucide="mail"></i>
-    <div>
-      <p>Correo electrónico principal</p>
-      <a href="mailto:gasolinerasespañacontacto@gmail.com">gasolinerasespañacontacto@gmail.com</a>
-    </div>
-  </div>
-
-  <div class="info-item">
-    <i data-lucide="message-square"></i>
-    <div>
-      <p>Sugerencias y Errores</p>
-      <span>Puedes enviarnos un correo directamente con capturas de pantalla o detalles de la incidencia.</span>
-    </div>
-  </div>
-
-  <div class="info-item">
-    <i data-lucide="clock"></i>
-    <div>
-      <p>Horario de atención</p>
-      <span>Respondemos normalmente en menos de 24-48 horas laborables.</span>
-    </div>
-  </div>
+<div class="header">
+  <a href="/">Gasolineras<span>España</span></a>
 </div>
 
-<p style="margin-top: 3rem; font-size: 0.85rem; color: #bab9b4; text-align: center;">
-  Este sitio web no pertenece a ninguna petrolera ni estación de servicio. Los datos provienen directamente de las fuentes oficiales del Gobierno de España.
-</p>
+<div class="container">
+  <a href="index.html" class="back"><i data-lucide="arrow-left" width="18" height="18"></i> Volver al buscador</a>
+  
+  <h1>Contacto</h1>
+  
+  <p>¿Tienes alguna duda sobre los precios mostrados? ¿Has detectado algún error en la ubicación de una gasolinera? ¿Te gustaría sugerir una nueva funcionalidad para nuestra web?</p>
+  <p>Estamos aquí para escucharte. Gasolineras España es un proyecto independiente orientado al usuario, y tu <em>feedback</em> es la herramienta fundamental que tenemos para seguir mejorando y ofreciendo un servicio de calidad y precisión.</p>
+  
+  <div class="contact-card">
+    <h2>Vías de Contacto</h2>
+    
+    <div class="info-item">
+      <i data-lucide="mail" width="24" height="24"></i>
+      <div>
+        <h3>Correo Electrónico Oficial</h3>
+        <p>Para consultas generales, propuestas de colaboración o reportes de errores técnicos.</p>
+        <p><a href="mailto:gasolinerasespañacontacto@gmail.com">gasolinerasespañacontacto@gmail.com</a></p>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <i data-lucide="alert-triangle" width="24" height="24"></i>
+      <div>
+        <h3>Reportar Errores en Datos</h3>
+        <p>Si notas que una gasolinera ha cerrado o sus coordenadas GPS están equivocadas en el mapa interactivo, por favor envíanos un correo con el <strong>Municipio</strong> y la <strong>Marca de la gasolinera</strong> afectada para que podamos revisarlo junto con la base de datos gubernamental.</p>
+      </div>
+    </div>
+
+    <div class="info-item">
+      <i data-lucide="clock" width="24" height="24"></i>
+      <div>
+        <h3>Tiempo de Respuesta</h3>
+        <p>Al ser un equipo pequeño, nuestro horario de atención por correo electrónico es limitado. Respondemos normalmente a todas las consultas en un plazo de <strong>24 a 48 horas laborables</strong>.</p>
+      </div>
+    </div>
+  </div>
+  
+  <p style="margin-top: 3rem; font-size: 0.85rem; color: var(--color-text-faint); text-align: center;">
+    Nota: Este sitio web no pertenece a ninguna petrolera. Los problemas directos con el cobro o la calidad del combustible en las estaciones de servicio deben ser tratados directamente con la empresa operadora correspondiente.
+  </p>
+</div>
+
+<footer>
+  <a href="/">Inicio</a> | 
+  <a href="sobre-nosotros.html">Sobre nosotros</a> | 
+  <a href="aviso-legal.html">Aviso Legal</a> | 
+  <a href="politica-privacidad.html">Privacidad</a>
+  <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--color-text-faint);">© 2026 Alejandro Sibaja. Todos los derechos reservados.</p>
+</footer>
 
 <script>lucide.createIcons();</script>
 </body>

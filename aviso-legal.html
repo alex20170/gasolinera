@@ -1,28 +1,79 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="light">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Aviso Legal - Gasolineras España</title>
+<meta name="description" content="Aviso legal, exclusión de responsabilidades y términos de uso de Gasolineras España.">
 <link rel="canonical" href="https://gasolinerasespaña.es/aviso-legal.html">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23c60b1e'/><rect y='10' width='32' height='12' fill='%23ffc400'/><text x='16' y='22' font-size='16' text-anchor='middle'>⛽</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..700&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
 <style>
-  body { font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 2rem; background: #fdfdfc; }
-  h1, h2 { color: #01696f; }
-  a { color: #006494; text-decoration: none; }
-  a:hover { text-decoration: underline; }
-  .back { display: inline-block; margin-bottom: 2rem; font-weight: 600; }
+:root, [data-theme="light"] {
+  --color-bg:#f7f6f2; --color-surface:#f9f8f5; --color-surface-2:#fbfbf9;
+  --color-divider:#dcd9d5; --color-border:#d4d1ca;
+  --color-text:#28251d; --color-text-muted:#7a7974; --color-text-faint:#bab9b4;
+  --color-primary:#01696f; --color-primary-highlight:#cedcd8;
+  --font-display:'Sora','Inter',sans-serif; --font-body:'Inter',sans-serif;
+  --text-base:clamp(1rem,.95rem + .25vw,1.125rem);
+  --space-4:1rem; --space-8:2rem; --space-12:3rem;
+}
+* { box-sizing:border-box; margin:0; padding:0; }
+body { min-height:100dvh; font-family:var(--font-body); font-size:var(--text-base); color:var(--color-text); background:var(--color-bg); line-height:1.7; display: flex; flex-direction: column; }
+.container { max-width: 800px; margin: 0 auto; padding: var(--space-8) var(--space-4); flex: 1; }
+h1, h2, h3 { font-family: var(--font-display); color: var(--color-primary); margin-bottom: 1rem; line-height: 1.2; }
+h1 { font-size: 2.5rem; margin-bottom: 2rem; border-bottom: 3px solid var(--color-primary-highlight); padding-bottom: 0.5rem; display: inline-block; }
+h2 { font-size: 1.5rem; margin-top: 2rem; color: #0c4e54; }
+p { margin-bottom: 1.5rem; color: var(--color-text-muted); }
+.back { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 2rem; font-weight: 600; color: var(--color-text-muted); text-decoration: none; transition: color 0.2s; }
+.back:hover { color: var(--color-primary); }
+a { color: var(--color-primary); text-decoration: none; font-weight: 600; }
+a:hover { text-decoration: underline; }
+.header { padding: 1rem; text-align: center; border-bottom: 1px solid var(--color-divider); background: var(--color-surface); }
+.header a { color: var(--color-text); text-decoration: none; font-weight: 700; font-family: var(--font-display); font-size: 1.25rem; }
+.header span { color: var(--color-primary); }
+footer { background: var(--color-surface); border-top: 1px solid var(--color-divider); padding: 2rem 0; margin-top: auto; text-align: center; }
+footer a { color: var(--color-text-muted); text-decoration: none; margin: 0 10px; font-size: 0.9rem; font-weight: normal; }
+footer a:hover { color: var(--color-primary); }
 </style>
 </head>
 <body>
-<a href="index.html" class="back">← Volver al buscador</a>
-<h1>Aviso Legal</h1>
-<h2>1. Información General</h2>
-<p>Este portal es de titularidad de Alejandro Sibaja. El sitio web Gasolineras España tiene como fin proporcionar información actualizada sobre el precio de los carburantes extraídos de las plataformas de datos abiertos del Gobierno de España.</p>
-<h2>2. Propiedad Intelectual</h2>
-<p>Los códigos fuente, diseños gráficos, los logotipos, así como la información y contenidos recogidos en esta web están protegidos por derechos de propiedad intelectual. No se permite la reproducción y/o publicación, total o parcial, del sitio web, ni su tratamiento informático, su distribución, difusión, ni su modificación o transformación, sin el permiso previo y por escrito.</p>
-<h2>3. Exclusión de Responsabilidades</h2>
-<p>Los datos que se exponen en esta página web tienen mero carácter informativo. Gasolineras España declina toda responsabilidad sobre posibles errores e inexactitudes en la información suministrada por fuentes de terceros (Ministerio). Los precios pueden variar y deben confirmarse en la propia estación de servicio. El titular no se hace responsable de los daños y perjuicios de cualquier naturaleza que pudieran derivarse de la falta de veracidad, exactitud, exhaustividad y/o actualidad de los contenidos transmitidos, difundidos, almacenados, puestos a disposición o recibidos, obtenidos o a los que se haya accedido a través del sitio web.</p>
-<h2>4. Contacto</h2>
-<p>Para cualquier consulta, puede dirigirse al titular a través del correo electrónico: <strong>contacto@gasolinerasespaña.es</strong></p>
+
+<div class="header">
+  <a href="/">Gasolineras<span>España</span></a>
+</div>
+
+<div class="container">
+  <a href="index.html" class="back"><i data-lucide="arrow-left" width="18" height="18"></i> Volver al buscador</a>
+  
+  <h1>Aviso Legal</h1>
+  
+  <h2>1. Información General</h2>
+  <p>En cumplimiento con el deber de información recogido en la legislación aplicable de servicios de la sociedad de la información y de comercio electrónico, se indica que este portal es de titularidad de Alejandro Sibaja. El sitio web Gasolineras España tiene como fin proporcionar a los usuarios información actualizada, gratuita y accesible sobre el precio de los carburantes, extrayendo los datos de forma automatizada de las plataformas de datos abiertos del Gobierno de España (Ministerio para la Transición Ecológica y el Reto Demográfico).</p>
+  
+  <h2>2. Propiedad Intelectual</h2>
+  <p>Los códigos fuente, diseños gráficos, la estructura de navegación, los logotipos, así como la información y contenidos que se recogen en esta web están protegidos por la normativa sobre derechos de propiedad intelectual. No se permite la reproducción y/o publicación, total o parcial, del sitio web, ni su tratamiento informático, su distribución, difusión, ni su modificación o transformación comercial sin el permiso previo y por escrito del titular.</p>
+  
+  <h2>3. Exclusión de Responsabilidades</h2>
+  <p>Los datos numéricos y de ubicación (precios y coordenadas) que se exponen en esta página web tienen mero carácter orientativo e informativo. Gasolineras España declina toda responsabilidad sobre posibles errores, retrasos, discrepancias e inexactitudes en la información suministrada por las fuentes gubernamentales de terceros.</p>
+  <p>Dado que el mercado de hidrocarburos fluctúa continuamente, los precios mostrados pueden variar en la vida real y deben confirmarse en la propia estación de servicio antes del repostaje. El titular de esta web no se hace responsable en ningún caso de los daños y perjuicios de cualquier naturaleza que pudieran derivarse de la falta de veracidad, exactitud, exhaustividad y/o actualidad de los contenidos transmitidos, difundidos, almacenados o recibidos a través del sitio web.</p>
+  
+  <h2>4. Contacto y Comunicaciones</h2>
+  <p>Para cualquier consulta legal, reclamación, notificación de vulneración de derechos o contacto administrativo, el usuario puede dirigirse al titular de forma directa a través del siguiente correo electrónico:</p>
+  <p><strong><a href="mailto:gasolinerasespañacontacto@gmail.com">gasolinerasespañacontacto@gmail.com</a></strong></p>
+</div>
+
+<footer>
+  <a href="/">Inicio</a> | 
+  <a href="sobre-nosotros.html">Sobre nosotros</a> | 
+  <a href="contacto.html">Contacto</a> | 
+  <a href="politica-privacidad.html">Privacidad</a>
+  <p style="margin-top: 1rem; font-size: 0.8rem; color: var(--color-text-faint);">© 2026 Alejandro Sibaja. Todos los derechos reservados.</p>
+</footer>
+
+<script>lucide.createIcons();</script>
 </body>
 </html>
